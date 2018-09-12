@@ -22,7 +22,7 @@ class PipelineBuilder {
     this.baseContainerName = "${project}-${branch}-${buildNumber}"
   }
 
-  def createBuilders(buildNodes) {
+  def createBuilders(buildNodes, String srcDir='code') {
     def builders = [:]
 
     buildNodes.each {
@@ -33,17 +33,17 @@ class PipelineBuilder {
         throw new IllegalArgumentException("'${name}' is not of type BuildNode")
       }
 
-      builders[name] = createBuilder(name, buildNode)
+      builders[name] = createBuilder(name, buildNode, srcDir)
     }
 
     return builders
   }
 
-  private def createBuilder(name, buildNode) {
+  private def createBuilder(String name, BuildNode buildNode, String srcDir) {
     def containerName = "${baseContainerName}-${name}"
     return {
       script.node('docker') {
-        script.dir('code') {
+        script.dir(scrDir) {
           script.checkout(script.scm)
 
           try {
@@ -58,6 +58,8 @@ class PipelineBuilder {
               --env https_proxy=${script.env.https_proxy} \
               --env local_conan_server=${script.env.local_conan_server} \
             ")
+
+            script.sh("docker cp ${srcDir} ${containerName}:/home/jenkins/")
           } finally {
             script.sh("docker stop ${containerName}")
             script.sh("docker rm -f ${containerName}")
