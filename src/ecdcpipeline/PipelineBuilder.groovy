@@ -43,25 +43,25 @@ class PipelineBuilder {
       script.node('docker') {
         script.dir(scrDir) {
           script.checkout(script.scm)
+        }
 
-          try {
-            def image = script.docker.image(buildNode.image)
-            def container = image.run("\
-              --name ${containerName} \
-              --tty \
-              --cpus=2 \
-              --memory=4GB \
-              --network=host \
-              --env http_proxy=${script.env.http_proxy} \
-              --env https_proxy=${script.env.https_proxy} \
-              --env local_conan_server=${script.env.local_conan_server} \
-            ")
+        try {
+          def image = script.docker.image(buildNode.image)
+          def container = image.run("\
+            --name ${containerName} \
+            --tty \
+            --cpus=2 \
+            --memory=4GB \
+            --network=host \
+            --env http_proxy=${script.env.http_proxy} \
+            --env https_proxy=${script.env.https_proxy} \
+            --env local_conan_server=${script.env.local_conan_server} \
+          ")
 
-            script.sh("docker cp ${srcDir} ${containerName}:/home/jenkins/")
-          } finally {
-            script.sh("docker stop ${containerName}")
-            script.sh("docker rm -f ${containerName}")
-          }
+          script.sh("docker cp ${srcDir} ${containerName}:/home/jenkins/")
+        } finally {
+          script.sh("docker stop ${containerName}")
+          script.sh("docker rm -f ${containerName}")
         }
       }
     }
