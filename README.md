@@ -49,6 +49,6 @@ groovy --classpath src:test test/ecdcpipeline/<file_name>.groovy
 where `<file_name>` must be substituted with a test file name (_*Test.groovy_).
 
 
-### Does this library use proper Groovy coding conventions/style/technique?
+### Does this library use proper Groovy coding conventions or style?
 
 Possibly not. If you know how to make it more proper Groovy-like and want to do it, make the changes and send a pull request.

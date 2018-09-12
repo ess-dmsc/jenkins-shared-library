@@ -16,9 +16,7 @@ class PipelineBuilder {
     def (org, project, branch) = "${script.env.JOB_NAME}".tokenize('/')
     this.project = project
     this.branch = branch
-
     this.buildNumber = script.env.BUILD_NUMBER
-
     this.baseContainerName = "${project}-${branch}-${buildNumber}"
   }
 
