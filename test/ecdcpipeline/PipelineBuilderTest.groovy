@@ -23,5 +23,7 @@ class PipelineBuilderTest extends GroovyTestCase {
   void testPipelineBuilderProperties() {
     assertEquals(pipelineBuilder.project, 'test-project')
     assertEquals(pipelineBuilder.branch, 'master')
+    assertEquals(pipelineBuilder.buildNumber, '42')
+    assertEquals(pipelineBuilder.baseContainerName, 'test-project-master-42')
   }
 }
