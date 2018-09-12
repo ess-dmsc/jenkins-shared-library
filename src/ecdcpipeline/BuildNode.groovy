@@ -1,7 +1,7 @@
 package ecdcpipeline
 
 
-class Globals {
+class BuildNode {
   static images = [
     'centos7': [
       'name': 'essdmscdm/centos7-build-node:3.1.0',
@@ -16,4 +16,13 @@ class Globals {
       'sh': 'bash -e'
     ]
   ]
+
+  String type
+
+  BuildNode(String type) {
+    if (!images.containsKey(type)) {
+      throw new Exception("Invalid build node type: ${type}")
+    }
+    this.type = type
+  }
 }
