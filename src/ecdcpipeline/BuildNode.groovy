@@ -1,28 +1,29 @@
 package ecdcpipeline
 
+import ecdcpipeline.DefaultBuildNodeImages
+
 
 class BuildNode {
-  static images = [
-    'centos7': [
-      'name': 'essdmscdm/centos7-build-node:3.1.0',
-      'sh': '/usr/bin/scl enable devtoolset-6 -- /bin/bash -e'
-    ],
-    'debian9': [
-      'name': 'essdmscdm/debian9-build-node:2.1.0',
-      'sh': 'bash -e'
-    ],
-    'ubuntu1804': [
-      'name': 'essdmscdm/ubuntu18.04-build-node:1.1.0',
-      'sh': 'bash -e'
-    ]
-  ]
+  String image
+  String shell
 
-  String type
+  BuildNode(String os, def images=DefaultBuildNodeImages.images) {
+    images.each {
+      key, value ->
+        if (!value.containsKey('image')) {
+          throw new IllegalArgumentException("'${key}' has no 'image' key")
+        }
 
-  BuildNode(String type) {
-    if (!images.containsKey(type)) {
-      throw new Exception("Invalid build node type: ${type}")
+        if (!value.containsKey('sh')) {
+          throw new IllegalArgumentException("'${key}' has no 'sh' key")
+        }
     }
-    this.type = type
+
+    if (!images.containsKey(os)) {
+      throw new IllegalArgumentException("Invalid build node: ${os}")
+    }
+
+    this.image = images[os]['image']
+    this.shell = images[os]['sh']
   }
 }
