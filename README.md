@@ -16,6 +16,11 @@ To make this library globally available in Jenkins, go to **Manage Jenkins**, **
 7. Click **Save** to save the changes.
 
 
+## Upgrading the default build nodes
+
+To upgrade the default build nodes, edit *src/ecdcpipeline/DefaultBuildNodeImages.groovy*.
+
+
 ## Developing the library
 
 To develop the library and run tests locally, you need [Groovy](http://www.groovy-lang.org). You can find out what version of Groovy Jenkins is using by clicking on **Master** under *Build Executor Status* and then going to the **Script Console**; enter `println GroovySystem.version` and click **Run** to get the result.
