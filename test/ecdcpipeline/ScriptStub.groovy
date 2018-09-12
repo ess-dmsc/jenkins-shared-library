@@ -8,4 +8,5 @@ class ScriptStub {
   def env = new Env()
 
   def sh(command) {}
+  def node(label) {}
 }

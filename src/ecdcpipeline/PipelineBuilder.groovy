@@ -35,7 +35,13 @@ class PipelineBuilder {
 
   private def createBuilder(name, buildNode) {
     return {
-      node('docker') {}
+      script.node('docker') {
+        script.dir('code') {
+          checkout scm
+          script.sh('pwd')
+          script.sh('ls -la')
+        }
+      }
     }
   }
 }
