@@ -16,6 +16,11 @@ To make this library globally available in Jenkins, go to **Manage Jenkins**, **
 7. Click **Save** to save the changes.
 
 
+## Using the library
+
+See the commented sample Jenkinsfile provided in this repository at *examples/Jenkinsfile*.
+
+
 ## Upgrading the default build nodes
 
 To upgrade the default build nodes, edit *src/ecdcpipeline/DefaultBuildNodeImages.groovy*.

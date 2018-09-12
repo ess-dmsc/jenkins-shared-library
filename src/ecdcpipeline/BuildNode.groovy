@@ -17,6 +17,6 @@ class BuildNode {
     if (!images.containsKey(os)) {
       throw new IllegalArgumentException("'${os}' is not a valid default build node OS")
     }
-    return new BuildNode(images[os]['image'], images[os]['sh'])
+    return new BuildNode(images[os]['image'], images[os]['shell'])
   }
 }

@@ -1,0 +1,14 @@
+// Assuming you added the library to Jenkins with the name ecdc-pipeline, load
+// it and import the required classes from the ecdcpipeline package.
+@Library('ecdc-pipeline')
+import ecdcpipeline.BuildNode
+
+// Build a map of build nodes where the pipeline will be run.
+// BuildNode.getDefaultBuildNode will return a default build node from the map
+// in the DefaultBuildNodeImages class. You can also create build node objects
+// using a custom image and shell by using the BuildNode constructor.
+def buildNodes = [
+  'centos-debug': BuildNode.getDefaultBuildNode('centos7'),
+  'centos-release': BuildNode.getDefaultBuildNode('centos7'),
+  'centos-custom': new BuildNode('essdmscdm/custom-node:1.2.3', '/bin/sh')
+]
