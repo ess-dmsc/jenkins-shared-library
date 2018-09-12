@@ -37,7 +37,7 @@ class PipelineBuilder {
     return {
       script.node('docker') {
         script.dir('code') {
-          script.checkout()
+          script.checkout(script.scm)
           script.sh('pwd')
           script.sh('ls -la')
         }
