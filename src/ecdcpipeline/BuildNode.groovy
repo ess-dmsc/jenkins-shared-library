@@ -12,7 +12,7 @@ class BuildNode {
     this.shell = shell
   }
 
-  static createDefaultBuildNode(String os) {
+  static getDefaultBuildNode(String os) {
     def images = DefaultBuildNodeImages.images
     if (!images.containsKey(os)) {
       throw new IllegalArgumentException("'${os}' is not a valid default build node OS")

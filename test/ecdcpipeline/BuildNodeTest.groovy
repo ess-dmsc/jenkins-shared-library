@@ -11,15 +11,15 @@ class BuildNodeTest extends GroovyTestCase {
     assertEquals(bn.shell, '/bin/test-shell -e')
   }
 
-  void testCreateDefaultBuildNodeSuccess() {
-    def bn = BuildNode.createDefaultBuildNode('centos7')
+  void testGetDefaultBuildNodeSuccess() {
+    def bn = BuildNode.getDefaultBuildNode('centos7')
     assertNotNull(bn.image)
     assertNotNull(bn.shell)
   }
 
-  void testCreateDefaultBuildNodeException() {
+  void testGetDefaultBuildNodeException() {
     shouldFail(IllegalArgumentException.class) {
-      def bn = BuildNode.createDefaultBuildNode('fail')
+      def bn = BuildNode.getDefaultBuildNode('fail')
     }
   }
 }
