@@ -37,7 +37,7 @@ You can run unit tests from the root directory of this repository with
 ```
 groovy --classpath src:test test/ecdcpipeline/<file_name>.groovy
 ```
-where `<file_name>` must be substituted by a test file name (_*Test.groovy_).
+where `<file_name>` must be substituted with a test file name (_*Test.groovy_).
 
 
 ### Does this library use proper Groovy coding conventions/style/technique?
