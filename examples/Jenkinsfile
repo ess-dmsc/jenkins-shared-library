@@ -2,13 +2,33 @@
 // it and import the required classes from the ecdcpipeline package.
 @Library('ecdc-pipeline')
 import ecdcpipeline.BuildNode
+import ecdcpipeline.PipelineBuilder
 
-// Build a map of build nodes where the pipeline will be run.
-// BuildNode.getDefaultBuildNode will return a default build node from the map
-// in the DefaultBuildNodeImages class. You can also create build node objects
-// using a custom image and shell by using the BuildNode constructor.
-def buildNodes = [
-  'centos-debug': BuildNode.getDefaultBuildNode('centos7'),
-  'centos-release': BuildNode.getDefaultBuildNode('centos7'),
-  'centos-custom': new BuildNode('essdmscdm/custom-node:1.2.3', '/bin/sh')
-]
+
+node {
+  // Build a map of build nodes where the pipeline will be run.
+  // BuildNode.getDefaultBuildNode will return a default build node from the map
+  // in the DefaultBuildNodeImages class. You can also create build node objects
+  // using a custom image and shell by using the BuildNode constructor.
+  def buildNodes = [
+    'centos-debug': BuildNode.getDefaultBuildNode('centos7'),
+    'centos-release': BuildNode.getDefaultBuildNode('centos7'),
+    'centos-custom': new BuildNode('essdmscdm/custom-node:1.2.3', '/bin/sh')
+  ]
+
+  // Instantiate a PipelineBuilder object to generate the builders.
+  def pipelineBuilder = new PipelineBuilder(this)
+
+  // PipelineBuilder defines properties that can be accessed in the Jenkinsfile.
+  echo pipelineBuilder.project
+  echo pipelineBuilder.branch
+  echo pipelineBuilder.buildNumber
+  echo pipelineBuilder.baseContainerName
+
+  // Create builders and start them in parallel. By default, the source code
+  // will be available in the 'code' directory; this can be change by supplying
+  // an additional string argument to createBuilders specifying the name of the
+  // source code directory: createBuilders(buildNodes, 'source').
+  builders = pipelineBuilder.createBuilders(buildNodes)
+  parallel builders
+}

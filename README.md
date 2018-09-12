@@ -3,6 +3,15 @@
 Common functionality for ECDC Jenkins pipeline jobs.
 
 
+## Requirements
+
+This library assumes the Docker plugin is installed on the Jenkins server. The following environment variables are assumed to be defined on build nodes:
+
+- http_proxy
+- https_proxy
+- local_conan_server
+
+
 ## Making the library available in Jenkins
 
 To make this library globally available in Jenkins, go to **Manage Jenkins**, **Configure System**, **Global Pipeline Libraries** and follow the instructions below:
