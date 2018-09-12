@@ -4,10 +4,16 @@ import ecdcpipeline.BuildNode
 
 
 class PipelineBuilder {
+  String project
+  String branch
   private def script
 
   PipelineBuilder(script) {
     this.script = script
+
+    def (org, project, branch) = "${script.env.JOB_NAME}".tokenize('/')
+    this.project = project
+    this.branch = branch
   }
 
   def createBuilders(buildNodes) {
@@ -21,13 +27,15 @@ class PipelineBuilder {
         throw new IllegalArgumentException("'${name}' is not of type BuildNode")
       }
 
-      builders[name] = {
-        node('docker') {}
-      }
+      builders[name] = createBuilder(name, buildNode)
     }
 
-    return {
+    return builders
+  }
 
+  private def createBuilder(name, buildNode) {
+    return {
+      node('docker') {}
     }
   }
 }

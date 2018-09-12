@@ -6,17 +6,22 @@ import ecdcpipeline.ScriptStub
 
 class PipelineBuilderTest extends GroovyTestCase {
   def script
+  def pipelineBuilder
 
   void setUp() {
     script = new ScriptStub()
+    pipelineBuilder = new PipelineBuilder(script)
   }
 
   void testCreateBuildersBadBuildNodesArgException() {
-    def pipelineBuilder = new PipelineBuilder(script)
     def buildNodes = ['fail': 'wrong type']
-
     shouldFail(IllegalArgumentException.class) {
       def builders = pipelineBuilder.createBuilders(buildNodes)
     }
+  }
+
+  void testPipelineBuilderProperties() {
+    assertEquals(pipelineBuilder.project, 'test-project')
+    assertEquals(pipelineBuilder.branch, 'master')
   }
 }
