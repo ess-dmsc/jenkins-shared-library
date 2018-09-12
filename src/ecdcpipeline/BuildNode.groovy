@@ -7,23 +7,16 @@ class BuildNode {
   String image
   String shell
 
-  BuildNode(String os, def images=DefaultBuildNodeImages.images) {
-    images.each {
-      key, value ->
-        if (!value.containsKey('image')) {
-          throw new IllegalArgumentException("'${key}' has no 'image' key")
-        }
+  BuildNode(String image, String shell) {
+    this.image = image
+    this.shell = shell
+  }
 
-        if (!value.containsKey('sh')) {
-          throw new IllegalArgumentException("'${key}' has no 'sh' key")
-        }
-    }
-
+  static createDefaultBuildNode(String os) {
+    def images = DefaultBuildNodeImages.images
     if (!images.containsKey(os)) {
-      throw new IllegalArgumentException("Invalid build node: ${os}")
+      throw new IllegalArgumentException("'${os}' is not a valid default build node OS")
     }
-
-    this.image = images[os]['image']
-    this.shell = images[os]['sh']
+    return new BuildNode(images[os]['image'], images[os]['sh'])
   }
 }
