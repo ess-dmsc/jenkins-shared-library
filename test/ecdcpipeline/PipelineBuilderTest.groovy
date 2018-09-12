@@ -11,12 +11,12 @@ class PipelineBuilderTest extends GroovyTestCase {
     script = new ScriptStub()
   }
 
-  void testCreateBuilderBadBuildNodesArgException() {
+  void testCreateBuildersBadBuildNodesArgException() {
     def pipelineBuilder = new PipelineBuilder(script)
     def buildNodes = ['fail': 'wrong type']
 
     shouldFail(IllegalArgumentException.class) {
-      def builder = pipelineBuilder.createBuilder(buildNodes)
+      def builders = pipelineBuilder.createBuilders(buildNodes)
     }
   }
 }
