@@ -3,7 +3,7 @@ package ecdcpipeline
 import ecdcpipeline.BuildNode
 
 
-class PipelineBuilder {
+class PipelineBuilder implements Serializable {
   String project
   String branch
   String buildNumber

@@ -3,7 +3,7 @@ package ecdcpipeline
 import ecdcpipeline.DefaultBuildNodeImages
 
 
-class BuildNode {
+class BuildNode  implements Serializable  {
   String image
   String shell
 
