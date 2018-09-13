@@ -9,7 +9,11 @@ node {
   // Build a map of build nodes where the pipeline will be run.
   // BuildNode.getDefaultBuildNode will return a default build node from the map
   // in the DefaultBuildNodeImages class. You can also create build node objects
-  // using a custom image and shell by using the BuildNode constructor.
+  // using a custom image and shell by using the BuildNode constructor. By using
+  // a default build node, your Jenkins job will automatically update to new
+  // versions of the build node when this library is updated; use the custom
+  // image if the container you require is not provided by the library or if an
+  // older fixed version is needed for compatibility.
   def buildNodes = [
     'centos-debug': BuildNode.getDefaultBuildNode('centos7'),
     'centos-release': BuildNode.getDefaultBuildNode('centos7'),

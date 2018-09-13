@@ -58,6 +58,7 @@ class PipelineBuilder {
             --env local_conan_server=${script.env.local_conan_server} \
           ")
 
+          // Copy cloned repository to container
           script.sh("docker cp ${srcDir} ${containerName}:/home/jenkins/")
         } finally {
           script.sh("docker stop ${containerName}")
