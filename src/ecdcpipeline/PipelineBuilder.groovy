@@ -41,7 +41,7 @@ class PipelineBuilder implements Serializable {
     def containerName = "${baseContainerName}-${name}"
     return {
       script.node('docker') {
-        script.dir(scrDir) {
+        script.dir(srcDir) {
           script.checkout(script.scm)
         }
 
