@@ -13,7 +13,7 @@ class PipelineBuilder implements Serializable {
 
   private def script
   private def buildNodes
-  private FailureNotifier FailureNotifier
+  private FailureNotifier failureNotifier
 
   PipelineBuilder(script, buildNodes) {
     // Check the argument types

@@ -37,7 +37,9 @@ echo pipelineBuilder.baseContainerName
 // container.
 builders = pipelineBuilder.createBuilders { container ->
 
-  stage('First Stage') {
+  // The pipelineBuilder stage will send a failure notification in case an
+  // exception is thrown.
+  pipelineBuilder.stage('First Stage') {
     // Regular pipeline commands can be used here.
     echo 'In first stage'
     // A shell script run on the Jenkins build node (not in a container).
