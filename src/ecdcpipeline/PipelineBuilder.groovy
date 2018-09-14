@@ -64,7 +64,7 @@ class PipelineBuilder implements Serializable {
 
   private def createBuilder(Closure pipeline, String key, BuildNode buildNode) {
     def containerName = "${baseContainerName}-${key}"
-    def container = new Container(script, containerName, buildNode)
+    def container = new Container(script, key, containerName, buildNode)
 
     def builder = {
       script.node('docker') {

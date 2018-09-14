@@ -5,11 +5,13 @@ import ecdcpipeline.BuildNode
 
 class Container implements Serializable {
   def script
+  String key
   String name
   BuildNode buildNode
 
-  Container(script, String name, BuildNode buildNode) {
+  Container(script, String key, String name, BuildNode buildNode) {
     this.script = script
+    this.key = key
     this.name = name
     this.buildNode = buildNode
   }

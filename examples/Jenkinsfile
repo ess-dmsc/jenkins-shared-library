@@ -39,9 +39,9 @@ builders = pipelineBuilder.createBuilders { container ->
 
   // The pipelineBuilder stage will send a failure notification in case an
   // exception is thrown. The notification message includes the stage name, so
-  // adding the container name to it allows identifying in which container the
-  // exception occurred.
-  pipelineBuilder.stage("${container.name}: First Stage") {
+  // adding the container name using 'container.key' to it allows identifying in
+  // which container the exception occurred.
+  pipelineBuilder.stage("${container.key}: First Stage") {
     // Regular pipeline commands can be used here.
     echo 'In first stage'
     // A shell script run on the Jenkins build node (not in a container).
@@ -50,15 +50,15 @@ builders = pipelineBuilder.createBuilders { container ->
     container.sh 'pwd'
   }
 
-  // The parameter has a 'name' field that can be used for conditional stages.
+  // The 'key' field can be used for conditional stages.
   if (container.name == 'centos-release') {
-    pipelineBuilder.stage("${container.name}: Release Stage") {
+    pipelineBuilder.stage("${container.key}: Release Stage") {
       echo 'This stage is only run on centos-release'
       container.sh 'ls -la'
     }
   }
 
-  pipelineBuilder.stage("${container.name}: Another Stage") {
+  pipelineBuilder.stage("${container.key}: Another Stage") {
     // Triple quotes can be used to write a multiline script.
     container.sh """
       cd code
