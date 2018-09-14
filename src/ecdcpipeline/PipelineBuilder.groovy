@@ -57,6 +57,7 @@ class PipelineBuilder implements Serializable {
       script.stage(name, stageCommands)
     } catch(e) {
       def msg = "${project} failed in stage ${name}"
+      failureNotifier.send(msg)
       throw e
     }
   }
