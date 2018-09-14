@@ -2,6 +2,7 @@ package ecdcpipeline
 
 import ecdcpipeline.BuildNode
 import ecdcpipeline.Container
+import ecdcpipeline.FailureNotifier
 
 
 class PipelineBuilder implements Serializable {
@@ -12,6 +13,7 @@ class PipelineBuilder implements Serializable {
 
   private def script
   private def buildNodes
+  private FailureNotifier FailureNotifier
 
   PipelineBuilder(script, buildNodes) {
     // Check the argument types
@@ -29,6 +31,16 @@ class PipelineBuilder implements Serializable {
     this.branch = branch
     this.buildNumber = script.env.BUILD_NUMBER
     this.baseContainerName = "${project}-${branch}-${buildNumber}"
+
+    this.failureNotifier = new FailureNotifier(script.env.JOB_NAME)
+  }
+
+  def activateEmailFailureNotifications() {
+    failureNotifier.activateNotificationChannel(FailureNotifier.EMAIL)
+  }
+
+  def activateSlackFailureNotifications() {
+    failureNotifier.activateNotificationChannel(FailureNotifier.SLACK)
   }
 
   def createBuilders(Closure pipeline) {
@@ -38,6 +50,15 @@ class PipelineBuilder implements Serializable {
     }
 
     return builders
+  }
+
+  def stage(String name, Closure stageCommands) {
+    try {
+      script.stage(name, stageCommands)
+    } catch(e) {
+      def msg = "${project} failed in stage ${name}"
+      throw e
+    }
   }
 
   private def createBuilder(Closure pipeline, String key, BuildNode buildNode) {

@@ -5,7 +5,11 @@ Common functionality for ECDC Jenkins pipeline jobs.
 
 ## Requirements
 
-This library assumes the Docker plugin is installed on the Jenkins server. The following environment variables are assumed to be defined on build nodes:
+This library assumes the following plugins are installed on the Jenkins server:
+- [Docker Pipeline](https://wiki.jenkins.io/display/JENKINS/Docker+Pipeline+Plugin)
+- [Slack Notification](http://wiki.jenkins-ci.org/display/JENKINS/Slack+Plugin)
+
+The following environment variables are assumed to be defined on build nodes:
 
 - http_proxy
 - https_proxy

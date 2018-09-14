@@ -18,8 +18,10 @@ buildNodes = [
   'ubuntu': new BuildNode('essdmscdm/ubuntu18.04-build-node:1.1.0', 'bash -e')
 ]
 
-// Instantiate a PipelineBuilder object to generate the builders.
+// Instantiate a PipelineBuilder object to generate the builders and activate
+// email failure notifications (Slack notifications are also available).
 pipelineBuilder = new PipelineBuilder(this, buildNodes)
+pipelineBuilder.activateEmailFailureNotifications()
 
 // PipelineBuilder defines properties that can be accessed in the Jenkinsfile.
 echo pipelineBuilder.project
