@@ -12,14 +12,14 @@ import ecdcpipeline.PipelineBuilder
 // versions of the build node when this library is updated; use the custom image
 // if the container you require is not provided by the library or if an older
 // fixed version is needed for compatibility.
-def buildNodes = [
+buildNodes = [
   'centos-debug': BuildNode.getDefaultBuildNode('centos7'),
   'centos-release': BuildNode.getDefaultBuildNode('centos7'),
   'centos-custom': new BuildNode('essdmscdm/custom-node:1.2.3', '/bin/sh')
 ]
 
 // Instantiate a PipelineBuilder object to generate the builders.
-def pipelineBuilder = new PipelineBuilder(this, buildNodes)
+pipelineBuilder = new PipelineBuilder(this, buildNodes)
 
 // PipelineBuilder defines properties that can be accessed in the Jenkinsfile.
 echo pipelineBuilder.project
