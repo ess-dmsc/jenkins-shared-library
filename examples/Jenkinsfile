@@ -51,7 +51,7 @@ builders = pipelineBuilder.createBuilders { container ->
   }
 
   // The 'key' field can be used for conditional stages.
-  if (container.name == 'centos-release') {
+  if (container.key == 'centos-release') {
     pipelineBuilder.stage("${container.key}: Release Stage") {
       echo 'This stage is only run on centos-release'
       container.sh 'ls -la'
