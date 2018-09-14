@@ -38,7 +38,7 @@ class PipelineBuilder implements Serializable {
   def createBuilders(Closure pipeline) {
     def builders = [:]
     buildNodes.each { key, buildNode ->
-      builders[name] = createBuilder(pipeline, key, buildNode)
+      builders[key] = createBuilder(pipeline, key, buildNode)
     }
 
     return builders

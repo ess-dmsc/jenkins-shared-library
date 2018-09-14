@@ -15,7 +15,7 @@ import ecdcpipeline.PipelineBuilder
 buildNodes = [
   'centos-debug': BuildNode.getDefaultBuildNode('centos7'),
   'centos-release': BuildNode.getDefaultBuildNode('centos7'),
-  'centos-custom': new BuildNode('essdmscdm/custom-node:1.2.3', '/bin/sh')
+  'ubuntu': new BuildNode('essdmscdm/ubuntu18.04-build-node:1.1.0', 'bash -e')
 ]
 
 // Instantiate a PipelineBuilder object to generate the builders.
