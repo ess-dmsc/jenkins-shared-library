@@ -24,15 +24,11 @@ class PipelineBuilder implements Serializable {
     this.script = script
     this.buildNodes = buildNodes
 
-    def (org, project, branch) = splitJobName(script)
+    def (org, project, branch) = "${script.env.JOB_NAME}".tokenize('/')
     this.project = project
     this.branch = branch
     this.buildNumber = script.env.BUILD_NUMBER
     this.baseContainerName = "${project}-${branch}-${buildNumber}"
-  }
-
-  private def splitJobName(script) {
-    return "${script.env.JOB_NAME}".tokenize('/')
   }
 
   def createBuilders(Closure pipeline) {
