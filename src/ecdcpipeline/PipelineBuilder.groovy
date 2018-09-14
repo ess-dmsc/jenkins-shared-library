@@ -1,6 +1,7 @@
 package ecdcpipeline
 
 import ecdcpipeline.BuildNode
+import ecdcpipeline.Container
 
 
 class PipelineBuilder implements Serializable {
@@ -8,46 +9,54 @@ class PipelineBuilder implements Serializable {
   String branch
   String buildNumber
   String baseContainerName
+
   private def script
+  private def buildNodes
 
-  PipelineBuilder(script) {
+  PipelineBuilder(script, buildNodes) {
+    // Check the argument types
+    buildNodes.each { key, buildNode ->
+      if (buildNode.getClass() != ecdcpipeline.BuildNode.class) {
+        throw new IllegalArgumentException("'${key}' is not of type BuildNode")
+      }
+    }
+
     this.script = script
+    this.buildNodes = buildNodes
 
-    def (org, project, branch) = "${script.env.JOB_NAME}".tokenize('/')
+    def (org, project, branch) = splitJobName(script)
     this.project = project
     this.branch = branch
     this.buildNumber = script.env.BUILD_NUMBER
     this.baseContainerName = "${project}-${branch}-${buildNumber}"
   }
 
-  def createBuilders(buildNodes, String srcDir='code') {
+  private def splitJobName(script) {
+    return "${script.env.JOB_NAME}".tokenize('/')
+  }
+
+  def createBuilders(Closure pipeline) {
     def builders = [:]
-
-    buildNodes.each {
-      name, buildNode ->
-
-      // Check the argument types
-      if (buildNode.getClass() != ecdcpipeline.BuildNode.class) {
-        throw new IllegalArgumentException("'${name}' is not of type BuildNode")
-      }
-
-      builders[name] = createBuilder(name, buildNode, srcDir)
+    buildNodes.each { key, buildNode ->
+      builders[name] = createBuilder(pipeline, key, buildNode)
     }
 
     return builders
   }
 
-  private def createBuilder(String name, BuildNode buildNode, String srcDir) {
-    def containerName = "${baseContainerName}-${name}"
-    return {
+  private def createBuilder(Closure pipeline, String key, BuildNode buildNode) {
+    def containerName = "${baseContainerName}-${key}"
+    def container = new Container(script, containerName, buildNode)
+
+    def builder = {
       script.node('docker') {
-        script.dir(srcDir) {
+        script.dir('code') {
           script.checkout(script.scm)
         }
 
         try {
           def image = script.docker.image(buildNode.image)
-          def container = image.run("\
+          image.run("\
             --name ${containerName} \
             --tty \
             --cpus=2 \
@@ -59,12 +68,16 @@ class PipelineBuilder implements Serializable {
           ")
 
           // Copy cloned repository to container
-          script.sh("docker cp ${srcDir} ${containerName}:/home/jenkins/")
+          script.sh("docker cp code ${containerName}:/home/jenkins/")
+
+          pipeline(container)
         } finally {
           script.sh("docker stop ${containerName}")
           script.sh("docker rm -f ${containerName}")
         }
       }
     }
+
+    return builder
   }
 }

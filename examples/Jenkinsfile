@@ -4,35 +4,71 @@
 import ecdcpipeline.BuildNode
 import ecdcpipeline.PipelineBuilder
 
+// Build a map of build nodes where the pipeline will be run.
+// BuildNode.getDefaultBuildNode will return a default build node from the map
+// in the DefaultBuildNodeImages class. You can also create build node objects
+// using a custom image and shell by using the BuildNode constructor. By using a
+// default build node, your Jenkins job will automatically update to new
+// versions of the build node when this library is updated; use the custom image
+// if the container you require is not provided by the library or if an older
+// fixed version is needed for compatibility.
+def buildNodes = [
+  'centos-debug': BuildNode.getDefaultBuildNode('centos7'),
+  'centos-release': BuildNode.getDefaultBuildNode('centos7'),
+  'centos-custom': new BuildNode('essdmscdm/custom-node:1.2.3', '/bin/sh')
+]
 
+// Instantiate a PipelineBuilder object to generate the builders.
+def pipelineBuilder = new PipelineBuilder(this, buildNodes)
+
+// PipelineBuilder defines properties that can be accessed in the Jenkinsfile.
+echo pipelineBuilder.project
+echo pipelineBuilder.branch
+echo pipelineBuilder.buildNumber
+echo pipelineBuilder.baseContainerName
+
+// Create builders for each build node with a parameterised pipeline. Notice the
+// 'container' parameter after the opening curly brace; this parameter can have
+// any name (container is recommended for readability) and is used in the
+// pipeline to invoke commands in the container. The pipeline will automatically
+// clone the repository and copy the source code to a 'code' folder in the
+// container.
+builders = pipelineBuilder.createBuilders { container ->
+
+  stage('First Stage') {
+    // Regular pipeline commands can be used here.
+    echo 'In first stage'
+    // A shell script run on the Jenkins build node (not in a container).
+    sh 'hostname'
+    // A shell script run on the container.
+    container.sh 'pwd'
+  }
+
+  // The parameter has a 'name' field that can be used for conditional stages.
+  if (container.name == 'centos-release') {
+    stage('Release Stage') {
+      echo 'This stage is only run on centos-release'
+      container.sh 'ls -la'
+    }
+  }
+
+  stage('Another Stage') {
+    // Triple quotes can be used to write a multiline script.
+    container.sh """
+      cd code
+      pwd
+      ls -la
+      cd ..
+      mkdir build
+      cd build
+      ls
+    """
+  }
+
+}
+
+// Checkout code on coordinator node and start builders in parallel.
 node {
-  // Build a map of build nodes where the pipeline will be run.
-  // BuildNode.getDefaultBuildNode will return a default build node from the map
-  // in the DefaultBuildNodeImages class. You can also create build node objects
-  // using a custom image and shell by using the BuildNode constructor. By using
-  // a default build node, your Jenkins job will automatically update to new
-  // versions of the build node when this library is updated; use the custom
-  // image if the container you require is not provided by the library or if an
-  // older fixed version is needed for compatibility.
-  def buildNodes = [
-    'centos-debug': BuildNode.getDefaultBuildNode('centos7'),
-    'centos-release': BuildNode.getDefaultBuildNode('centos7'),
-    'centos-custom': new BuildNode('essdmscdm/custom-node:1.2.3', '/bin/sh')
-  ]
-
-  // Instantiate a PipelineBuilder object to generate the builders.
-  def pipelineBuilder = new PipelineBuilder(this)
-
-  // PipelineBuilder defines properties that can be accessed in the Jenkinsfile.
-  echo pipelineBuilder.project
-  echo pipelineBuilder.branch
-  echo pipelineBuilder.buildNumber
-  echo pipelineBuilder.baseContainerName
-
-  // Create builders and start them in parallel. By default, the source code
-  // will be available in the 'code' directory; this can be change by supplying
-  // an additional string argument to createBuilders specifying the name of the
-  // source code directory: createBuilders(buildNodes, 'source').
-  builders = pipelineBuilder.createBuilders(buildNodes)
+  checkout scm
   parallel builders
 }

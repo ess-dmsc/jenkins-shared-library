@@ -2,25 +2,29 @@ package ecdcpipeline
 
 import ecdcpipeline.PipelineBuilder
 import ecdcpipeline.ScriptStub
+import ecdcpipeline.BuildNode
 
 
 class PipelineBuilderTest extends GroovyTestCase {
   def script
-  def pipelineBuilder
+  def buildNodes
 
   void setUp() {
     script = new ScriptStub()
-    pipelineBuilder = new PipelineBuilder(script)
+    buildNodes = [
+      'test': new BuildNode('repository/image:1.2.3', '/bin/sh')
+    ]
   }
 
   void testCreateBuildersBadBuildNodesArgException() {
-    def buildNodes = ['fail': 'wrong type']
+    def badBuildNodes = ['fail': 'not a BuildNode object']
     shouldFail(IllegalArgumentException.class) {
-      def builders = pipelineBuilder.createBuilders(buildNodes)
+      def pipelineBuilder = new PipelineBuilder(script, badBuildNodes)
     }
   }
 
   void testPipelineBuilderProperties() {
+    def pipelineBuilder = new PipelineBuilder(script, buildNodes)
     assertEquals(pipelineBuilder.project, 'test-project')
     assertEquals(pipelineBuilder.branch, 'master')
     assertEquals(pipelineBuilder.buildNumber, '42')
