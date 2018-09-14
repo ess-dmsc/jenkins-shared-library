@@ -62,7 +62,13 @@ builders = pipelineBuilder.createBuilders { container ->
       mkdir build
       cd build
       ls
-    """
+      echo TEST > text.txt
+      """
+      container.copyFrom('/home/jenkins/build/test.txt', '.')
+      sh """
+        ls -la
+        cat test.txt
+      """
   }
 
 }
