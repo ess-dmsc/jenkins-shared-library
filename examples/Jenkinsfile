@@ -58,7 +58,7 @@ builders = pipelineBuilder.createBuilders { container ->
     }
   }
 
-  pipelineBuilder.stage("${container.name}: Another Stage")
+  pipelineBuilder.stage("${container.name}: Another Stage") {
     // Triple quotes can be used to write a multiline script.
     container.sh """
       cd code
