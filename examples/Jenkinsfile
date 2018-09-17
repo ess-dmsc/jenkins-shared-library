@@ -42,6 +42,13 @@ builders = pipelineBuilder.createBuilders { container ->
   // adding the container name using 'container.key' to it allows identifying in
   // which container the exception occurred.
   pipelineBuilder.stage("${container.key}: First Stage") {
+    // Clone the source code repository to a directory with the project's name
+    // on the Jenkins build node.
+    dir(pipelineBuilder.project) {
+      checkout scm
+    }
+    // Copy cloned source code to a directory named 'code' on the container.
+    container.copyTo(pipelineBuilder.project, '/home/jenkins/code')
     // Regular pipeline commands can be used here.
     echo 'In first stage'
     // A shell script run on the Jenkins build node (not in a container).
@@ -70,6 +77,7 @@ builders = pipelineBuilder.createBuilders { container ->
       echo TEST > test.txt
       ls
     """
+    // Copy a file from the container.
     container.copyFrom('/home/jenkins/build/test.txt', '.')
     sh """
       ls -la
