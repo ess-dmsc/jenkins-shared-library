@@ -56,7 +56,7 @@ Activate Slack failure notifications for exceptions inside the *PipelineBuilder*
 
 ### `createBuilders(Closure pipeline)`
 
-Return a map of builders to be passed to a Jenkins `parallel` step. The argument is a parameterised *Closure*, where the parameter is the container interface (see section below), defined with curly braces and the parameter name before an arrow:
+Return a map of builders to be passed to a Jenkins `parallel` step. The argument is a parameterised *Closure* defined with curly braces and the parameter name before an arrow, where the parameter is the container interface (see section below):
 
 ```
 builders = pipelineBuilder.createBuilders { container ->
