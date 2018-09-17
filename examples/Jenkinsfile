@@ -47,14 +47,16 @@ builders = pipelineBuilder.createBuilders { container ->
     dir(pipelineBuilder.project) {
       checkout scm
     }
-    // Copy cloned source code to a directory named 'code' on the container.
-    container.copyTo(pipelineBuilder.project, '/home/jenkins/code')
+    // Copy cloned source code to a directory named 'code' on the container. If
+    // a relative path is passed to the container copy functions, it will be
+    // prefixed with '/home/jenkins/'.
+    container.copyTo(pipelineBuilder.project, 'code')
     // Regular pipeline commands can be used here.
     echo 'In first stage'
     // A shell script run on the Jenkins build node (not in a container).
     sh 'hostname'
     // A shell script run on the container.
-    container.sh 'pwd'
+    container.sh 'pwd; ls -la; ls -la code'
   }
 
   // The 'key' field can be used for conditional stages.
