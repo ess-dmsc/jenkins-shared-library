@@ -84,9 +84,6 @@ class PipelineBuilder implements Serializable {
             --env local_conan_server=${script.env.local_conan_server} \
           ")
 
-          // Copy cloned repository to container
-          script.sh("docker cp code ${containerName}:/home/jenkins/")
-
           pipeline(container)
         } finally {
           script.sh("docker stop ${containerName}")
