@@ -68,6 +68,9 @@ class PipelineBuilder implements Serializable {
 
     def builder = {
       script.node('docker') {
+        // Delete workspace when build is done
+        cleanWs()
+
         script.dir('code') {
           script.checkout(script.scm)
         }
