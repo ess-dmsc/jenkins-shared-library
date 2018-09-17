@@ -1,23 +1,23 @@
 package ecdcpipeline
 
-import ecdcpipeline.BuildNode
+import ecdcpipeline.ContainerBuildNode
 
 
 class Container implements Serializable {
   def script
   String key
   String name
-  BuildNode buildNode
+  ContainerBuildNode containerBuildNode
 
-  Container(script, String key, String name, BuildNode buildNode) {
+  Container(script, String key, String name, ContainerBuildNode containerBuildNode) {
     this.script = script
     this.key = key
     this.name = name
-    this.buildNode = buildNode
+    this.containerBuildNode = containerBuildNode
   }
 
   def sh(String shellScript) {
-    return script.sh("docker exec ${name} ${buildNode.shell} -c \"" + shellScript + "\"")
+    return script.sh("docker exec ${name} ${containerBuildNode.shell} -c \"" + shellScript + "\"")
   }
 
   def copyTo(String src, String dst) {

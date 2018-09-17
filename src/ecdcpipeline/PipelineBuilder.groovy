@@ -1,6 +1,6 @@
 package ecdcpipeline
 
-import ecdcpipeline.BuildNode
+import ecdcpipeline.ContainerBuildNode
 import ecdcpipeline.Container
 import ecdcpipeline.FailureNotifier
 
@@ -12,19 +12,19 @@ class PipelineBuilder implements Serializable {
   String baseContainerName
 
   private def script
-  private def buildNodes
+  private def containerBuildNodes
   private FailureNotifier failureNotifier
 
-  PipelineBuilder(script, buildNodes) {
+  PipelineBuilder(script, containerBuildNodes) {
     // Check the argument types
-    buildNodes.each { key, buildNode ->
-      if (buildNode.getClass() != ecdcpipeline.BuildNode.class) {
-        throw new IllegalArgumentException("'${key}' is not of type BuildNode")
+    containerBuildNodes.each { key, containerBuildNode ->
+      if (containerBuildNode.getClass() != ecdcpipeline.ContainerBuildNode.class) {
+        throw new IllegalArgumentException("'${key}' is not of type ContainerBuildNode")
       }
     }
 
     this.script = script
-    this.buildNodes = buildNodes
+    this.containerBuildNodes = containerBuildNodes
 
     def (org, project, branch) = "${script.env.JOB_NAME}".tokenize('/')
     this.project = project
@@ -45,8 +45,8 @@ class PipelineBuilder implements Serializable {
 
   def createBuilders(Closure pipeline) {
     def builders = [:]
-    buildNodes.each { key, buildNode ->
-      builders[key] = createBuilder(pipeline, key, buildNode)
+    containerBuildNodes.each { key, containerBuildNode ->
+      builders[key] = createBuilder(pipeline, key, containerBuildNode)
     }
 
     return builders
@@ -62,9 +62,9 @@ class PipelineBuilder implements Serializable {
     }
   }
 
-  private def createBuilder(Closure pipeline, String key, BuildNode buildNode) {
+  private def createBuilder(Closure pipeline, String key, ContainerBuildNode containerBuildNode) {
     def containerName = "${baseContainerName}-${key}"
-    def container = new Container(script, key, containerName, buildNode)
+    def container = new Container(script, key, containerName, containerBuildNode)
 
     def builder = {
       script.node('docker') {
@@ -73,7 +73,7 @@ class PipelineBuilder implements Serializable {
         }
 
         try {
-          def image = script.docker.image(buildNode.image)
+          def image = script.docker.image(containerBuildNode.image)
           image.run("\
             --name ${containerName} \
             --tty \

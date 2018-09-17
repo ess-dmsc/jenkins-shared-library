@@ -1,7 +1,7 @@
 package ecdcpipeline
 
 
-class DefaultBuildNodeImages {
+class DefaultContainerBuildNodeImages {
   static images = [
     'centos7': [
       'image': 'essdmscdm/centos7-build-node:3.1.0',

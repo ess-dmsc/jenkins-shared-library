@@ -1,42 +1,42 @@
 # The ECDC Jenkins Pipeline Library
 
-This documents describes the public interface of the ECDC Jenkins Pipeline Library and is a companion to the example Jenkinsfile. The instructions assume you have added the shared library to Jenkins using the name `ecdc-pipeline`, according to the *Making the library available in Jenkins* section of the *README.md* file.
+This documents describes the public interface of the ECDC Jenkins Pipeline Library and is a companion to the example Jenkinsfile. The instructions assume you have added the shared library globally to Jenkins using the name `ecdc-pipeline`, according to the *Making the library available in Jenkins* section of the *README.md* file.
 
 
 ## Making the library available in the pipeline script
 
-Add the following lines to a Jenkinsfile to make the *BuildNode* and *PipelineBuilder* library classes available:
+Add the following lines to a Jenkinsfile to make the *ContainerBuildNode* and *PipelineBuilder* library classes available:
 
 ```
 @Library('ecdc-pipeline')
-import ecdcpipeline.BuildNode
+import ecdcpipeline.ContainerBuildNode
 import ecdcpipeline.PipelineBuilder
 ```
 
 
 ## Selecting container build nodes
 
-The pipeline creation function expects a map with *BuildNode* objects as values as one of its arguments. The map keys are user-selected strings identifying each container. The values can be created in two different ways:
+The pipeline builder constructor expects a map with *ContainerBuildNode* objects as values as one of its arguments. The map keys are user-selected strings identifying each container and the values can be created in two different ways:
 
-### `BuildNode getDefaultBuildNode(String os)`
+### `ContainerBuildNode getDefaultContainerBuildNode(String os)`
 
-Return a default container build node for the operating system `os`. The valid values for this parameter are the keys in `DefaultBuildNodeImages` (defined in *src/DefaultBuildNodeImages.groovy*). This is the recommended approach.
+Return a default container build node for the operating system `os`. The valid values for this parameter are the keys in `DefaultContainerBuildNodeImages` (defined in *src/DefaultContainerBuildNodeImages.groovy*). This is the recommended approach.
 
-### `BuildNode(String image, String shell)`
+### `ContainerBuildNode(String image, String shell)`
 
-The *BuildNode* constructor takes a Docker image name and the shell command to be used with it.
+The *ContainerBuildNode* constructor takes a Docker image name and the shell command to be used with it.
 
 
 ## The pipeline builder
 
-The *PipelineBuilder* class provides the for building a parallel pipeline to be run on the selected build nodes.
+The *PipelineBuilder* class provides the interface for creating a parallel pipeline to be run on the selected build node containers.
 
-### `PipelineBuilder(script, buildNodes)`
+### `PipelineBuilder(script, containerContainerBuildNodes)`
 
-The  *PipelineBuilder* constructor takes a reference to the current pipeline script (`this`) and a map of build nodes as described above:
+The  *PipelineBuilder* constructor takes a reference to the current pipeline script (`this`) and a map of container build nodes as described above:
 
 ```
-pipelineBuilder = new PipelineBuilder(this, buildNodes)
+pipelineBuilder = new PipelineBuilder(this, containerContainerBuildNodes)
 ```
 
 A *PipelineBuilder* object has string fields that can be used in the build script:
