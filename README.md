@@ -31,7 +31,7 @@ To make this library globally available in Jenkins, go to **Manage Jenkins**, **
 
 ## Using the library
 
-See the commented sample Jenkinsfile provided in this repository at *examples/Jenkinsfile*.
+See the commented sample Jenkinsfile provided in this repository at *examples/Jenkinsfile* and the file *MANUAL.md*.
 
 
 ## Upgrading the default build nodes
