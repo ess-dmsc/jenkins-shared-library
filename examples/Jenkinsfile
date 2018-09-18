@@ -32,10 +32,8 @@ echo pipelineBuilder.baseContainerName
 
 // Create builders for each build node with a parameterised pipeline. Notice the
 // 'container' parameter after the opening curly brace; this parameter can have
-// any name (container is recommended for readability) and is used in the
-// pipeline to invoke commands in the container. The pipeline will automatically
-// clone the repository and copy the source code to a 'code' folder in the
-// container.
+// any name ('container' is recommended for readability) and is used in the
+// pipeline to invoke commands in the container.
 builders = pipelineBuilder.createBuilders { container ->
 
   // The pipelineBuilder stage will send a failure notification in case an
