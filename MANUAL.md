@@ -1,6 +1,6 @@
 # The ECDC Jenkins Pipeline Library
 
-This documents describes the public interface of the ECDC Jenkins Pipeline Library and is a companion to the example Jenkinsfile. The instructions assume you have added the shared library globally to Jenkins using the name `ecdc-pipeline`, according to the *Making the library available in Jenkins* section of the *README.md* file.
+This documents describes the public interface of the ECDC Jenkins Pipeline Library and is a companion to the example Jenkinsfile available at *examples/Jenkinsfile*. The instructions assume you have added the shared library globally to Jenkins using the name `ecdc-pipeline`, according to the *Making the library available in Jenkins* section of the *README.md* file.
 
 
 ## Making the library available in the pipeline script
@@ -18,7 +18,14 @@ import ecdcpipeline.PipelineBuilder
 
 The pipeline builder constructor expects a map with *ContainerBuildNode* objects as values as one of its arguments. The map keys are user-selected strings identifying each container and the values can be created in two different ways:
 
-### `ContainerBuildNode getDefaultContainerBuildNode(String os)`
+```
+containerBuildNodes = [
+  'centos': ContainerBuildNode.getDefaultContainerBuildNode('centos7'),
+  'ubuntu': new ContainerBuildNode('essdmscdm/ubuntu18.04-build-node:1.1.0', 'bash -e')
+]
+```
+
+### `static ContainerBuildNode getDefaultContainerBuildNode(String os)`
 
 Return a default container build node for the operating system `os`. The valid values for this parameter are the keys in `DefaultContainerBuildNodeImages` (defined in *src/DefaultContainerBuildNodeImages.groovy*). This is the recommended approach.
 
@@ -31,12 +38,12 @@ The *ContainerBuildNode* constructor takes a Docker image name and the shell com
 
 The *PipelineBuilder* class provides the interface for creating a parallel pipeline to be run on the selected build node containers.
 
-### `PipelineBuilder(script, containerContainerBuildNodes)`
+### `PipelineBuilder(script, containerBuildNodes)`
 
 The  *PipelineBuilder* constructor takes a reference to the current pipeline script (`this`) and a map of container build nodes as described above:
 
 ```
-pipelineBuilder = new PipelineBuilder(this, containerContainerBuildNodes)
+pipelineBuilder = new PipelineBuilder(this, containerBuildNodes)
 ```
 
 A *PipelineBuilder* object has string fields that can be used in the build script:
@@ -46,13 +53,26 @@ A *PipelineBuilder* object has string fields that can be used in the build scrip
 * `buildNumber`
 * `baseContainerName`
 
+```
+sh "mkdir ${pipelineBuilder.project}"
+echo pipelineBuilder.branch
+```
+
 ### `activateEmailFailureNotifications()`
 
 Activate email failure notifications for exceptions inside the *PipelineBuilder* `stage` method.
 
+```
+pipelineBuilder.activateEmailFailureNotifications()
+```
+
 ### `activateSlackFailureNotifications()`
 
 Activate Slack failure notifications for exceptions inside the *PipelineBuilder* `stage` method.
+
+```
+pipelineBuilder.activateSlackFailureNotifications()
+```
 
 ### `createBuilders(Closure pipeline)`
 
@@ -94,6 +114,14 @@ container.sh """
 
 Copy `src` in the build node to `dst` in the container. If `dst` is a relative path, it gets prefixed with `/home/jenkins/`.
 
+```
+container.copyTo('code', "pipelineBuilder.project")
+```
+
 ### `copyFrom(String src, String dst)`
 
 Copy `src` in the container to `dst` in the build node. If `src` is a relative path, it gets prefixed with `/home/jenkins/`.
+
+```
+container.copyFrom('build', '.')
+```
