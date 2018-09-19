@@ -1,3 +1,5 @@
+// This Jenkinsfile assumes you are familiar with the use of the library as
+// presented in the build/Jenkinsfile example file.
 @Library('ecdc-pipeline')
 import ecdcpipeline.ContainerBuildNode
 import ecdcpipeline.ConanPackageBuilder
@@ -10,10 +12,19 @@ containerBuildNodes = [
   'ubuntu': ContainerBuildNode.getDefaultContainerBuildNode('ubuntu1804')
 ]
 
+// Instantiate a ConanPackageBuilder object to generate the package builder.
+// Notice the additional argument with the Conan package channel name as a
+// string.
 packageBuilder = new ConanPackageBuilder(this, containerBuildNodes, conanPackageChannel)
 
+// Create builders for each build node with a parameterised pipeline. Most
+// steps, like setting up the local Conan server and uploading the package to
+// the local and remote servers, are automatically included in the generated
+// builder. You only need to define the configurations to build.
 builders = packageBuilder.createPackageBuilders { container ->
 
+  // Add a build configuration, defining the settings and options to be passed
+  // to the Conan create command.
   packageBuilder.build(container, [
     'settings': [
       'librdkafka:build_type': 'Release'
