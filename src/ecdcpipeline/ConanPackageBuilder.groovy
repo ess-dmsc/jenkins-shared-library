@@ -10,15 +10,17 @@ class ConanPackageBuilder {
 
   private def script
   private PipelineBuilder pipelineBuilder
+  private String remoteUploadNode
 
   ConanPackageBuilder(script, containerBuildNodes, String conanPackageChannel='stable') {
-    if (conanPackageChannel == 'stable' && script.env.BRANCH_NAME != 'master') {
-      script.error('Only the master branch can create a package for the stable channel')
-    }
-
     this.script = script
     this.pipelineBuilder = new PipelineBuilder(script, containerBuildNodes)
     this.conanPackageChannel = conanPackageChannel
+    this.remoteUploadNode = ''
+  }
+
+  def setRemoteUploadNode(String key) {
+    remoteUploadNode = key
   }
 
   def createPackageBuilders(Closure pipeline) {
@@ -39,19 +41,33 @@ class ConanPackageBuilder {
         pipeline(container)
       }  // stage
 
-      if (script.env.CHANGE_ID) {
-        script.echo 'Pull request build: skipping upload stage'
+      if (isPullRequestBuild()) {
+        script.echo 'Skipping upload stage: pull request build'
+      } else if (isStableButNotMaster()) {
+        script.echo 'Skipping upload stage: only the master branch can upload to the stable channel'
       } else {
         pipelineBuilder.stage("${container.key}: upload") {
           container.uploadLocalConanPackage(pipelineBuilder.project, conanPackageChannel)
-          if (container.key == 'centos') {
+          if (container.key == remoteUploadNode) {
             container.uploadRemoteConanRecipe(pipelineBuilder.project, conanPackageChannel)
           }
         }  // stage
-      }  // else
+      }
     }
 
     return builders
+  }
+
+  private def isPullRequestBuild() {
+    if (script.env.CHANGE_ID) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  private def isStableButNotMaster() {
+    return (conanPackageChannel == 'stable' && script.env.BRANCH_NAME != 'master')
   }
 
   def addConfiguration(Container container, settingsAndOptions) {

@@ -16,6 +16,7 @@ containerBuildNodes = [
 // Notice the additional argument with the Conan package channel name as a
 // string.
 packageBuilder = new ConanPackageBuilder(this, containerBuildNodes, conanPackageChannel)
+packageBuilder.setRemoteUploadNode('centos')
 
 // Create builders for each build node with a parameterised pipeline. Most
 // steps, like setting up the local Conan server and uploading the package to
