@@ -11,7 +11,11 @@ class ConanPackageBuilder {
   private def script
   private PipelineBuilder pipelineBuilder
 
-  ConanPackageBuilder(script, containerBuildNodes, String conanPackageChannel='master') {
+  ConanPackageBuilder(script, containerBuildNodes, String conanPackageChannel='stable') {
+    if (conanPackageChannel == 'stable' && script.env.BRANCH_NAME != 'master') {
+      script.error('Only the master branch can create a package for the stable channel')
+    }
+
     this.script = script
     this.pipelineBuilder = new PipelineBuilder(script, containerBuildNodes)
     this.conanPackageChannel = conanPackageChannel

@@ -111,9 +111,6 @@ class Container implements Serializable {
   private def getConanUploadFlag(String conanPackageChannel) {
     def conanUploadFlag
     if (conanPackageChannel == 'stable') {
-      if (script.env.BRANCH_NAME != 'master') {
-        script.error('Only the master branch can create a package for the stable channel')
-      }
       conanUploadFlag = '--no-overwrite'
     } else {
       conanUploadFlag = ''
