@@ -25,7 +25,7 @@ builders = packageBuilder.createPackageBuilders { container ->
 
   // Add a build configuration, defining the settings and options to be passed
   // to the Conan create command.
-  packageBuilder.build(container, [
+  packageBuilder.addConfiguration(container, [
     'settings': [
       'librdkafka:build_type': 'Release'
     ],
@@ -34,7 +34,7 @@ builders = packageBuilder.createPackageBuilders { container ->
     ]
   ])
 
-  packageBuilder.build(container, [
+  packageBuilder.addConfiguration(container, [
     'settings': [
       'librdkafka:build_type': 'Release'
     ],
