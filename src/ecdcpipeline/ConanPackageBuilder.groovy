@@ -19,10 +19,6 @@ class ConanPackageBuilder {
     this.remoteUploadNode = ''
   }
 
-  def setRemoteUploadNode(String key) {
-    remoteUploadNode = key
-  }
-
   def createPackageBuilders(Closure pipeline) {
     def builders = pipelineBuilder.createBuilders { container ->
       pipelineBuilder.stage("${container.key}: checkout") {
