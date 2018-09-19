@@ -1,6 +1,6 @@
 # The ECDC Jenkins Pipeline Library
 
-This documents describes the public interface of the ECDC Jenkins Pipeline Library and is a companion to the example Jenkinsfile available at *examples/Jenkinsfile*. The instructions assume you have added the shared library globally to Jenkins using the name `ecdc-pipeline`, according to the *Making the library available in Jenkins* section of the *README.md* file.
+This documents describes the public interface of the ECDC Jenkins Pipeline Library and is a companion to the example Jenkinsfile available at *examples/build/Jenkinsfile*. The instructions assume you have added the shared library globally to Jenkins using the name `ecdc-pipeline`, according to the *Making the library available in Jenkins* section of the *README.md* file.
 
 
 ## Making the library available in the pipeline script

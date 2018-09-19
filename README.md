@@ -34,7 +34,7 @@ To make this library globally available in Jenkins, go to **Manage Jenkins**, **
 
 ## Using the library
 
-See the commented sample Jenkinsfile provided in this repository at *examples/Jenkinsfile* and the *MANUAL.md* file.
+See the commented sample Jenkinsfile provided in this repository at *examples/build/Jenkinsfile* and the *MANUAL.md* file.
 
 
 ## Upgrading the default build node container images
