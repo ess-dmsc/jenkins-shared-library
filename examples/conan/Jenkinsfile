@@ -1,4 +1,4 @@
-@Library('ecdc-pipeline-conan')
+@Library('ecdc-pipeline')
 import ecdcpipeline.ContainerBuildNode
 import ecdcpipeline.ConanPackageBuilder
 
