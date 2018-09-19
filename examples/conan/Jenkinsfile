@@ -28,22 +28,23 @@ builders = packageBuilder.createPackageBuilders { container ->
   // to the Conan create command.
   packageBuilder.addConfiguration(container, [
     'settings': [
-      'librdkafka:build_type': 'Release'
+      'librdkafka:build_type': 'Debug'
     ],
     'options': [
       'librdkafka:shared': 'False'
     ]
   ])
 
+  // Define only options and use default settings. The opposite can also be
+  // done.
   packageBuilder.addConfiguration(container, [
-    'settings': [
-      'librdkafka:build_type': 'Release'
-    ],
     'options': [
       'librdkafka:shared': 'True'
     ]
   ])
 
+  // Use default settings and options.
+  packageBuilder.addConfiguration(container)
 }
 
 node {

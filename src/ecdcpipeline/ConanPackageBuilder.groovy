@@ -73,15 +73,23 @@ class ConanPackageBuilder {
     return (conanPackageChannel == 'stable' && script.env.BRANCH_NAME != 'master')
   }
 
+  def addConfiguration(Container container) {
+    return addConfiguration(container, [:])
+  }
+
   def addConfiguration(Container container, settingsAndOptions) {
     String settingsString = ''
-    settingsAndOptions['settings'].each { key, value ->
-      settingsString = settingsString + "--settings ${key}=${value} "
+    if (settingsAndOptions.containsKey('settings')) {
+      settingsAndOptions['settings'].each { key, value ->
+        settingsString = settingsString + "--settings ${key}=${value} "
+      }
     }
 
     String optionsString = ''
-    settingsAndOptions['options'].each { key, value ->
-      settingsString = settingsString + "--options ${key}=${value} "
+    if (settingsAndOptions.containsKey('options')) {
+      settingsAndOptions['options'].each { key, value ->
+        settingsString = settingsString + "--options ${key}=${value} "
+      }
     }
 
     return container.createConanPackage(conanPackageChannel, pipelineBuilder.project, settingsString, optionsString)
