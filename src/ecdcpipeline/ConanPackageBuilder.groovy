@@ -39,16 +39,20 @@ class ConanPackageBuilder {
         pipeline(container)
       }  // stage
 
-      pipelineBuilder.stage("${container.key}: upload") {
-        container.uploadLocalConanPackage(pipelineBuilder.project, conanPackageChannel)
-        if (container.key == 'centos') {
-          container.uploadRemoteConanRecipe(pipelineBuilder.project, conanPackageChannel)
-        }
-      }  // stage
-    }  // super.createBuilders
+      if (script.env.CHANGE_ID) {
+        script.echo 'Pull request build: skipping upload stage'
+      } else {
+        pipelineBuilder.stage("${container.key}: upload") {
+          container.uploadLocalConanPackage(pipelineBuilder.project, conanPackageChannel)
+          if (container.key == 'centos') {
+            container.uploadRemoteConanRecipe(pipelineBuilder.project, conanPackageChannel)
+          }
+        }  // stage
+      }  // else
+    }
 
     return builders
-  }  // createBuilders
+  }
 
   def addConfiguration(Container container, settingsAndOptions) {
     String settingsString = ''
