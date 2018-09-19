@@ -19,6 +19,13 @@ class ConanPackageBuilder {
     this.remoteUploadNode = ''
   }
 
+  // This is not called set because Groovy apparently autogenerates a setter
+  // with that name, which could not be used in the pipeline script without
+  // Jenkins administrator approval.
+  def defineRemoteUploadNode(String containerBuildNodeKey) {
+    remoteUploadNode = containerBuildNodeKey
+  }
+
   def createPackageBuilders(Closure pipeline) {
     def builders = pipelineBuilder.createBuilders { container ->
       pipelineBuilder.stage("${container.key}: checkout") {
