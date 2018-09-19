@@ -26,7 +26,7 @@ class ConanPackageBuilder {
     remoteUploadNode = containerBuildNodeKey
   }
 
-  def createPackageBuilders(Closure pipeline) {
+  def createPackageBuilders(Closure configurations) {
     def builders = pipelineBuilder.createBuilders { container ->
       pipelineBuilder.stage("${container.key}: checkout") {
         script.dir(pipelineBuilder.project) {
@@ -41,7 +41,7 @@ class ConanPackageBuilder {
       }  // stage
 
       pipelineBuilder.stage("${container.key}: package") {
-        pipeline(container)
+        configurations(container)
       }  // stage
 
       if (isPullRequestBuild()) {

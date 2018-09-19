@@ -1,6 +1,6 @@
 # Jenkins Shared Library
 
-Common functionality for ECDC Jenkins pipeline jobs.
+Common functionality for ECDC Jenkins pipeline jobs, including parallel builds in containers and automated Conan package generation and upload.
 
 
 ## Requirements
@@ -34,7 +34,7 @@ To make this library globally available in Jenkins, go to **Manage Jenkins**, **
 
 ## Using the library
 
-See the commented sample Jenkinsfile provided in this repository at *examples/build/Jenkinsfile* and the *MANUAL.md* file.
+See the commented sample Jenkinsfiles provided in the *examples* folder and the *MANUAL.md* file.
 
 
 ## Upgrading the default build node container images

@@ -1,14 +1,21 @@
 # The ECDC Jenkins Pipeline Library
 
-This documents describes the public interface of the ECDC Jenkins Pipeline Library and is a companion to the example Jenkinsfile available at *examples/build/Jenkinsfile*. The instructions assume you have added the shared library globally to Jenkins using the name `ecdc-pipeline`, according to the *Making the library available in Jenkins* section of the *README.md* file.
+This documents describes the public interface of the ECDC Jenkins Pipeline Library and is a companion to the example Jenkinsfiles available in the *examples* folder. The instructions assume you have added the shared library globally to Jenkins using the name `ecdc-pipeline`, according to the *Making the library available in Jenkins* section of the *README.md* file.
 
 
 ## Making the library available in the pipeline script
 
-Add the following lines to a Jenkinsfile to make the *ContainerBuildNode* and *PipelineBuilder* library classes available:
+Add the following line to a Jenkinsfile to make the library available:
 
 ```
 @Library('ecdc-pipeline')
+```
+
+## Importing classes from the library
+
+To make library classes available in the pipeline, use `import`:
+
+```
 import ecdcpipeline.ContainerBuildNode
 import ecdcpipeline.PipelineBuilder
 ```
@@ -40,7 +47,7 @@ The *PipelineBuilder* class provides the interface for creating a parallel pipel
 
 ### `PipelineBuilder(script, containerBuildNodes)`
 
-The  *PipelineBuilder* constructor takes a reference to the current pipeline script (`this`) and a map of container build nodes as described above:
+The *PipelineBuilder* constructor takes a reference to the current pipeline script (`this`) and a map of container build nodes as described above:
 
 ```
 pipelineBuilder = new PipelineBuilder(this, containerBuildNodes)
@@ -124,4 +131,61 @@ Copy `src` in the container to `dst` in the build node. If `src` is a relative p
 
 ```
 container.copyFrom('build', '.')
+```
+
+
+## Automated Conan package generation and upload
+
+The automated Conan packaging functionality uses the *ConanPackageBuilder* class instead to create builders:
+
+```
+import ecdcpipeline.ConanPackageBuilder
+```
+
+### `ConanPackageBuilder(script, containerBuildNodes, String conanPackageChannel='stable')`
+
+The *ConanPackageBuilder* constructor takes a reference to the current pipeline script (`this`), a map of container build nodes as described above and the Conan package channel as a string (with a default value of `stable`):
+
+```
+packageBuilder = new ConanPackageBuilder(this, containerBuildNodes, conanPackageChannel)
+```
+
+### `defineRemoteUploadNode(String containerBuildNodeKey)`
+
+Set the container build node key to use for uploading the package recipe to the remote repository.
+
+```
+packageBuilder.defineRemoteUploadNode('centos')
+```
+
+### `createPackageBuilders(Closure configurations)`
+
+Return a map of builders to be passed to a Jenkins `parallel` step, with automated local Conan server setup and upload to the local and remote servers. The argument is a parameterised *Closure* defined with curly braces and the parameter name before an arrow, where the parameter is the container interface (see section above):
+
+```
+builders = packageBuilder.createPackageBuilders { container ->
+  // Configurations here.
+}
+```
+
+### `def addConfiguration(Container container)`
+### `def addConfiguration(Container container, settingsAndOptions)`
+
+Add configurations to a `createPackageBuilders` argument closure. The single-argument version uses default settings and options values, while the two-argument version takes a map with optional `settings` and `options` keys, whose associated values are maps of property–value pairs:
+
+```
+packageBuilder.addConfiguration(container, [
+  'settings': [
+    'librdkafka:build_type': 'Debug'
+  ],
+  'options': [
+    'librdkafka:shared': 'False'
+  ]
+])
+packageBuilder.addConfiguration(container, [
+  'options': [
+    'librdkafka:shared': 'True'
+  ]
+])
+packageBuilder.addConfiguration(container)
 ```
