@@ -1,0 +1,40 @@
+@Library('ecdc-pipeline-conan')
+import ecdcpipeline.ContainerBuildNode
+import ecdcpipeline.ConanPackageBuilder
+
+conanPackageChannel = 'master'
+
+containerBuildNodes = [
+  'centos': ContainerBuildNode.getDefaultContainerBuildNode('centos7'),
+  'debian': ContainerBuildNode.getDefaultContainerBuildNode('debian9'),
+  'ubuntu': ContainerBuildNode.getDefaultContainerBuildNode('ubuntu1804')
+]
+
+packageBuilder = new ConanPackageBuilder(this, containerBuildNodes, conanPackageChannel)
+
+builders = packageBuilder.createPackageBuilders { container ->
+
+  packageBuilder.build(container, [
+    'settings': [
+      'librdkafka:build_type': 'Release'
+    ],
+    'options': [
+      'librdkafka:shared': 'False'
+    ]
+  ])
+
+  packageBuilder.build(container, [
+    'settings': [
+      'librdkafka:build_type': 'Release'
+    ],
+    'options': [
+      'librdkafka:shared': 'True'
+    ]
+  ])
+
+}
+
+node {
+  checkout scm
+  parallel builders
+}
