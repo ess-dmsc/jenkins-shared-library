@@ -34,11 +34,11 @@ containerBuildNodes = [
 
 ### `static ContainerBuildNode getDefaultContainerBuildNode(String os)`
 
-Return a default container build node for the operating system `os`. The valid values for this parameter are the keys in `DefaultContainerBuildNodeImages` (defined in *src/DefaultContainerBuildNodeImages.groovy*). This is the recommended approach.
+Return a default container build node for the operating system `os`. The valid values for this parameter are the keys in `DefaultContainerBuildNodeImages` (defined in *src/DefaultContainerBuildNodeImages.groovy*). This is the recommended approach for Conan package builds.
 
 ### `ContainerBuildNode(String image, String shell)`
 
-The *ContainerBuildNode* constructor takes a Docker image name and the shell command to be used with it.
+The *ContainerBuildNode* constructor takes a Docker image name and the shell command to be used with it. This is the recommended approach for regular builds.
 
 
 ## The pipeline builder

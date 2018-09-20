@@ -28,7 +28,7 @@ To make this library globally available in Jenkins, go to **Manage Jenkins**, **
 3. Set the *Default version* to a valid Git version identifier (e.g. `master`, a commit hash or tag).
 4. Under **Retrieval method**, select **Modern SCM**.
 5. Under **Source Code Management**, select **Git**.
-6. Set *Project Repository* to `https://git.esss.dk/dm_group/jenkins-shared-library.git`
+6. Set *Project Repository* to `https://git.esss.dk/dm_group/jenkins-shared-library.git` (this repository is mirrored on the DMSC GitLab).
 7. Click **Save** to save the changes.
 
 

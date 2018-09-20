@@ -4,15 +4,14 @@
 import ecdcpipeline.ContainerBuildNode
 import ecdcpipeline.PipelineBuilder
 
-// Build a map of build nodes where the pipeline will be run.
+// Build a map of container build nodes where the pipeline will be run.
 // ContainerBuildNode.getDefaultContainerBuildNode will return a default build
 // node from the map in the DefaultContainerBuildNodeImages class. You can also
 // create build node objects using a custom image and shell by using the
 // ContainerBuildNode constructor. By using a default build node, your Jenkins
-// job will automatically update to new versions of the build node when this
-// library is updated; use the custom image if the container you require is not
-// provided by the library or if an older fixed version is needed for
-// compatibility.
+// job will automatically update to new versions of the build node image when
+// this library is updated; use the custom image if you want to keep the version
+// fixed or if the image you require is not provided by the library.
 containerBuildNodes = [
   'centos-debug': ContainerBuildNode.getDefaultContainerBuildNode('centos7'),
   'centos-release': ContainerBuildNode.getDefaultContainerBuildNode('centos7'),
