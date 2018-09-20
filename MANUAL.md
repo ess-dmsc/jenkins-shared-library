@@ -158,6 +158,14 @@ Set the container build node key to use for uploading the package recipe to the 
 packageBuilder.defineRemoteUploadNode('centos')
 ```
 
+### `skipPackageUpload()`
+
+Skip recipe and package upload stage.
+
+```
+packageBuilder.skipPackageUpload()
+```
+
 ### `createPackageBuilders(Closure configurations)`
 
 Return a map of builders to be passed to a Jenkins `parallel` step, with automated local Conan server setup and upload to the local and remote servers. The argument is a parameterised *Closure* defined with curly braces and the parameter name before an arrow, where the parameter is the container interface (see section above):

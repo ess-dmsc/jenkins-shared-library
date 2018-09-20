@@ -11,12 +11,14 @@ class ConanPackageBuilder {
   private def script
   private PipelineBuilder pipelineBuilder
   private String remoteUploadNode
+  private boolean shouldSkipUpload
 
   ConanPackageBuilder(script, containerBuildNodes, String conanPackageChannel='stable') {
     this.script = script
     this.pipelineBuilder = new PipelineBuilder(script, containerBuildNodes)
     this.conanPackageChannel = conanPackageChannel
     this.remoteUploadNode = ''
+    this.shouldSkipPackageUpload = false
   }
 
   // This is not called set because Groovy apparently autogenerates a setter
@@ -24,6 +26,10 @@ class ConanPackageBuilder {
   // Jenkins administrator approval.
   def defineRemoteUploadNode(String containerBuildNodeKey) {
     remoteUploadNode = containerBuildNodeKey
+  }
+
+  def skipPackageUpload() {
+    shouldSkipPackageUpload = true
   }
 
   def createPackageBuilders(Closure configurations) {
@@ -44,7 +50,9 @@ class ConanPackageBuilder {
         configurations(container)
       }  // stage
 
-      if (isPullRequestBuild()) {
+      if (shouldSkipPackageUpload) {
+        script.echo 'Skipping upload stage: user request'
+      } else if (isPullRequestBuild()) {
         script.echo 'Skipping upload stage: pull request build'
       } else if (isStableButNotMaster()) {
         script.echo 'Skipping upload stage: only the master branch can upload to the stable channel'
