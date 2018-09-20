@@ -1,7 +1,8 @@
 // Mirror repository on DMSC GitLab.
 
 node('docker') {
-
+  // Delete workspace when build is done.
+  cleanWs()
 
   stage('Checkout') {
     checkout scm
@@ -23,7 +24,4 @@ node('docker') {
       """
     }  // withCredentials
   }  // stage
-
-  // Delete workspace when build is done.
-  cleanWs()
 }
