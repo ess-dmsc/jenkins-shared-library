@@ -18,7 +18,7 @@ class ConanPackageBuilder {
     this.pipelineBuilder = new PipelineBuilder(script, containerBuildNodes)
     this.conanPackageChannel = conanPackageChannel
     this.remoteUploadNode = ''
-    this.shouldSkipPackageUpload = false
+    this.shouldSkipUpload = false
   }
 
   // This is not called set because Groovy apparently autogenerates a setter
@@ -28,8 +28,8 @@ class ConanPackageBuilder {
     remoteUploadNode = containerBuildNodeKey
   }
 
-  def skipPackageUpload() {
-    shouldSkipPackageUpload = true
+  def skipUpload() {
+    shouldSkipUpload = true
   }
 
   def createPackageBuilders(Closure configurations) {
@@ -50,7 +50,7 @@ class ConanPackageBuilder {
         configurations(container)
       }  // stage
 
-      if (shouldSkipPackageUpload) {
+      if (shouldSkipUpload) {
         script.echo 'Skipping upload stage: user request'
       } else if (isPullRequestBuild()) {
         script.echo 'Skipping upload stage: pull request build'

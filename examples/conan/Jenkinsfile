@@ -18,7 +18,7 @@ containerBuildNodes = [
 packageBuilder = new ConanPackageBuilder(this, containerBuildNodes, conanPackageChannel)
 
 // Define node to use for uploading recipe. If you want to skip the upload
-// stage, use the skipPackageUpload() method.
+// stage, use the skipUpload() method.
 packageBuilder.defineRemoteUploadNode('centos')
 
 // Create builders for each build node with a parameterised pipeline. Most

@@ -158,12 +158,12 @@ Set the container build node key to use for uploading the package recipe to the 
 packageBuilder.defineRemoteUploadNode('centos')
 ```
 
-### `skipPackageUpload()`
+### `skipUpload()`
 
 Skip recipe and package upload stage.
 
 ```
-packageBuilder.skipPackageUpload()
+packageBuilder.skipUpload()
 ```
 
 ### `createPackageBuilders(Closure configurations)`
