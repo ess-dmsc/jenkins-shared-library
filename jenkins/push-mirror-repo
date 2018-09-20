@@ -10,3 +10,5 @@ send "$username\r"
 expect "Password for 'https://$username@github.com':"
 send "$password\r"
 expect eof
+catch wait result
+exit [lindex $result 3]
