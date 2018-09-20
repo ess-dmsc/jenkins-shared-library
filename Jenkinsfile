@@ -1,6 +1,6 @@
 // Mirror repository on DMSC GitLab.
 
-node {
+node('docker') {
   stage('Checkout') {
     checkout scm
   }
