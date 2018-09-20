@@ -1,8 +1,8 @@
-// Mirror repository on DMSC GitLab
+// Mirror repository on DMSC GitLab.
 
 node {
   stage('Checkout') {
-    scm checkout
+    checkout scm
   }
 
   stage('Push to GitLab') {
@@ -14,7 +14,7 @@ node {
       sh """
         set +x
         ./jenkins/push-mirror-repo \
-          http://git.esss.dk/dm_group/my-test-repo.git \
+          http://git.esss.dk/dm_group/jenkins-shared-library.git \
           ${USERNAME} \
           ${PASSWORD}
       """
