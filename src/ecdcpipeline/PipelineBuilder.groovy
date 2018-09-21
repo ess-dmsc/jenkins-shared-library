@@ -39,6 +39,7 @@ class PipelineBuilder implements Serializable {
   }
   
   void finalize() {
+    this.failure_messages.eachWithIndex{message, index -> println "${index}: ${message}"}
     println "Destructor!"
   }
 
