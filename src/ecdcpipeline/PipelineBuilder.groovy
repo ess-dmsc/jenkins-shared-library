@@ -10,6 +10,8 @@ class PipelineBuilder implements Serializable {
   String branch
   String buildNumber
   String baseContainerName
+  
+  def failure_messages
 
   private def script
   private def containerBuildNodes
@@ -29,6 +31,7 @@ class PipelineBuilder implements Serializable {
     def (org, project, branch) = "${script.env.JOB_NAME}".tokenize('/')
     this.project = project
     this.branch = branch
+    this.failure_messages = Collections.synchronizedList([])
     this.buildNumber = script.env.BUILD_NUMBER
     this.baseContainerName = "${project}-${branch}-${buildNumber}"
 
@@ -57,6 +60,7 @@ class PipelineBuilder implements Serializable {
       script.stage(name, stageCommands)
     } catch(e) {
       def msg = "pipeline failed in stage ${name}"
+      this.failure_messages.add(msg)
       failureNotifier.send(script, msg)
       throw e
     }
