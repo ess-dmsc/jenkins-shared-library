@@ -1,10 +1,11 @@
 #!/usr/bin/expect
 
 set repo [lindex $argv 0]
-set username [lindex $argv 1]
-set password [lindex $argv 2]
+set branch [lindex $argv 1]
+set username [lindex $argv 2]
+set password [lindex $argv 3]
 
-spawn git push --force --mirror "$repo"
+spawn git push --force "$repo" "$branch"
 expect "Username for 'https://github.com':"
 send "$username\r"
 expect "Password for 'https://$username@github.com':"
