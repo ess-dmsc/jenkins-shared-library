@@ -47,8 +47,8 @@ class PipelineBuilder implements Serializable {
   }
   
   def handleFailureMessages() {
-    String failureMessage = "The following failures were encountered when building:\n"
-    this.failure_messages.eachWithIndex{message, index -> failureMessage += "${index}: ${message}\n"}
+    String failureMessage = "The following failures were encountered:\n"
+    this.failure_messages.eachWithIndex{message, index -> failureMessage += "${index+1}: ${message}\n"}
     failureNotifier.send(script, failureMessage)
   }
 
