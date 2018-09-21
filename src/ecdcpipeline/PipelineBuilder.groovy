@@ -37,6 +37,10 @@ class PipelineBuilder implements Serializable {
 
     this.failureNotifier = new FailureNotifier(script.env.JOB_NAME)
   }
+  
+  void finalize() {
+    println "Destructor!"
+  }
 
   def activateEmailFailureNotifications() {
     failureNotifier.activateNotificationChannel(FailureNotifier.EMAIL)
