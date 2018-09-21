@@ -11,7 +11,7 @@ class PipelineBuilder implements Serializable {
   String buildNumber
   String baseContainerName
   
-  def failure_messages
+  private def failure_messages
 
   private def script
   private def containerBuildNodes
@@ -37,11 +37,6 @@ class PipelineBuilder implements Serializable {
 
     this.failureNotifier = new FailureNotifier(script.env.JOB_NAME)
   }
-  
-  void finalize() {
-    this.failure_messages.eachWithIndex{message, index -> println "${index}: ${message}"}
-    println "Destructor!"
-  }
 
   def activateEmailFailureNotifications() {
     failureNotifier.activateNotificationChannel(FailureNotifier.EMAIL)
@@ -49,6 +44,12 @@ class PipelineBuilder implements Serializable {
 
   def activateSlackFailureNotifications() {
     failureNotifier.activateNotificationChannel(FailureNotifier.SLACK)
+  }
+  
+  def handleFailureMessages() {
+    String failureMessage = "The following failures were encountered when building:\n"
+    this.failure_messages.eachWithIndex{message, index -> failureMessage += "${index}: ${message}\n"}
+    failureNotifier.send(script, failureMessage)
   }
 
   def createBuilders(Closure pipeline) {
@@ -66,7 +67,6 @@ class PipelineBuilder implements Serializable {
     } catch(e) {
       def msg = "pipeline failed in stage ${name}"
       this.failure_messages.add(msg)
-      failureNotifier.send(script, msg)
       throw e
     }
   }
