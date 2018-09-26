@@ -197,3 +197,16 @@ packageBuilder.addConfiguration(container, [
 ])
 packageBuilder.addConfiguration(container)
 ```
+
+## Running the pipelines
+
+The function `parallel` is used to execute the pipelines (e.g. `parallel builders`) and this function will throw an exception on failure of one or more of the pipelines that it tries to execute. To prevent this from immediately stopping the build process and (thus) enable the sending of failure messages (via Slack or email), this function has to be executed in a try statement. This try statment can then implement code for dealing with build failures (i.e. calling `PipelineBuilder.handleFailureMessages()`). A simple way of implementing this is as follows:
+
+```
+try {
+  parallel builders
+  } catch (e) {
+    pipeline_builder.handleFailureMessages()
+    throw e
+}
+```
