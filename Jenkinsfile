@@ -1,5 +1,7 @@
 // Mirror repository on DMSC GitLab.
 
+properties([disableConcurrentBuilds()])
+
 node('docker') {
   // Delete workspace when build is done.
   cleanWs()
@@ -52,7 +54,7 @@ node('docker') {
           mv ../docs/* .
           git status
           git add .
-          git commit -m 'Jenkins build for ${scmVars.GIT_COMMIT}'
+          git commit -m 'Jenkins build ${env.BUILD_NUMBER} for ${scmVars.GIT_COMMIT}'
         """
 
         withCredentials([
