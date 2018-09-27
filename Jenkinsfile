@@ -1,4 +1,4 @@
-// Mirror repository on DMSC GitLab.
+// Mirror repository on DMSC GitLab and publish documentation to GitHub.
 
 properties([disableConcurrentBuilds()])
 
