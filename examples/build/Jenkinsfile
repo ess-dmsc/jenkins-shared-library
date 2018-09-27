@@ -92,5 +92,10 @@ builders = pipelineBuilder.createBuilders { container ->
 // Checkout code on coordinator node and start builders in parallel.
 node {
   checkout scm
-  parallel builders
+  try {
+    parallel builders
+    } catch (e) {
+      pipelineBuilder.handleFailureMessages()
+      throw e
+  }
 }

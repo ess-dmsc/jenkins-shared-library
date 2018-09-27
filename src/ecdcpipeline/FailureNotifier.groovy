@@ -20,7 +20,7 @@ class FailureNotifier {
   def send(script, String msg) {
     if (notificationChannels & EMAIL) {
       def toEmails = [[$class: 'DevelopersRecipientProvider']]
-      script.emailext body: '${DEFAULT_CONTENT}\n\"' + msg + '\"\n\nCheck console output at $BUILD_URL to view the results.',
+      script.emailext body: '${DEFAULT_CONTENT}\n' + msg + '\n\nCheck console output at $BUILD_URL to view the results.',
         recipientProviders: toEmails,
         subject: '${DEFAULT_SUBJECT}'
     }
