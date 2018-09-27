@@ -34,7 +34,7 @@ To make this library globally available in Jenkins, go to **Manage Jenkins**, **
 
 ## Using the library
 
-See the commented sample Jenkinsfiles provided in the *examples* folder.
+See the commented sample Jenkinsfiles provided in the *examples* folder and the documentation at https://ess-dmsc.github.io/jenkins-shared-library/.
 
 ### Making the library available in the pipeline script
 
