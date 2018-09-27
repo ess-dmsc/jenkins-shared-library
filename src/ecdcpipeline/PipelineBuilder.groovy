@@ -4,21 +4,46 @@ import ecdcpipeline.ContainerBuildNode
 import ecdcpipeline.Container
 import ecdcpipeline.FailureNotifier
 
-
+/**
+ * Parallel pipeline with containers.
+ */
 class PipelineBuilder implements Serializable {
-  String project
-  String branch
-  String buildNumber
-  String baseContainerName
-  
-  private def failure_messages
 
+  /**
+   * Repository name.
+   */
+  String project
+
+  /**
+   * Git branch name.
+   */
+  String branch
+
+  /**
+   * Jenkins build number.
+   */
+  String buildNumber
+
+  /**
+   * Base name for setting build node container names.
+   */
+  String baseContainerName
+
+  private def failure_messages
   private def script
   private def containerBuildNodes
   private FailureNotifier failureNotifier
 
+  /**
+   * <p></p>
+   *
+   * @param script reference to the current pipeline script ({@code this} in a
+   *   Jenkinsfile)
+   * @param containerBuildNodes map with string keys and {@link
+   *   ContainerBuildNode} values
+   */
   PipelineBuilder(script, containerBuildNodes) {
-    // Check the argument types
+    // Check argument types
     containerBuildNodes.each { key, containerBuildNode ->
       if (containerBuildNode.getClass() != ecdcpipeline.ContainerBuildNode.class) {
         throw new IllegalArgumentException("'${key}' is not of type ContainerBuildNode")
@@ -38,20 +63,45 @@ class PipelineBuilder implements Serializable {
     this.failureNotifier = new FailureNotifier(script.env.JOB_NAME)
   }
 
+  /**
+   * Activate email failure notifications.
+   */
   def activateEmailFailureNotifications() {
     failureNotifier.activateNotificationChannel(FailureNotifier.EMAIL)
   }
 
+  /**
+   * Activate Slack failure notifications.
+   */
   def activateSlackFailureNotifications() {
     failureNotifier.activateNotificationChannel(FailureNotifier.SLACK)
   }
-  
+
+  /**
+   * Handle failures that occurred inside {@link stage} blocks.
+   *
+   * If failures occurred, the associated failure messages are sent using the
+   * activated notification channels.
+   */
   def handleFailureMessages() {
     String failureMessage = "The following failures were encountered:\n"
     this.failure_messages.eachWithIndex{message, index -> failureMessage += "${index+1}: ${message}\n"}
     failureNotifier.send(script, failureMessage)
   }
 
+  /**
+   * Create a map of builders to be passed to a Jenkins {@code parallel} step.
+   *
+   * Standard Jenkins pipeline steps are executed on the allocated build node
+   * outside the container. To run commands with the container, call the {@link
+   * Container} methods on the closure parameter.
+   *
+   * @param pipeline parameterised closure defined with curly braces and the
+   *   parameter name before an arrow, where the parameter uses the {@link
+   *   Container} interface
+   *
+   * @return Map of string keys and builder values
+   */
   def createBuilders(Closure pipeline) {
     def builders = [:]
     containerBuildNodes.each { key, containerBuildNode ->
@@ -61,6 +111,18 @@ class PipelineBuilder implements Serializable {
     return builders
   }
 
+  /**
+   * Get a Jenkins pipeline stage with automated failure messages.
+   *
+   * If an exception occurs inside the stage block, the messages are saved for
+   * {@link #handleFailureMessages()}, identifying the stage name.
+   *
+   * @throws Exception if any command  in the block throws an exception
+   *
+   * @param name stage name
+   * @param stageCommands block of commands between curly braces
+   *
+   */
   def stage(String name, Closure stageCommands) {
     try {
       script.stage(name, stageCommands)

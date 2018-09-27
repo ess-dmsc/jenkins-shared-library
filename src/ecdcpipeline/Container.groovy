@@ -2,16 +2,44 @@ package ecdcpipeline
 
 import ecdcpipeline.ContainerBuildNode
 
-
+/**
+ * Docker container wrapper for Jenkins pipeline commands.
+ */
 class Container implements Serializable {
+
+  /**
+   * Jenkins pipeline script.
+   */
   def script
+
+  /**
+   * Container build node key in map.
+   */
   String key
+
+  /**
+   * Docker container name.
+   */
   String name
+
+  /**
+   * Object with Docker container image and shell definition.
+   */
   ContainerBuildNode containerBuildNode
 
   private final String conanUser = 'ess-dmsc'
   private final String conanRemote = 'ess-dmsc-local'
 
+  /**
+   * <p></p>
+   *
+   * @param script reference to the current pipeline script ({@code this} in a
+   *   Jenkinsfile)
+   * @param key container build node key in map
+   * @param name Docker container name
+   * @param containerBuildNode object with Docker container image and shell
+   *   definition.
+   */
   Container(script, String key, String name, ContainerBuildNode containerBuildNode) {
     this.script = script
     this.key = key
@@ -19,6 +47,15 @@ class Container implements Serializable {
     this.containerBuildNode = containerBuildNode
   }
 
+  /**
+   * Run shell script inside the container
+   *
+   * @param shellScript shell script to be run
+   *
+   * @return Jenkins pipeline {@code sh} step with the script run inside the
+   *   container using the shell defined in the {@link ContainerBuildNode}
+   *   object
+   */
   def sh(String shellScript) {
     return containerShell(shellScript, false)
   }
@@ -37,11 +74,29 @@ class Container implements Serializable {
     return result
   }
 
+  /**
+   * Copy {@code src} in the build node to {@code dst} in the container.
+   *
+   * If {@code dst} is a relative path, it gets prefixed with @{code
+   *  /home/jenkins/}.
+   *
+   * @param src source path in build node
+   * @param dst destination path in container
+   */
   def copyTo(String src, String dst) {
     def resolvedPath = resolveContainerPath(dst)
     return script.sh("docker cp ${src} ${name}:${resolvedPath}")
   }
 
+  /**
+   * Copy {@code src} in the container to {@code dst} in the build node.
+   *
+   * If {@code src} is a relative path, it gets prefixed with @{code
+   *  /home/jenkins/}.
+   *
+   * @param src source path in container
+   * @param dst destination path in build node
+   */
   def copyFrom(String src, String dst) {
     def resolvedPath = resolveContainerPath(src)
     return script.sh("docker cp ${name}:${resolvedPath} ${dst}")

@@ -34,7 +34,24 @@ To make this library globally available in Jenkins, go to **Manage Jenkins**, **
 
 ## Using the library
 
-See the commented sample Jenkinsfiles provided in the *examples* folder and the *MANUAL.md* file.
+See the commented sample Jenkinsfiles provided in the *examples* folder.
+
+### Making the library available in the pipeline script
+
+Assuming you have added the shared library globally to Jenkins using the name `ecdc-pipeline`, add the following line to a Jenkinsfile to make the library available:
+
+```
+@Library('ecdc-pipeline')
+```
+
+### Importing classes from the library
+
+To make library classes available in the pipeline, use `import`:
+
+```
+import ecdcpipeline.ContainerBuildNode
+import ecdcpipeline.PipelineBuilder
+```
 
 
 ## Upgrading the default build node container images
@@ -50,10 +67,20 @@ To develop the library and run tests locally, you need [Groovy](http://www.groov
 ### Running unit tests
 
 You can run unit tests from the root directory of this repository with
+
 ```
 groovy --classpath src:test test/ecdcpipeline/<file_name>.groovy
 ```
+
 where `<file_name>` must be substituted with a test file name (_*Test.groovy_).
+
+### Generating documentation pages
+
+To create the documentation pages locally, run from the root of this repository
+
+```
+groovydoc -sourcepath src -d doc 'ecdcpipeline' '*.groovy'
+```
 
 
 ### Does this library use proper Groovy coding conventions or style?

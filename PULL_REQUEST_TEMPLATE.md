@@ -1,6 +1,5 @@
 ## Checklist
 
-- [ ] Public interface changes have been documented in _MANUAL.md_.
 - [ ] Public interface changes have been documented in one of the example Jenkinsfiles.
 
 ### Description of work
