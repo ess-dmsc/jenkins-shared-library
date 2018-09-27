@@ -79,7 +79,7 @@ where `<file_name>` must be substituted with a test file name (_*Test.groovy_).
 To create the documentation pages locally, run from the root of this repository
 
 ```
-groovydoc -sourcepath src -d doc 'ecdcpipeline' '*.groovy'
+groovydoc -sourcepath src -d docs 'ecdcpipeline' '*.groovy'
 ```
 
 
