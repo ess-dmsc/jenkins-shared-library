@@ -4,25 +4,64 @@ node('docker') {
   // Delete workspace when build is done.
   cleanWs()
 
-  stage('Checkout') {
-    checkout scm
-  }
+  dir('code') {
+    stage('Checkout') {
+      scmVars = checkout scm
+    }
 
-  stage('Push to GitLab') {
-    withCredentials([usernamePassword(
-      credentialsId: 'dm_jenkins_gitlab_token',
-      usernameVariable: 'USERNAME',
-      passwordVariable: 'PASSWORD'
-    )]) {
+    stage('Push to GitLab') {
+      withCredentials([usernamePassword(
+        credentialsId: 'dm_jenkins_gitlab_token',
+        usernameVariable: 'USERNAME',
+        passwordVariable: 'PASSWORD'
+      )]) {
+        sh """
+          git checkout ${env.BRANCH_NAME}
+          set +x
+          ./jenkins/push-mirror-repo \
+            http://git.esss.dk/dm_group/jenkins-shared-library.git \
+            ${env.BRANCH_NAME} \
+            ${USERNAME} \
+            ${PASSWORD}
+        """
+      }  // withCredentials
+    }  // stage
+  }  // dir
+
+  if (env.BRANCH_NAME == 'master') {
+    stage('Create documentation') {
       sh """
-        git checkout ${env.BRANCH_NAME}
-        set +x
-        ./jenkins/push-mirror-repo \
-          http://git.esss.dk/dm_group/jenkins-shared-library.git \
-          ${env.BRANCH_NAME} \
-          ${USERNAME} \
-          ${PASSWORD}
+        cd code
+        /opt/dm_group/groovy/current/bin/groovydoc -sourcepath src -d ../docs 'ecdcpipeline' '*.groovy'
       """
-    }  // withCredentials
-  }  // stage
+    }  // stage
+
+    dir('code') {
+      stage('Publish documentation') {
+        sh """
+          git config user.email 'dm-jenkins-integration@esss.se'
+          git config user.name 'cow-bot'
+          git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+          git fetch
+          git checkout gh-pages
+          cp jenkins/push-docs-repo ..
+          rm -rf *
+          mv ../docs/* .
+          git status
+          git add .
+          git commit -m 'Jenkins build for ${scmVars.GIT_COMMIT}'
+        """
+
+        withCredentials([
+          usernamePassword(
+            credentialsId: 'cow-bot-username',
+            usernameVariable: 'USERNAME',
+            passwordVariable: 'PASSWORD'
+          )
+        ]) {
+          sh "../push-docs-repo ${USERNAME} ${PASSWORD}"
+        }  // withCredentials
+      }  // stage
+    }  // dir
+  }  // if
 }
