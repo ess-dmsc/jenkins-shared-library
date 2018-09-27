@@ -39,12 +39,15 @@ node('docker') {
     dir('code') {
       stage('Publish documentation') {
         sh """
+          cp jenkins/push-docs-repo ..
+
           git config user.email 'dm-jenkins-integration@esss.se'
           git config user.name 'cow-bot'
           git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+
           git fetch
           git checkout gh-pages
-          cp jenkins/push-docs-repo ..
+
           rm -rf *
           mv ../docs/* .
           git status
