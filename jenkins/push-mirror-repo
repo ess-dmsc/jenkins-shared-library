@@ -6,9 +6,9 @@ set username [lindex $argv 2]
 set password [lindex $argv 3]
 
 spawn git push --force "$repo" "$branch"
-expect "Username for 'https://github.com':"
+expect "Username for 'http://git.esss.dk':"
 send "$username\r"
-expect "Password for 'https://$username@github.com':"
+expect "Password for 'http://$username@git.esss.dk':"
 send "$password\r"
 expect eof
 catch wait result
