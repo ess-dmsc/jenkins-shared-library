@@ -139,9 +139,6 @@ class PipelineBuilder implements Serializable {
 
     def builder = {
       script.node('docker') {
-        // Delete workspace when build is done
-        script.cleanWs()
-
         try {
           def image = script.docker.image(containerBuildNode.image)
           image.run("\
@@ -159,6 +156,7 @@ class PipelineBuilder implements Serializable {
         } finally {
           script.sh("docker stop ${containerName}")
           script.sh("docker rm -f ${containerName}")
+          script.cleanWs()
         }
       }
     }
