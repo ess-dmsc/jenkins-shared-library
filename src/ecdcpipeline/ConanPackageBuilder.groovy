@@ -117,7 +117,8 @@ class ConanPackageBuilder {
   }
 
   /**
-   * Add default configuration to a {@link #createPackageBuilders()} closure.
+   * Add default configuration to a {@link #createPackageBuilders(Closure)}
+   * closure.
    *
    * @param container the closure parameter
    *
@@ -128,7 +129,8 @@ class ConanPackageBuilder {
   }
 
   /**
-   * Add custom configuration to a {@link #createPackageBuilders()} closure.
+   * Add custom configuration to a {@link #createPackageBuilders(Closure)}
+   * closure.
    *
    * @param container the closure parameter
    * @param settingsAndOptions map with optional {@code settings} and {@code
