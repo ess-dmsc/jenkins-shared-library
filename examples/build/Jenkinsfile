@@ -3,6 +3,7 @@
 @Library('ecdc-pipeline')
 import ecdcpipeline.ContainerBuildNode
 import ecdcpipeline.PipelineBuilder
+import ecdcpipeline.NodeStatus
 
 // Build a map of container build nodes where the pipeline will be run.
 // ContainerBuildNode.getDefaultContainerBuildNode will return a default build
@@ -93,9 +94,31 @@ builders = pipelineBuilder.createBuilders { container ->
 node {
   checkout scm
   try {
+    // Only run macOS pipeline if a node is online.
+    if (NodeStatus.isMacOSOnline()) {
+      builders['macOS'] = getMacOSPipeline()
+    }
+
     parallel builders
     } catch (e) {
       pipelineBuilder.handleFailureMessages()
       throw e
+  }
+}
+
+// Define macOS pipeline in a function returning a closure with the node block.
+def getMacOSPipeline() {
+  return {
+    node('macos') {
+
+      pipelineBuilder.stage("macOS: First Stage") {
+        dir(pipelineBuilder.project) {
+          checkout scm
+        }
+
+        sh "ls -l"
+      }
+
+    }
   }
 }
