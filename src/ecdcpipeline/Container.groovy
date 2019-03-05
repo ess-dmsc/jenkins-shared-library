@@ -177,12 +177,14 @@ class Container implements Serializable {
   private def getPackageNameAndVersion(String packageDir) {
     def shellScript = """
       cd ${packageDir}
-      conan info .
+      conan inspect --attribute name --attribute version .
     """
-    def conanInfo = containerShell(shellScript, true)
-    def fullPackageName = conanInfo.tokenize("\n")[0]
-    def packageNameAndVersion = fullPackageName.tokenize('@')[0]
-    return packageNameAndVersion
+    def conanInspection = containerShell(shellScript, true)
+    def conanInspectionLines = conanInspection.tokenize("\n")
+    def packageName = conanInspectionLines[0].tokenize(": ")[1]
+    def packageVersion = conanInspectionLines[1].tokenize(": ")[1]
+
+    return "${packageName}/${packageVersion}"
   }
 
   private def resolveContainerPath(String path) {
