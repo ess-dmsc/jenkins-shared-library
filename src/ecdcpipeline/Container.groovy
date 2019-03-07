@@ -200,10 +200,10 @@ class Container implements Serializable {
     return resolvedPath
   }
 
-  def createConanPackage(String conanPackageChannel, String packageDir, String settings, String options) {
+  def createConanPackage(String conanPackageChannel, String packageDir, String settings, String options, String env) {
     def shellScript = """
       cd ${packageDir}
-      conan create . ${conanUser}/${conanPackageChannel} \
+      ${env} conan create . ${conanUser}/${conanPackageChannel} \
         --build=outdated \
         ${settings} \
         ${options}

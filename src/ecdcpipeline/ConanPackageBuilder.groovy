@@ -133,27 +133,35 @@ class ConanPackageBuilder {
    * closure.
    *
    * @param container the closure parameter
-   * @param settingsAndOptions map with optional {@code settings} and {@code
-   *   options} keys, whose associated values are maps of property–value pairs
+   * @param settingsOptionsAndEnv map with optional {@code settings}, {@code
+   *   options} and {@code env} keys, whose associated values are maps of
+   *   property–value pairs
    *
    * @return Jenkins {@code sh} step inside the container
    */
-  def addConfiguration(Container container, settingsAndOptions) {
+  def addConfiguration(Container container, settingsOptionsAndEnv) {
+    String envString = ''
+    if (settingsOptionsAndEnv.containsKey('env')) {
+      settingsOptionsAndEnv['env'].each { key, value ->
+        envString = envString + "${key}=${value} "
+      }
+    }
+
     String settingsString = ''
-    if (settingsAndOptions.containsKey('settings')) {
-      settingsAndOptions['settings'].each { key, value ->
+    if (settingsOptionsAndEnv.containsKey('settings')) {
+      settingsOptionsAndEnv['settings'].each { key, value ->
         settingsString = settingsString + "--settings ${key}=${value} "
       }
     }
 
     String optionsString = ''
-    if (settingsAndOptions.containsKey('options')) {
-      settingsAndOptions['options'].each { key, value ->
+    if (settingsOptionsAndEnv.containsKey('options')) {
+      settingsOptionsAndEnv['options'].each { key, value ->
         settingsString = settingsString + "--options ${key}=${value} "
       }
     }
 
-    return container.createConanPackage(conanPackageChannel, pipelineBuilder.project, settingsString, optionsString)
+    return container.createConanPackage(conanPackageChannel, pipelineBuilder.project, settingsString, optionsString, envString)
   }
 
 }
