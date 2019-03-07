@@ -157,7 +157,7 @@ class ConanPackageBuilder {
     String optionsString = ''
     if (settingsOptionsAndEnv.containsKey('options')) {
       settingsOptionsAndEnv['options'].each { key, value ->
-        settingsString = settingsString + "--options ${key}=${value} "
+        optionsString = optionsString + "--options ${key}=${value} "
       }
     }
 
