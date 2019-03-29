@@ -40,6 +40,7 @@ class ConanPackageBuilder {
   // without Jenkins administrator approval.
   /**
    * Define a container build node key to use for remote upload.
+   * Must only call this once if the package is header only
    *
    * If a remote upload node is not set, the remote upload step is skipped.
    *
