@@ -95,7 +95,6 @@ class ConanPackageBuilder {
       } else {
         pipelineBuilder.stage("${container.key}: upload") {
           container.uploadLocalConanPackage(pipelineBuilder.project, conanPackageChannel)
-          remoteUploadNodes.any { it.contains(container.key) }
           if (remoteUploadNodes.any { it.contains(container.key) }) {
             container.uploadRemoteConanRecipe(pipelineBuilder.project, conanPackageChannel)
           }
