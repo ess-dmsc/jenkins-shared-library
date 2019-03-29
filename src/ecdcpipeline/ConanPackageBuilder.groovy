@@ -31,7 +31,7 @@ class ConanPackageBuilder {
     this.script = script
     this.pipelineBuilder = new PipelineBuilder(script, containerBuildNodes)
     this.conanPackageChannel = conanPackageChannel
-    this.remoteUploadNode = ''
+    this.remoteUploadNodes = []
     this.shouldSkipUpload = false
   }
 
@@ -39,7 +39,7 @@ class ConanPackageBuilder {
   // setter with that name, which could not be used in the pipeline script
   // without Jenkins administrator approval.
   /**
-   * Define the container build node key to use for remote upload.
+   * Define a container build node key to use for remote upload.
    *
    * If a remote upload node is not set, the remote upload step is skipped.
    *
@@ -47,7 +47,7 @@ class ConanPackageBuilder {
    *   the map
    */
   def defineRemoteUploadNode(String containerBuildNodeKey) {
-    remoteUploadNode = containerBuildNodeKey
+    remoteUploadNodes.add(containerBuildNodeKey)
   }
 
   /**
@@ -94,7 +94,8 @@ class ConanPackageBuilder {
       } else {
         pipelineBuilder.stage("${container.key}: upload") {
           container.uploadLocalConanPackage(pipelineBuilder.project, conanPackageChannel)
-          if (container.key == remoteUploadNode) {
+          remoteUploadNodes.any { it.contains(container.key) }
+          if (remoteUploadNodes.any { it.contains(container.key) }) {
             container.uploadRemoteConanRecipe(pipelineBuilder.project, conanPackageChannel)
           }
         }  // stage
