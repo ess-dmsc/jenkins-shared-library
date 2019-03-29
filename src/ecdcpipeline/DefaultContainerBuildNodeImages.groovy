@@ -16,7 +16,7 @@ class DefaultContainerBuildNodeImages {
       'shell': 'bash -e -x'
     ],
     'alpine': [
-      'image': 'screamingudder/alpine-build-node:1.2.0',
+      'image': 'screamingudder/alpine-build-node:1.3.0',
       'shell': 'bash -e -x'
     ]
   ]
