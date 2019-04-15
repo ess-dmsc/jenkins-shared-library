@@ -4,7 +4,7 @@ package ecdcpipeline
 class DefaultContainerBuildNodeImages {
   static images = [
     'centos7': [
-      'image': 'essdmscdm/centos7-build-node:4.2.0',
+      'image': 'screamingudder/centos7-build-node:4.3.0',
       'shell': '/usr/bin/scl enable devtoolset-6 -- /bin/bash -e -x'
     ],
     'debian9': [
