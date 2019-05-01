@@ -12,7 +12,7 @@ class DefaultContainerBuildNodeImages {
       'shell': 'bash -e -x'
     ],
     'ubuntu1804': [
-      'image': 'essdmscdm/ubuntu18.04-build-node:2.1.0',
+      'image': 'screamingudder/ubuntu18.04-build-node:2.2.0',
       'shell': 'bash -e -x'
     ],
     'alpine': [
