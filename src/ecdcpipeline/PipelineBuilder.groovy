@@ -41,10 +41,8 @@ class PipelineBuilder implements Serializable {
    *   Jenkinsfile)
    * @param containerBuildNodes map with string keys and {@link
    *   ContainerBuildNode} values
-   * @param hostMounts string with host directories to be mounted read-only in
-   *   container, with the form "src1:dst1,src2:dst2,..."
    */
-  PipelineBuilder(script, containerBuildNodes, hostMounts = "") {
+  PipelineBuilder(script, containerBuildNodes) {
     // Check argument types
     containerBuildNodes.each { key, containerBuildNode ->
       if (containerBuildNode.getClass() != ecdcpipeline.ContainerBuildNode.class) {
@@ -54,7 +52,6 @@ class PipelineBuilder implements Serializable {
 
     this.script = script
     this.containerBuildNodes = containerBuildNodes
-    this.hostMounts = hostMounts
 
     def (org, project, branch) = "${script.env.JOB_NAME}".tokenize('/')
     this.project = project
@@ -140,18 +137,6 @@ class PipelineBuilder implements Serializable {
     def containerName = "${baseContainerName}-${key}"
     def container = new Container(script, key, containerName, containerBuildNode)
 
-    def mountArgList = []
-    if (this.hostMounts != "") {
-      hostMountList = this.hostMounts.tokenize(',')
-      for (m in hostMountList) {
-        dirs = m.tokenize(':')
-        src = dirs[0]
-        dst = dirs[1]
-        mountArgList += "--mount=type=bind,src=${src},dst=${dst},readonly"
-      }
-    }
-    def mountArgs = mountArgList.join(' ')
-
     def builder = {
       script.node('docker') {
         try {
@@ -165,7 +150,6 @@ class PipelineBuilder implements Serializable {
             --env http_proxy=${script.env.http_proxy} \
             --env https_proxy=${script.env.https_proxy} \
             --env local_conan_server=${script.env.local_conan_server} \
-            ${mountArgs} \
           ")
 
           pipeline(container)
