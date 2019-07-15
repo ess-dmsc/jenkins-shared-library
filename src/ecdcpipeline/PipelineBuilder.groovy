@@ -99,13 +99,15 @@ class PipelineBuilder implements Serializable {
    * @param pipeline parameterised closure defined with curly braces and the
    *   parameter name before an arrow, where the parameter uses the {@link
    *   Container} interface
+   * @param hostMounts string with host directories to be mounted read-only in
+   *   container, with the form "src1:dst1,src2:dst2,..."
    *
    * @return Map of string keys and builder values
    */
-  def createBuilders(Closure pipeline) {
+  def createBuilders(Closure pipeline, String hostMounts = "") {
     def builders = [:]
     containerBuildNodes.each { key, containerBuildNode ->
-      builders[key] = createBuilder(pipeline, key, containerBuildNode)
+      builders[key] = createBuilder(pipeline, key, containerBuildNode, hostMounts)
     }
 
     return builders
@@ -133,9 +135,21 @@ class PipelineBuilder implements Serializable {
     }
   }
 
-  private def createBuilder(Closure pipeline, String key, ContainerBuildNode containerBuildNode) {
+  private def createBuilder(Closure pipeline, String key, ContainerBuildNode containerBuildNode, String hostMounts) {
     def containerName = "${baseContainerName}-${key}"
     def container = new Container(script, key, containerName, containerBuildNode)
+
+    def mountArgList = []
+    if (hostMounts != "") {
+      hostMountList = hostMounts.tokenize(',')
+      for (m in hostMountList) {
+        dirs = m.tokenize(':')
+        src = dirs[0]
+        dst = dirs[1]
+        mountArgList += "--mount=type=bind,src=${src},dst=${dst},readonly"
+      }
+    }
+    def mountArgs = mountArgList.join(' ')
 
     def builder = {
       script.node('docker') {
@@ -150,6 +164,7 @@ class PipelineBuilder implements Serializable {
             --env http_proxy=${script.env.http_proxy} \
             --env https_proxy=${script.env.https_proxy} \
             --env local_conan_server=${script.env.local_conan_server} \
+            ${mountArgs} \
           ")
 
           pipeline(container)
