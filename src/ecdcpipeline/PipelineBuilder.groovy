@@ -143,11 +143,11 @@ class PipelineBuilder implements Serializable {
 
     def mountArgList = []
     if (this.hostMounts != "") {
-      hostMountList = this.hostMounts.tokenize(',')
+      def hostMountList = this.hostMounts.tokenize(',')
       for (m in hostMountList) {
-        dirs = m.tokenize(':')
-        src = dirs[0]
-        dst = dirs[1]
+        def dirs = m.tokenize(':')
+        def src = dirs[0]
+        def dst = dirs[1]
         mountArgList += "--mount=type=bind,src=${src},dst=${dst},readonly"
       }
     }
