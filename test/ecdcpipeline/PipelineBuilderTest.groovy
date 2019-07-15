@@ -7,11 +7,11 @@ import ecdcpipeline.ContainerBuildNode
 
 class PipelineBuilderTest extends GroovyTestCase {
   def script
-  def containerContainerBuildNodes
+  def containerBuildNodes
 
   void setUp() {
     script = new ScriptStub()
-    containerContainerBuildNodes = [
+    containerBuildNodes = [
       'test': new ContainerBuildNode('repository/image:1.2.3', '/bin/sh')
     ]
   }
@@ -24,7 +24,7 @@ class PipelineBuilderTest extends GroovyTestCase {
   }
 
   void testPipelineBuilderProperties() {
-    def pipelineBuilder = new PipelineBuilder(script, containerContainerBuildNodes)
+    def pipelineBuilder = new PipelineBuilder(script, containerBuildNodes)
     assertEquals(pipelineBuilder.project, 'test-project')
     assertEquals(pipelineBuilder.branch, 'master')
     assertEquals(pipelineBuilder.buildNumber, '42')
