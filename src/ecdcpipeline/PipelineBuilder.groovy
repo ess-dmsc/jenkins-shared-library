@@ -41,8 +41,10 @@ class PipelineBuilder implements Serializable {
    *   Jenkinsfile)
    * @param containerBuildNodes map with string keys and {@link
    *   ContainerBuildNode} values
+   * @param hostMounts string with host directories to be mounted read-only in
+   *   container, with the form "src1:dst1,src2:dst2,..."
    */
-  PipelineBuilder(script, containerBuildNodes) {
+  PipelineBuilder(script, containerBuildNodes, hostMounts = "") {
     // Check argument types
     containerBuildNodes.each { key, containerBuildNode ->
       if (containerBuildNode.getClass() != ecdcpipeline.ContainerBuildNode.class) {
@@ -52,6 +54,7 @@ class PipelineBuilder implements Serializable {
 
     this.script = script
     this.containerBuildNodes = containerBuildNodes
+    this.hostMounts = hostMounts
 
     def (org, project, branch) = "${script.env.JOB_NAME}".tokenize('/')
     this.project = project
@@ -99,15 +102,13 @@ class PipelineBuilder implements Serializable {
    * @param pipeline parameterised closure defined with curly braces and the
    *   parameter name before an arrow, where the parameter uses the {@link
    *   Container} interface
-   * @param hostMounts string with host directories to be mounted read-only in
-   *   container, with the form "src1:dst1,src2:dst2,..."
    *
    * @return Map of string keys and builder values
    */
-  def createBuilders(Closure pipeline, String hostMounts = "") {
+  def createBuilders(Closure pipeline) {
     def builders = [:]
     containerBuildNodes.each { key, containerBuildNode ->
-      builders[key] = createBuilder(pipeline, key, containerBuildNode, hostMounts)
+      builders[key] = createBuilder(pipeline, key, containerBuildNode)
     }
 
     return builders
@@ -135,13 +136,13 @@ class PipelineBuilder implements Serializable {
     }
   }
 
-  private def createBuilder(Closure pipeline, String key, ContainerBuildNode containerBuildNode, String hostMounts) {
+  private def createBuilder(Closure pipeline, String key, ContainerBuildNode containerBuildNode) {
     def containerName = "${baseContainerName}-${key}"
     def container = new Container(script, key, containerName, containerBuildNode)
 
     def mountArgList = []
-    if (hostMounts != "") {
-      hostMountList = hostMounts.tokenize(',')
+    if (this.hostMounts != "") {
+      hostMountList = this.hostMounts.tokenize(',')
       for (m in hostMountList) {
         dirs = m.tokenize(':')
         src = dirs[0]
