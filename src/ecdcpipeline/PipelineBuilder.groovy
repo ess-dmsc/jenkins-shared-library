@@ -141,8 +141,8 @@ class PipelineBuilder implements Serializable {
     def container = new Container(script, key, containerName, containerBuildNode)
 
     def mountArgList = []
-    if (this.hostMounts != "") {
-      hostMountList = this.hostMounts.tokenize(',')
+    if (pipeline.hostMounts != "") {
+      hostMountList = pipeline.hostMounts.tokenize(',')
       for (m in hostMountList) {
         dirs = m.tokenize(':')
         src = dirs[0]
