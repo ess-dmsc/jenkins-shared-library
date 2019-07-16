@@ -77,8 +77,8 @@ class Container implements Serializable {
   /**
    * Copy {@code src} in the build node to {@code dst} in the container.
    *
-   * If {@code dst} is a relative path, it gets prefixed with @{code
-   *  /home/jenkins/}.
+   * If {@code dst} is a relative path, it gets prefixed with
+   *   @{code /home/jenkins/}.
    *
    * @param src source path in build node
    * @param dst destination path in container
@@ -91,8 +91,8 @@ class Container implements Serializable {
   /**
    * Copy {@code src} in the container to {@code dst} in the build node.
    *
-   * If {@code src} is a relative path, it gets prefixed with @{code
-   *  /home/jenkins/}.
+   * If {@code src} is a relative path, it gets prefixed with
+   *   @{code /home/jenkins/}.
    *
    * @param src source path in container
    * @param dst destination path in build node
