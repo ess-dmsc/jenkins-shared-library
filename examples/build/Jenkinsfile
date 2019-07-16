@@ -19,9 +19,11 @@ containerBuildNodes = [
   'ubuntu': new ContainerBuildNode('essdmscdm/ubuntu18.04-build-node:1.1.0', 'bash -e')
 ]
 
-// Instantiate a PipelineBuilder object to generate the builders and activate
-// email failure notifications (Slack notifications are also available).
-pipelineBuilder = new PipelineBuilder(this, containerBuildNodes)
+// Instantiate a PipelineBuilder object to generate the builders, mounting the
+// host directory /home/jenkins/data in the container with the mount point
+// /var/data, and activate email failure notifications (Slack notifications are
+// also available).
+pipelineBuilder = new PipelineBuilder(this, containerBuildNodes, "/home/jenkins/data:/var/data")
 pipelineBuilder.activateEmailFailureNotifications()
 
 // PipelineBuilder defines properties that can be accessed in the Jenkinsfile.
