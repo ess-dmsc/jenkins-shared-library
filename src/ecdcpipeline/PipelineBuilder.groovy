@@ -161,7 +161,7 @@ class PipelineBuilder implements Serializable {
             --name ${containerName} \
             --tty \
             --cpus=2 \
-            --memory=4GB \
+            --memory=3.5GB \
             --network=host \
             --env http_proxy=${script.env.http_proxy} \
             --env https_proxy=${script.env.https_proxy} \
