@@ -160,8 +160,8 @@ class PipelineBuilder implements Serializable {
           image.run("\
             --name ${containerName} \
             --tty \
-            --cpus=2 \
-            --memory=3.5GB \
+            --cpus=4 \
+            --memory=6GB \
             --network=host \
             --env http_proxy=${script.env.http_proxy} \
             --env https_proxy=${script.env.https_proxy} \
