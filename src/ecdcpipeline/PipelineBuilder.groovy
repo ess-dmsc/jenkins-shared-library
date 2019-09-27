@@ -29,6 +29,11 @@ class PipelineBuilder implements Serializable {
    */
   String baseContainerName
 
+  /**
+   * Number of cores available for building
+   */
+  final numCpus = 8
+
   private def failure_messages
   private def script
   private def containerBuildNodes
@@ -160,7 +165,7 @@ class PipelineBuilder implements Serializable {
           image.run("\
             --name ${containerName} \
             --tty \
-            --cpus=4 \
+            --cpus=${numCpus} \
             --memory=6GB \
             --network=host \
             --env http_proxy=${script.env.http_proxy} \
