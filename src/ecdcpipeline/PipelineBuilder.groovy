@@ -30,7 +30,7 @@ class PipelineBuilder implements Serializable {
   String baseContainerName
 
   /**
-   * Number of cores available for building
+   * Number of cores available for building.
    */
   final numCpus = 8
 
