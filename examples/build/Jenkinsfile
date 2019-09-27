@@ -31,7 +31,7 @@ echo pipelineBuilder.project
 echo pipelineBuilder.branch
 echo pipelineBuilder.buildNumber
 echo pipelineBuilder.baseContainerName
-echo pipeline_builder.numCpus
+echo pipelineBuilder.numCpus
 
 // Create builders for each build node with a parameterised pipeline. Notice the
 // 'container' parameter after the opening curly brace; this parameter can have
