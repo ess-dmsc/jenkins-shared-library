@@ -8,7 +8,7 @@ class DefaultContainerBuildNodeImages {
       'shell': '/usr/bin/scl enable devtoolset-6 -- /bin/bash -e -x'
     ],
     'centos7-gcc8': [
-      'image': 'screamingudder/centos7-build-node:5.0.0',
+      'image': 'screamingudder/centos7-build-node:5.0.1',
       'shell': '/usr/bin/scl enable devtoolset-8 -- /bin/bash -e -x'
     ],
     'debian9': [
