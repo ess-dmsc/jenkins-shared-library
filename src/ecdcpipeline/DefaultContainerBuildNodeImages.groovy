@@ -16,7 +16,7 @@ class DefaultContainerBuildNodeImages {
       'shell': 'bash -e -x'
     ],
     'debian10': [
-      'image': 'screamingudder/debian9-build-node:1.0.0',
+      'image': 'screamingudder/debian10-build-node:1.0.0',
       'shell': 'bash -e -x'
     ],
     'ubuntu1804': [
