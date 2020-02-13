@@ -13,7 +13,6 @@ node('docker') {
 
     stage('Create documentation') {
       sh """
-        cd code
         /opt/dm_group/groovy/current/bin/groovydoc -sourcepath src -d ../docs 'ecdcpipeline' '*.groovy'
       """
     }  // stage
