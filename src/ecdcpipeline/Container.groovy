@@ -137,7 +137,7 @@ class Container implements Serializable {
 
   def uploadAllConanPackages() {
     sh """
-      conan upload '*'\
+      conan upload '*' \
         --all \
         -c \
         --remote ${conanRemote}
