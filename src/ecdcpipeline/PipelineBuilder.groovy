@@ -177,7 +177,7 @@ class PipelineBuilder implements Serializable {
           pipeline(container)
         } finally {
           try {
-            container.setupLocalConanServer()
+            container.setupConanUser()
             container.uploadAllConanPackages()
           } catch(e) {
             println("Failed to upload conan package binaries to local server")
