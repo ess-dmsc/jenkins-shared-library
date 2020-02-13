@@ -176,12 +176,12 @@ class PipelineBuilder implements Serializable {
 
           pipeline(container)
         } finally {
-          try {
-            container.setupLocalConanServer()
-            container.uploadAllConanPackages()
-          } catch(e) {
-            println("Failed to upload conan package binaries to local server")
-          }
+          // try {
+          //   container.setupLocalConanServer()
+          //   container.uploadAllConanPackages()
+          // } catch(e) {
+          //   println("Failed to upload conan package binaries to local server")
+          // }
           script.sh("docker stop ${containerName}")
           script.sh("docker rm -f ${containerName}")
           script.cleanWs()
