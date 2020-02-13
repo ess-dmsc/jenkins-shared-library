@@ -1,7 +1,7 @@
 ## Checklist
 
 - [ ] Public interface changes have been documented in one of the example Jenkinsfiles.
-- [ ] Changes have been tested in the test branch
+- [ ] Changes have been tested in the test branch with https://github.com/ess-dmsc/jenkins-shared-library-test
 
 ### Description of work
 
