@@ -114,6 +114,20 @@ class Container implements Serializable {
         conan remote add \
           --insert 0 \
           ${conanRemote} ${script.env.local_conan_server}
+      """
+    }  // withCredentials
+    setupConanUser()
+  }
+
+  def setupConanUser() {
+    script.withCredentials([
+      script.string(
+        credentialsId: 'local-conan-server-password',
+        variable: 'CONAN_PASSWORD'
+      )
+    ]) {
+      sh """
+        set +x
         conan user \
           --password '${script.CONAN_PASSWORD}' \
           --remote ${conanRemote} \
