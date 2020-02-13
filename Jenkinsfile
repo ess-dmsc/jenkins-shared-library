@@ -22,7 +22,7 @@ node('docker') {
           set +x
           ./jenkins/push-mirror-repo \
             http://git.esss.dk/dm_group/jenkins-shared-library.git \
-            ${env.BRANCH_NAME} \
+            HEAD:${env.BRANCH_NAME} \
             ${USERNAME} \
             ${PASSWORD}
         """
