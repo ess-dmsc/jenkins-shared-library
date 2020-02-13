@@ -1,6 +1,7 @@
 ## Checklist
 
 - [ ] Public interface changes have been documented in one of the example Jenkinsfiles.
+- [ ] Changes have been tested in the test branch
 
 ### Description of work
 
