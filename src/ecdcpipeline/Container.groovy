@@ -135,6 +135,15 @@ class Container implements Serializable {
     """
   }
 
+  def uploadAllConanPackages() {
+    sh """
+      conan upload '*' \
+        --all \
+        -c \
+        --remote ${conanRemote}
+    """
+  }
+
   def uploadRemoteConanRecipe(String packageDir, String conanPackageChannel) {
     script.withCredentials([
       script.usernamePassword(
