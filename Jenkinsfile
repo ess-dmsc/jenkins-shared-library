@@ -11,6 +11,12 @@ node('docker') {
       scmVars = checkout scm
     }
 
+    stage('Create documentation') {
+      sh """
+        /opt/dm_group/groovy/current/bin/groovydoc -sourcepath src -d ../docs 'ecdcpipeline' '*.groovy'
+      """
+    }  // stage
+
     stage('Push to GitLab') {
       withCredentials([usernamePassword(
         credentialsId: 'dm_jenkins_gitlab_token',
@@ -31,25 +37,15 @@ node('docker') {
   }  // dir
 
   if (env.BRANCH_NAME == 'master') {
-    stage('Create documentation') {
-      sh """
-        cd code
-        /opt/dm_group/groovy/current/bin/groovydoc -sourcepath src -d ../docs 'ecdcpipeline' '*.groovy'
-      """
-    }  // stage
-
     dir('code') {
       stage('Publish documentation') {
         sh """
           cp jenkins/push-docs-repo ..
-
           git config user.email 'dm-jenkins-integration@esss.se'
           git config user.name 'cow-bot'
           git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
-
           git fetch
           git checkout gh-pages
-
           rm -rf *
           mv ../docs/* .
           git status
