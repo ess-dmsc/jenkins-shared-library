@@ -12,7 +12,7 @@ class DefaultContainerBuildNodeImages {
       'shell': '/usr/bin/scl enable devtoolset-8 -- /bin/bash -e -x'
     ],
     'debian9': [
-      'image': 'screamingudder/debian9-build-node:3.5.0',
+      'image': 'screamingudder/debian9-build-node:3.5.1',
       'shell': 'bash -e -x'
     ],
     'debian10': [
