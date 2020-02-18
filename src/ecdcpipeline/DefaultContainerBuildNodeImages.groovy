@@ -24,11 +24,11 @@ class DefaultContainerBuildNodeImages {
       'shell': 'bash -e -x'
     ],
     'ubuntu1804-gcc8': [
-      'image': 'screamingudder/ubuntu18.04-build-node:3.0.2',
+      'image': 'screamingudder/ubuntu18.04-build-node:3.0.3',
       'shell': 'bash -e -x'
     ],
     'alpine': [
-      'image': 'screamingudder/alpine-build-node:2.0.0',
+      'image': 'screamingudder/alpine-build-node:2.0.1',
       'shell': 'bash -e -x'
     ]
   ]
