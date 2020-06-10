@@ -121,18 +121,20 @@ class PipelineBuilder implements Serializable {
   }
 
   /**
-   * Abort build if commit message contains '[ci skip]'.
+   * Abort build if commit message contains '[ci skip]', except for PR builds.
    */
   def abortBuildOnMagicCommitMessage() {
-    def r = script.sh(
-      script: "git log -1 | grep '\\[ci skip\\]'",
-      returnStatus: true
-    )
+      if (script.env.CHANGE_ID == null) {
+        def r = script.sh(
+          script: "git log -1 | grep '\\[ci skip\\]'",
+          returnStatus: true
+        )
 
-    if (r == 0) {
-      script.echo "Ignoring this build because of commit message"
-      script.currentBuild.result = 'ABORTED'
-      script.error('Build skipped')
+        if (r == 0) {
+          script.echo "Ignoring this build because of commit message"
+          script.currentBuild.result = 'ABORTED'
+          script.error('Build skipped')
+        }
     }
   }
 
