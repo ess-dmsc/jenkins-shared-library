@@ -124,12 +124,12 @@ class PipelineBuilder implements Serializable {
    *
    */
   def abortBuildOnMagicCommitMessage() {
-    result = script.sh(
+    def r = script.sh(
       script: "git log -1 | grep '\\[ci skip\\]'",
       returnStatus: true
     )
 
-    if (result == 0) {
+    if (r == 0) {
       script.echo "Ignoring this build because of commit message"
       script.currentBuild.result = 'ABORTED'
       script.error('Build skipped')
