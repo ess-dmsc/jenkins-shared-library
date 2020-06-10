@@ -121,7 +121,7 @@ class PipelineBuilder implements Serializable {
   }
 
   /**
-   *
+   * Abort build if commit message contains '[ci skip]'.
    */
   def abortBuildOnMagicCommitMessage() {
     def r = script.sh(

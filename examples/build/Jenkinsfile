@@ -97,6 +97,10 @@ builders = pipelineBuilder.createBuilders { container ->
 // Checkout code on coordinator node and start builders in parallel.
 node {
   checkout scm
+
+  // Abort build if commit message contains '[ci skip]'.
+  abortBuildOnMagicCommitMessage()
+
   try {
     // Only run macOS pipeline if a node is online.
     if (NodeStatus.isMacOSOnline()) {
