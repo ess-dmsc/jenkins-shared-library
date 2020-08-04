@@ -113,6 +113,7 @@ class Container implements Serializable {
         set +x
         conan remote add \
           --insert 0 \
+          --force \
           ${conanRemote} ${script.env.local_conan_server}
       """
     }  // withCredentials
