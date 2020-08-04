@@ -155,7 +155,8 @@ class Container implements Serializable {
       conan upload '*' \
         --all \
         -c \
-        --remote ${conanRemote}
+        --remote ${conanRemote} \
+        || true
     """
   }
 
