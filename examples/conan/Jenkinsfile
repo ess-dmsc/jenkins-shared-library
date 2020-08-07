@@ -14,8 +14,9 @@ containerBuildNodes = [
 
 // Instantiate a ConanPackageBuilder object to generate the package builder.
 // Notice the additional argument with the Conan package channel name as a
-// string.
+// string. Activate email failure notifications.
 packageBuilder = new ConanPackageBuilder(this, containerBuildNodes, conanPackageChannel)
+packageBuilder.activateEmailFailureNotifications()
 
 // Define node to use for uploading recipe. If you want to skip the upload
 // stage, use the skipUpload() method.
@@ -52,5 +53,11 @@ builders = packageBuilder.createPackageBuilders { container ->
 
 node {
   checkout scm
-  parallel builders
+
+  try {
+    parallel builders
+  } catch (e) {
+    packageBuilder.handleFailureMessages()
+    throw e
+  }
 }
