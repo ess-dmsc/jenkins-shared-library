@@ -58,6 +58,13 @@ class ConanPackageBuilder {
   }
 
   /**
+   * Activate pipeline email failure notification.
+   */
+  def activateEmailFailureNotifications() {
+    this.pipelineBuilder.activateEmailFailureNotifications()
+  }
+
+  /**
    * Create a map of builders to be passed to a Jenkins {@code parallel} step.
    *
    * The builders include automated local Conan server setup and upload to the
@@ -162,6 +169,13 @@ class ConanPackageBuilder {
     }
 
     return container.createConanPackage(conanPackageChannel, pipelineBuilder.project, settingsString, optionsString, envString)
+  }
+
+  /**
+   * Handle failures that occurred in the build stages.
+   */
+  def handleFailureMessages() {
+    this.pipelineBuilder.handleFailureMessages()
   }
 
 }
