@@ -14,7 +14,7 @@ node('docker') {
     stage('Run tests') {
       sh """
         for filepath in \$(ls test/ecdcpipeline/*Test.groovy); do
-          /opt/dm_group/groovy/current/bin/groovy --classpath src:test $filepath
+          /opt/dm_group/groovy/current/bin/groovy --classpath src:test \$filepath
         done
       """
     }  // stage
