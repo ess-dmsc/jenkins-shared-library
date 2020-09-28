@@ -35,7 +35,7 @@ class ImageRemover implements Serializable {
   private def getImagesToRemove(images) {
     def imageNamesToKeep = this.getDefaultBuildNodeNames()
     def irf = new ImageRemovalFilter(imageNamesToKeep)
-    def imageNamesToRemove = irf.getFilteredImageNames(imageNames)
+    def imageNamesToRemove = irf.getFilteredImageNames(imageNamesToKeep)
 
     return imageNamesToRemove
   }
