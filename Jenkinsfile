@@ -11,14 +11,6 @@ node('docker') {
       scmVars = checkout scm
     }
 
-    stage('Run tests') {
-      sh """
-        for filepath in \$(ls test/ecdcpipeline/*Test.groovy); do
-          /opt/dm_group/groovy/current/bin/groovy --classpath src:test \$filepath
-        done
-      """
-    }  // stage
-
     stage('Create documentation') {
       sh """
         /opt/dm_group/groovy/current/bin/groovydoc -sourcepath src -d ../docs 'ecdcpipeline' '*.groovy'
