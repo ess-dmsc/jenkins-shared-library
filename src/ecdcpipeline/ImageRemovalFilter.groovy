@@ -24,7 +24,7 @@ class ImageRemovalFilter implements Serializable {
    *
    * @param imageNames list of image names
    *
-   * @returns List of image names to remove
+   * @return List of image names to remove
    */
   def getFilteredImageNames(imageNames) {
     return imageNames - imageNamesToKeep
