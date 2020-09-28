@@ -7,8 +7,8 @@ class DockerOutputParser implements Serializable {
 
   static final IMAGES_FORMAT = "'{{.Repository}}:{{.Tag}}'"
 
-  def parseImages(output) {
-    def images = output.tokenize("\n")
+  def parseImages(imagesStr) {
+    def images = imagesStr.tokenize("\n")
     return images
   }
 
