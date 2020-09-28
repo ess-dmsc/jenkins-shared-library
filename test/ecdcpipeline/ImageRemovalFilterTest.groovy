@@ -14,7 +14,7 @@ class ImageRemovalFilterTest extends GroovyTestCase {
 
   void testImageRemoval() {
     def irf = new ImageRemovalFilter(imageNamesToKeep)
-    def imageNamesToRemove = irf.getFilteredIDsFromImages(sampleImageNames)
+    def imageNamesToRemove = irf.getFilteredImageNames(sampleImageNames)
 
     assertEquals(imageNamesToRemove.size(), 2)
     assertTrue('repo1/image1:tag1' in imageNamesToRemove)
@@ -23,7 +23,7 @@ class ImageRemovalFilterTest extends GroovyTestCase {
 
   void testImageRemovalWithEmptyKeepList() {
     def irf = new ImageRemovalFilter([])
-    def imageNamesToRemove = irf.getFilteredIDsFromImages(sampleImageNames)
+    def imageNamesToRemove = irf.getFilteredImageNames(sampleImageNames)
 
     assertEquals(imageNamesToRemove.size(), 4)
     assertTrue('repo1/image1:tag2' in imageNamesToRemove)
