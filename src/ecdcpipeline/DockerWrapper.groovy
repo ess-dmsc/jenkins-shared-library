@@ -23,7 +23,7 @@ class DockerWrapper implements Serializable {
    */
   def getImages() {
     def formatStr = this.dockerOutputParser.IMAGES_FORMAT
-    def result = "docker images --format ${formatStr}".execute().text.trim()
+    def result = "/bin/docker images --format ${formatStr}".execute().text.trim()
     println(result)
     def images = this.dockerOutputParser.parseImages(result)
 
