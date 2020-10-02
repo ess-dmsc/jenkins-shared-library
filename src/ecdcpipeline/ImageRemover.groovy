@@ -13,12 +13,9 @@ class ImageRemover implements Serializable {
 
   /**
    * <p></p>
-   *
-   * @param script reference to the current pipeline script ({@code this} in a
-   *   Jenkinsfile)
    */
-  ImageRemover(script) {
-    this.dockerWrapper = new DockerWrapper(script)
+  ImageRemover() {
+    this.dockerWrapper = new DockerWrapper()
   }
 
   /**
@@ -27,8 +24,6 @@ class ImageRemover implements Serializable {
    * The images kept are the ones in {@link DefaultContainerBuildNodeImages}.
    */
   def cleanImages() {
-    def output = "hostname".execute().text.trim()
-    println(output)
     def images = this.dockerWrapper.getImages()
     def imageNamesToRemove = this.getImagesToRemove(images)
     this.dockerWrapper.removeImages(imageNamesToRemove)

@@ -11,9 +11,6 @@ class DockerWrapper implements Serializable {
 
   /**
    * <p></p>
-   *
-   * @param script reference to the current pipeline script ({@code this} in a
-   *   Jenkinsfile)
    */
   DockerWrapper() {
     this.dockerOutputParser = new DockerOutputParser()
