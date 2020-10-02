@@ -13,9 +13,12 @@ class ImageRemover implements Serializable {
 
   /**
    * <p></p>
+   *
+   * @param script reference to the current pipeline script ({@code this} in a
+   *   Jenkinsfile)
    */
-  ImageRemover() {
-    this.dockerWrapper = new DockerWrapper()
+  ImageRemover(script) {
+    this.dockerWrapper = new DockerWrapper(script)
   }
 
   /**
