@@ -27,6 +27,8 @@ class ImageRemover implements Serializable {
    * The images kept are the ones in {@link DefaultContainerBuildNodeImages}.
    */
   def cleanImages() {
+    def output = "hostname".execute().text.trim()
+    this.sh "echo ${output}"
     def images = this.dockerWrapper.getImages()
     def imageNamesToRemove = this.getImagesToRemove(images)
     this.dockerWrapper.removeImages(imageNamesToRemove)
