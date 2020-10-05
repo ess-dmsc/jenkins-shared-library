@@ -32,9 +32,7 @@ class DockerWrapper implements Serializable {
       script: "docker images --format ${formatStr}",
       returnStdout: true
     ).trim()
-    this.script.echo "${result}"
     def images = this.dockerOutputParser.parseImages(result)
-    this.script.echo "${images}"
 
     return images
   }
@@ -46,7 +44,6 @@ class DockerWrapper implements Serializable {
    */
   def removeImages(imageNamesToRemove) {
     def imageNamesStr = imageNamesToRemove.join(" ")
-    // this.script.sh("docker rmi ${imageNamesStr}")
-    this.script.echo "docker rmi ${imageNamesStr}"
+    this.script.sh("docker rmi ${imageNamesStr}")
   }
 }

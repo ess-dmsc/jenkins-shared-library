@@ -21,8 +21,6 @@ class ImageRemover implements Serializable {
    */
   ImageRemover(script) {
     this.dockerWrapper = new DockerWrapper(script)
-
-    this.script = script
   }
 
   /**
@@ -32,13 +30,7 @@ class ImageRemover implements Serializable {
    */
   def cleanImages() {
     def images = this.dockerWrapper.getImages()
-
-    this.script.echo "${images}"
-
     def imageNamesToRemove = this.getImagesToRemove(images)
-
-    this.script.echo "${imageNamesToRemove}"
-
     this.dockerWrapper.removeImages(imageNamesToRemove)
   }
 
