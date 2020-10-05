@@ -7,7 +7,7 @@ import ecdcpipeline.DockerOutputParser
  */
 class DockerWrapper implements Serializable {
 
-  private def script
+  private def steps
   private def dockerOutputParser
 
   /**
