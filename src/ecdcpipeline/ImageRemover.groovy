@@ -46,7 +46,8 @@ class ImageRemover implements Serializable {
   private def getDefaultBuildNodeNames() {
     def imageValues = DefaultContainerBuildNodeImages.images.values()
     def imageNames = []
-    imageValues.each { key, (image, shell) ->
+    imageValues.each { key, imageAndShell ->
+      def (image, shell) = imageAndShell
       imageNames += image
     }
 
