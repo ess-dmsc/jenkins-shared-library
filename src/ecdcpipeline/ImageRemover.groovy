@@ -50,8 +50,8 @@ class ImageRemover implements Serializable {
     def imageNames = []
     imageValues.each { imageAndShell ->
       this.script.echo "Inside each:"
-      def argument = imageAndShell['image']
-      this.script.echo "${argument}"
+      // def argument = imageAndShell['image']
+      this.script.echo "${imageAndShell}"
       imageNames += image
     }
 
