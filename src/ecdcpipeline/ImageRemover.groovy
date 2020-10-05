@@ -21,6 +21,7 @@ class ImageRemover implements Serializable {
    */
   ImageRemover(script) {
     this.dockerWrapper = new DockerWrapper(script)
+    this.script = script
   }
 
   /**
@@ -36,7 +37,7 @@ class ImageRemover implements Serializable {
 
   private def getImagesToRemove(images) {
     def imageNamesToKeep = this.getDefaultBuildNodeNames()
-    def irf = new ImageRemovalFilter(imageNamesToKeep)
+    def irf = new ImageRemovalFilter(imageNamesToKeep, this.script)
     def imageNamesToRemove = irf.getFilteredImageNames(images)
 
     return imageNamesToRemove
