@@ -34,6 +34,7 @@ class DockerWrapper implements Serializable {
     ).trim()
     this.script.echo "${result}"
     def images = this.dockerOutputParser.parseImages(result)
+    this.script.echo "${images}"
 
     return images
   }
