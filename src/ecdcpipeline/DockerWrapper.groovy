@@ -13,11 +13,11 @@ class DockerWrapper implements Serializable {
   /**
    * <p></p>
    *
-   * @param script reference to the current pipeline script ({@code this} in a
+   * @param steps reference to the current pipeline script ({@code this} in a
    *   Jenkinsfile)
    */
-  DockerWrapper(script) {
-    this.script = script
+  DockerWrapper(steps) {
+    this.steps = steps
     this.dockerOutputParser = new DockerOutputParser()
   }
 
@@ -28,7 +28,7 @@ class DockerWrapper implements Serializable {
    */
   def getImages() {
     def formatStr = dockerOutputParser.IMAGES_FORMAT
-    def result = script.sh(
+    def result = steps.sh(
       script: "docker images --format ${formatStr} | cat",
       returnStdout: true
     )
@@ -37,7 +37,7 @@ class DockerWrapper implements Serializable {
     println(result.size())
     def images = dockerOutputParser.parseImages(result)
 
-    println(script.sh(script: "pwd", returnStdout: true))
+    println(steps.sh(script: "pwd", returnStdout: true))
 
     return images
   }
