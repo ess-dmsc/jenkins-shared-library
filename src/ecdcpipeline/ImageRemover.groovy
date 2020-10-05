@@ -45,14 +45,9 @@ class ImageRemover implements Serializable {
 
   private def getDefaultBuildNodeNames() {
     def imageValues = DefaultContainerBuildNodeImages.images.values()
-    this.script.echo "Image values:"
-    this.script.echo "${imageValues}"
     def imageNames = []
     imageValues.each { imageAndShell ->
-      this.script.echo "Inside each:"
-      // def argument = imageAndShell['image']
-      this.script.echo "${imageAndShell}"
-      imageNames += image
+      imageNames += imageAndShell['image']
     }
 
     return imageNames
