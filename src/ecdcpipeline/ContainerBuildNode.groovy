@@ -18,8 +18,6 @@ class ContainerBuildNode implements Serializable  {
   String shell
 
   /**
-   * <p></p>
-   *
    * This is the recommended approach for getting container build nodes for
    * regular builds.
    *
