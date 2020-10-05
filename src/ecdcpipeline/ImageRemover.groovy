@@ -29,7 +29,9 @@ class ImageRemover implements Serializable {
   def cleanImages() {
     def images = this.dockerWrapper.getImages()
     def imageNamesToRemove = this.getImagesToRemove(images)
-    this.dockerWrapper.removeImages(imageNamesToRemove)
+    if (imageNamesToRemove.size() > 0) {
+      this.dockerWrapper.removeImages(imageNamesToRemove)
+    }
   }
 
   private def getImagesToRemove(images) {
