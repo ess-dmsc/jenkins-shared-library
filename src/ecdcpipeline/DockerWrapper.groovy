@@ -27,15 +27,15 @@ class DockerWrapper implements Serializable {
    * @returns List of image names
    */
   def getImages() {
-    def formatStr = this.dockerOutputParser.IMAGES_FORMAT
-    def result = this.script.sh(
+    def formatStr = dockerOutputParser.IMAGES_FORMAT
+    def result = script.sh(
       script: "docker images --format ${formatStr}",
       returnStdout: true
     )
     println(result.size())
-    def images = this.dockerOutputParser.parseImages(result)
+    def images = dockerOutputParser.parseImages(result)
 
-    println(this.script.sh(script: "pwd", returnStdout: true))
+    println(script.sh(script: "pwd", returnStdout: true))
 
     return images
   }
