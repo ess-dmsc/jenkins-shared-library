@@ -11,8 +11,6 @@ class ImageRemovalFilter implements Serializable {
   private def imageNamesToKeep
 
   /**
-   * <p></p>
-   *
    * @param imageNamesToKeep list of image names to be kept
    */
   ImageRemovalFilter(imageNamesToKeep) {
