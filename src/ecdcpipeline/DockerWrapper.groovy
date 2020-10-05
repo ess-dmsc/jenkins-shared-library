@@ -7,17 +7,17 @@ import ecdcpipeline.DockerOutputParser
  */
 class DockerWrapper implements Serializable {
 
-  private def steps
+  private def script
   private def dockerOutputParser
 
   /**
    * <p></p>
    *
-   * @param steps reference to the current pipeline script ({@code this} in a
+   * @param script reference to the current pipeline script ({@code this} in a
    *   Jenkinsfile)
    */
-  DockerWrapper(steps) {
-    this.steps = steps
+  DockerWrapper(script) {
+    this.script = script
     this.dockerOutputParser = new DockerOutputParser()
   }
 
@@ -27,17 +27,13 @@ class DockerWrapper implements Serializable {
    * @returns List of image names
    */
   def getImages() {
-    def formatStr = dockerOutputParser.IMAGES_FORMAT
-    def result = steps.sh(
-      script: """docker images --format ${formatStr}""",
+    def formatStr = this.dockerOutputParser.IMAGES_FORMAT
+    def result = this.script.sh(
+      script: "docker images --format ${formatStr}",
       returnStdout: true
-    )
-
-    println("Testing result:")
-    println(result.size())
-    def images = dockerOutputParser.parseImages(result)
-
-    println(steps.sh(script: "pwd", returnStdout: true))
+    ).trim()
+    this.script.echo "${result}"
+    def images = this.dockerOutputParser.parseImages(result)
 
     return images
   }
