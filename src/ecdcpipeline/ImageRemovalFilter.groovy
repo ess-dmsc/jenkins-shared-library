@@ -9,16 +9,14 @@ class ImageRemovalFilter implements Serializable {
    * List of image names to be kept.
    */
   private def imageNamesToKeep
-  private def script
 
   /**
    * <p></p>
    *
    * @param imageNamesToKeep list of image names to be kept
    */
-  ImageRemovalFilter(imageNamesToKeep, script) {
+  ImageRemovalFilter(imageNamesToKeep) {
     this.imageNamesToKeep = imageNamesToKeep
-    this.script = script
   }
 
   /**
@@ -29,12 +27,6 @@ class ImageRemovalFilter implements Serializable {
    * @return List of image names to remove
    */
   def getFilteredImageNames(imageNames) {
-    this.script.echo "Inside filter class"
-    this.script.echo "All images:"
-    this.script.echo "${imageNames}"
-    this.script.echo "To Keep:"
-    this.script.echo "${imageNamesToKeep}"
-
     return imageNames - imageNamesToKeep
   }
 
