@@ -9,6 +9,7 @@ import ecdcpipeline.ImageRemovalFilter
  */
 class ImageRemover implements Serializable {
 
+  private def script
   private def dockerWrapper
 
   /**
@@ -16,6 +17,7 @@ class ImageRemover implements Serializable {
    *   Jenkinsfile)
    */
   ImageRemover(script) {
+    this.script = script
     this.dockerWrapper = new DockerWrapper(script)
   }
 
@@ -26,8 +28,10 @@ class ImageRemover implements Serializable {
    */
   def cleanImages() {
     def images = this.dockerWrapper.getImages()
+    this.script.echo "Existing Docker images: ${images}"
     def imageNamesToRemove = this.getImagesToRemove(images)
     if (imageNamesToRemove.size() > 0) {
+      this.script.echo "Images to be removed: ${imageNamesToRemove}"
       this.dockerWrapper.removeImages(imageNamesToRemove)
     }
   }
