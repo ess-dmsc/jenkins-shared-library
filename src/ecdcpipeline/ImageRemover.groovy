@@ -12,8 +12,6 @@ class ImageRemover implements Serializable {
   private def dockerWrapper
 
   /**
-   * <p></p>
-   *
    * @param script reference to the current pipeline script ({@code this} in a
    *   Jenkinsfile)
    */

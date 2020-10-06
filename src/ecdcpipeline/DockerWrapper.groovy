@@ -11,8 +11,6 @@ class DockerWrapper implements Serializable {
   private def dockerOutputParser
 
   /**
-   * <p></p>
-   *
    * @param script reference to the current pipeline script ({@code this} in a
    *   Jenkinsfile)
    */
