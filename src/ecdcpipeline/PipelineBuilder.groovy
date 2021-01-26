@@ -189,6 +189,7 @@ class PipelineBuilder implements Serializable {
             --network=host \
             --env http_proxy=${script.env.http_proxy} \
             --env https_proxy=${script.env.https_proxy} \
+            --env no_proxy=${script.env.no_proxy} \
             --env local_conan_server=${script.env.local_conan_server} \
             ${mountArgs} \
           ")
