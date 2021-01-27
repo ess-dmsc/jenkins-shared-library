@@ -65,6 +65,7 @@ class PipelineBuilder implements Serializable {
     this.containerBuildNodes = containerBuildNodes
     this.hostMounts = hostMounts
 
+    // Replace percent-encoded slashes
     def job_name = script.env.JOB_NAME.replace("%2F", "_")
     def job_name_elements = job_name.tokenize('/')
     if (job_name_elements.size() != 3) {
