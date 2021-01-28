@@ -43,6 +43,9 @@ class PipelineBuilder implements Serializable {
   /**
    * <p></p>
    *
+   * @throws IllegalArgumentException if build node keys have wrong type or
+   *   JOB_NAME has wrong number of components.
+   *
    * @param script reference to the current pipeline script ({@code this} in a
    *   Jenkinsfile)
    * @param containerBuildNodes map with string keys and {@link
@@ -62,14 +65,22 @@ class PipelineBuilder implements Serializable {
     this.containerBuildNodes = containerBuildNodes
     this.hostMounts = hostMounts
 
-    def (org, project, branch) = "${script.env.JOB_NAME}".tokenize('/')
-    this.project = project
-    this.branch = branch
+    // Replace percent-encoded slashes
+    def job_name = script.env.JOB_NAME.replace("%2F", "_")
+    def job_name_elements = job_name.tokenize('/')
+    if (job_name_elements.size() != 3) {
+      def msg = "'${script.env.JOB_NAME}' is not a valid job name " \
+        + "(expected org/project/branch)"
+      throw new IllegalArgumentException(msg)
+    }
+    this.project = job_name_elements[1]
+    this.branch = job_name_elements[2]
+
     this.failure_messages = Collections.synchronizedList([])
     this.buildNumber = script.env.BUILD_NUMBER
     this.baseContainerName = "${project}-${branch}-${buildNumber}"
 
-    this.failureNotifier = new FailureNotifier(script.env.JOB_NAME)
+    this.failureNotifier = new FailureNotifier(job_name)
   }
 
   /**
