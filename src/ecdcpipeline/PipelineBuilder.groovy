@@ -65,6 +65,7 @@ class PipelineBuilder implements Serializable {
     this.containerBuildNodes = containerBuildNodes
     this.hostMounts = hostMounts
 
+    // Replace percent-encoded slashes
     def job_name = script.env.JOB_NAME.replace("%2F", "_")
     def job_name_elements = job_name.tokenize('/')
     if (job_name_elements.size() != 3) {
@@ -147,6 +148,22 @@ class PipelineBuilder implements Serializable {
           script.error('Build skipped')
         }
     }
+  }
+
+  /**
+   * Create and archive BUILD_INFO file.
+   *
+   * If a file with this name exists in the current directory, build
+   * information will be appended to it.
+   */
+  def archiveBuildInfo() {
+    script.sh("""
+      touch BUILD_INFO
+      echo 'Repository: ${this.project}/${this.branch}' >> BUILD_INFO
+      echo 'Commit: ${script.scm_vars.GIT_COMMIT}' >> BUILD_INFO
+      echo 'Jenkins build: ${script.env.BUILD_NUMBER}' >> BUILD_INFO
+    """)
+    script.archiveArtifacts "BUILD_INFO"
   }
 
   /**
