@@ -74,6 +74,8 @@ groovy --classpath src:test test/ecdcpipeline/<file_name>.groovy
 
 where `<file_name>` must be substituted with a test file name (_*Test.groovy_).
 
+The _runtests.sh_ script is provided to run all unit tests in the _test/ecdcpipeline_ directory. Note that it always returns 0, independently of the test results.
+
 ### Generating documentation pages
 
 To create the documentation pages locally, run from the root of this repository
