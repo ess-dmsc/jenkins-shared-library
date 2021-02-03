@@ -108,9 +108,14 @@ node {
     }
 
     parallel builders
-    } catch (e) {
-      pipelineBuilder.handleFailureMessages()
-      throw e
+
+    pipelineBuilder.stage("Archive") {
+      // Archive build metadata.
+      pipelineBuilder.archiveBuildInfo()
+    }
+  } catch (e) {
+    pipelineBuilder.handleFailureMessages()
+    throw e
   }
 }
 

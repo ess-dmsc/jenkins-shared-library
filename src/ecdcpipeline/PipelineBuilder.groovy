@@ -151,6 +151,22 @@ class PipelineBuilder implements Serializable {
   }
 
   /**
+   * Create and archive BUILD_INFO file.
+   *
+   * If a file with this name exists in the current directory, build
+   * information will be appended to it.
+   */
+  def archiveBuildInfo() {
+    script.sh("""
+      touch BUILD_INFO
+      echo 'Repository: ${this.project}/${this.branch}' >> BUILD_INFO
+      echo 'Commit: ${script.scm_vars.GIT_COMMIT}' >> BUILD_INFO
+      echo 'Jenkins build: ${script.env.BUILD_NUMBER}' >> BUILD_INFO
+    """)
+    script.archiveArtifacts "BUILD_INFO"
+  }
+
+  /**
    * Get a Jenkins pipeline stage with automated failure messages.
    *
    * If an exception occurs inside the stage block, the messages are saved for
