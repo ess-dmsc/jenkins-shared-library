@@ -42,7 +42,6 @@ class DockerWrapper implements Serializable {
    */
   def removeImages(imageIDsToRemove) {
     def imageIDsStr = imageIDsToRemove.join(" ")
-    //this.script.sh("docker rmi ${imageIDsStr}")
-    this.script.echo("docker rmi ${imageIDsStr}")
+    this.script.sh("docker rmi ${imageIDsStr}")
   }
 }
