@@ -22,7 +22,7 @@ class DockerWrapper implements Serializable {
   /**
    * Get locally available images.
    *
-   * @returns List of image names
+   * @returns Map of image IDs to names
    */
   def getImages() {
     def formatStr = this.dockerOutputParser.IMAGES_FORMAT
@@ -38,10 +38,11 @@ class DockerWrapper implements Serializable {
   /**
    * Remove images.
    *
-   * @param imageNamesToRemove list of image names to remove
+   * @param imageIDsToRemove list of image IDs to remove
    */
-  def removeImages(imageNamesToRemove) {
-    def imageNamesStr = imageNamesToRemove.join(" ")
-    this.script.sh("docker rmi ${imageNamesStr}")
+  def removeImages(imageIDsToRemove) {
+    def imageIDsStr = imageIDsToRemove.join(" ")
+    //this.script.sh("docker rmi ${imageIDsStr}")
+    this.script.echo("docker rmi ${imageIDsStr}")
   }
 }

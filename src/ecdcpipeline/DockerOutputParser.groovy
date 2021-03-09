@@ -5,10 +5,15 @@ package ecdcpipeline
  */
 class DockerOutputParser implements Serializable {
 
-  static final IMAGES_FORMAT = "'{{.Repository}}:{{.Tag}}'"
+  static final IMAGES_FORMAT = "'{{.ID}};{{.Repository}}:{{.Tag}}'"
 
   def parseImages(imagesStr) {
-    def images = imagesStr.tokenize("\n")
+    def imageList = imagesStr.tokenize("\n")
+    def images = [:]
+    imageList.each { image ->
+      def components = image.tokenize(";")
+      images[components[0]] = components[1]
+    }
     return images
   }
 

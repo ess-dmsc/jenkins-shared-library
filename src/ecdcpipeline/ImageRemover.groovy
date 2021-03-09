@@ -29,19 +29,19 @@ class ImageRemover implements Serializable {
   def cleanImages() {
     def images = this.dockerWrapper.getImages()
     this.script.echo "Existing Docker images: ${images}"
-    def imageNamesToRemove = this.getImagesToRemove(images)
-    if (imageNamesToRemove.size() > 0) {
-      this.script.echo "Images to be removed: ${imageNamesToRemove}"
-      this.dockerWrapper.removeImages(imageNamesToRemove)
+    def imagesToRemove = this.getImagesToRemove(images)
+    if (imagesToRemove.size() > 0) {
+      this.script.echo "Images to be removed: ${imagesToRemove}"
+      this.dockerWrapper.removeImages(imagesToRemove)
     }
   }
 
   private def getImagesToRemove(images) {
     def imageNamesToKeep = this.getDefaultBuildNodeNames()
     def irf = new ImageRemovalFilter(imageNamesToKeep)
-    def imageNamesToRemove = irf.getFilteredImageNames(images)
+    def imagesToRemove = irf.getFilteredImageIDs(images)
 
-    return imageNamesToRemove
+    return imagesToRemove
   }
 
   private def getDefaultBuildNodeNames() {
