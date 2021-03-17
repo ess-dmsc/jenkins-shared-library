@@ -241,9 +241,9 @@ class PipelineBuilder implements Serializable {
     return builder
   }
 
-  private def replacePercentEncodedChars(String jobName) {
-    jobName = jobName.replace("%2F", "_")  // '/'
-    jobName = jobName.replace("%23", "_")  // '#'
-    return "DEBUG"
+  private def replacePercentEncodedChars(String s) {
+    s = s.replace("%2F", "_")  // '/'
+    s = s.replace("%23", "_")  // '#'
+    return s
   }
 }
