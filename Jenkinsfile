@@ -17,23 +17,25 @@ node('docker') {
       """
     }  // stage
 
-    stage('Push to GitLab') {
-      withCredentials([usernamePassword(
-        credentialsId: 'dm_jenkins_gitlab_token',
-        usernameVariable: 'USERNAME',
-        passwordVariable: 'PASSWORD'
-      )]) {
-        sh """
-          git checkout ${env.BRANCH_NAME}
-          set +x
-          ./jenkins/push-mirror-repo \
-            http://git.esss.dk/dm_group/jenkins-shared-library.git \
-            HEAD:${env.BRANCH_NAME} \
-            ${USERNAME} \
-            ${PASSWORD}
-        """
-      }  // withCredentials
-    }  // stage
+    if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "test") {
+      stage('Push to GitLab') {
+        withCredentials([usernamePassword(
+          credentialsId: 'dm_jenkins_gitlab_token',
+          usernameVariable: 'USERNAME',
+          passwordVariable: 'PASSWORD'
+        )]) {
+          sh """
+            git checkout ${env.BRANCH_NAME}
+            set +x
+            ./jenkins/push-mirror-repo \
+              http://git.esss.dk/dm_group/jenkins-shared-library.git \
+              HEAD:${env.BRANCH_NAME} \
+              ${USERNAME} \
+              ${PASSWORD}
+          """
+        }  // withCredentials
+      }  // stage
+    }  // if
   }  // dir
 
   if (env.BRANCH_NAME == 'master') {
