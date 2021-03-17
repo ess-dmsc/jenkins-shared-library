@@ -43,6 +43,9 @@ class PipelineBuilder implements Serializable {
   /**
    * <p></p>
    *
+   * The branch name is used to generate the Docker container name; some
+   * percent-encoded characters, like '/' and '#', are replaced with '_'.
+   *
    * @throws IllegalArgumentException if build node keys have wrong type or
    *   JOB_NAME has wrong number of components.
    *
@@ -65,22 +68,21 @@ class PipelineBuilder implements Serializable {
     this.containerBuildNodes = containerBuildNodes
     this.hostMounts = hostMounts
 
-    // Replace percent-encoded slashes
-    def job_name = script.env.JOB_NAME.replace("%2F", "_")
-    def job_name_elements = job_name.tokenize('/')
-    if (job_name_elements.size() != 3) {
+    def jobName = replacePercentEncodedChars(script.env.JOB_NAME)
+    def jobNameElements = jobName.tokenize('/')
+    if (jobNameElements.size() != 3) {
       def msg = "'${script.env.JOB_NAME}' is not a valid job name " \
         + "(expected org/project/branch)"
       throw new IllegalArgumentException(msg)
     }
-    this.project = job_name_elements[1]
-    this.branch = job_name_elements[2]
+    this.project = jobNameElements[1]
+    this.branch = jobNameElements[2]
 
     this.failure_messages = Collections.synchronizedList([])
     this.buildNumber = script.env.BUILD_NUMBER
     this.baseContainerName = "${project}-${branch}-${buildNumber}"
 
-    this.failureNotifier = new FailureNotifier(job_name)
+    this.failureNotifier = new FailureNotifier(jobName)
   }
 
   /**
@@ -237,5 +239,11 @@ class PipelineBuilder implements Serializable {
     }
 
     return builder
+  }
+
+  private def replacePercentEncodedChars(String jobName) {
+    jobName = script.env.JOB_NAME.replace("%2F", "_")  // '/'
+    jobName = script.env.JOB_NAME.replace("%23", "_")  // '#'
+    return jobName
   }
 }
