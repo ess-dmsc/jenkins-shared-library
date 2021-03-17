@@ -241,6 +241,7 @@ class PipelineBuilder implements Serializable {
     return builder
   }
 
+  @NonCPS
   private def replacePercentEncodedChars(String s) {
     s = s.replace("%2F", "_")  // '/'
     s = s.replace("%23", "_")  // '#'
