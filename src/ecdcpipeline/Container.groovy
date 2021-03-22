@@ -88,7 +88,7 @@ class Container implements Serializable {
     def resolvedPath = resolveContainerPath(dst)
     def s = """
       docker cp ${src} ${name}:${resolvedPath}
-      docker exec ${name} ${containerBuildNode.shell} -c "chown -R jenkins:jenkins ${resolvedPath}"
+      docker exec -u root ${name} chown --silent --recursive jenkins:jenkins ${resolvedPath}
     """
     return script.sh(s)
   }
