@@ -75,7 +75,8 @@ class Container implements Serializable {
   }
 
   /**
-   * Copy {@code src} in the build node to {@code dst} in the container.
+   * Copy {@code src} in the build node to {@code dst} in the container and
+   * change ownership to the jenkins user.
    *
    * If {@code dst} is a relative path, it gets prefixed with {@code
    *   /home/jenkins/}.
@@ -85,7 +86,11 @@ class Container implements Serializable {
    */
   def copyTo(String src, String dst) {
     def resolvedPath = resolveContainerPath(dst)
-    return script.sh("docker cp ${src} ${name}:${resolvedPath}")
+    def s = """
+      docker cp ${src} ${name}:${resolvedPath}
+      docker exec ${name} ${containerBuildNode.shell} -c "chown -R jenkins:jenkins ${resolvedPath}"
+    """
+    return script.sh(s)
   }
 
   /**
