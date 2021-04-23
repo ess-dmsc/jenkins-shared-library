@@ -168,17 +168,17 @@ class Container implements Serializable {
   def uploadRemoteConanRecipe(String packageDir, String conanPackageChannel) {
     script.withCredentials([
       script.usernamePassword(
-        credentialsId: 'cow-bot-bintray-username-and-api-key',
-        passwordVariable: 'COWBOT_PASSWORD',
-        usernameVariable: 'COWBOT_USERNAME'
+        credentialsId: 'dm_jenkins-public-artifactory-upload',
+        passwordVariable: 'DM_JENKINS_PASSWORD',
+        usernameVariable: 'DM_JENKINS_USERNAME'
       )
     ]) {
       sh """
         set +x
         conan user \
-          --password '${script.COWBOT_PASSWORD}' \
-          --remote ess-dmsc \
-          ${script.COWBOT_USERNAME} \
+          --password '${script.DM_JENKINS_PASSWORD}' \
+          --remote ecdc \
+          ${script.DM_JENKINS_USERNAME} \
           > /dev/null
       """
     }  // withCredentials
