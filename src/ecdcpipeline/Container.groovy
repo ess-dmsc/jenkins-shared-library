@@ -188,7 +188,7 @@ class Container implements Serializable {
     sh """
       conan upload \
         ${conanUploadFlag} \
-        --remote ess-dmsc \
+        --remote ecdc \
         ${packageNameAndVersion}@${conanUser}/${conanPackageChannel}
     """
   }
