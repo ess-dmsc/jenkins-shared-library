@@ -108,20 +108,13 @@ class Container implements Serializable {
   }
 
   def setupLocalConanServer() {
-    script.withCredentials([
-      script.string(
-        credentialsId: 'local-conan-server-password',
-        variable: 'CONAN_PASSWORD'
-      )
-    ]) {
-      sh """
-        set +x
-        conan remote add \
-          --insert 0 \
-          --force \
-          ${conanRemote} ${script.env.local_conan_server}
-      """
-    }  // withCredentials
+    sh """
+      set +x
+      conan remote add \
+        --insert 0 \
+        --force \
+        ${conanRemote} ${script.env.local_conan_server}
+    """
     setupConanUser()
   }
 
@@ -132,14 +125,16 @@ class Container implements Serializable {
         variable: 'CONAN_PASSWORD'
       )
     ]) {
-      sh """
-        set +x
-        conan user \
-          --password '${script.CONAN_PASSWORD}' \
-          --remote ${conanRemote} \
-          ${conanUser} \
-          > /dev/null
-      """
+      withEnv(["conanRemote=${conanRemote}", "conanUser=${conanUser}"]) {
+        sh '''
+          set +x
+          conan user \
+            --password '$CONAN_PASSWORD' \
+            --remote $conanRemote \
+            $conanUser \
+            > /dev/null
+        '''
+      }  // withEnv
     }  // withCredentials
   }
 
