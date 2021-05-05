@@ -24,15 +24,15 @@ node('docker') {
           usernameVariable: 'USERNAME',
           passwordVariable: 'PASSWORD'
         )]) {
-          sh """
-            git checkout ${env.BRANCH_NAME}
+          sh '''
+            git checkout $BRANCH_NAME
             set +x
             ./jenkins/push-mirror-repo \
               http://git.esss.dk/dm_group/jenkins-shared-library.git \
-              HEAD:${env.BRANCH_NAME} \
-              ${USERNAME} \
-              ${PASSWORD}
-          """
+              HEAD:$BRANCH_NAME \
+              $USERNAME \
+              $PASSWORD
+          '''
         }  // withCredentials
       }  // stage
     }  // if
@@ -62,7 +62,7 @@ node('docker') {
             passwordVariable: 'PASSWORD'
           )
         ]) {
-          sh "../push-docs-repo ${USERNAME} ${PASSWORD}"
+          sh '../push-docs-repo $USERNAME $PASSWORD'
         }  // withCredentials
       }  // stage
     }  // dir
