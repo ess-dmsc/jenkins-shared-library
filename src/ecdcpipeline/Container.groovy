@@ -168,14 +168,14 @@ class Container implements Serializable {
         usernameVariable: 'DM_JENKINS_USERNAME'
       )
     ]) {
-      sh """
+      sh '''
         set +x
         conan user \
-          --password '${script.DM_JENKINS_PASSWORD}' \
+          --password '$DM_JENKINS_PASSWORD' \
           --remote ecdc \
-          ${script.DM_JENKINS_USERNAME} \
+          $DM_JENKINS_USERNAME \
           > /dev/null
-      """
+      '''
     }  // withCredentials
 
     def conanUploadFlag = getConanUploadFlag(conanPackageChannel)
