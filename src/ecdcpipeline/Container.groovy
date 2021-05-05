@@ -125,7 +125,7 @@ class Container implements Serializable {
         variable: 'CONAN_PASSWORD'
       )
     ]) {
-      withEnv(["conanRemote=${conanRemote}", "conanUser=${conanUser}"]) {
+      script.withEnv(["conanRemote=${conanRemote}", "conanUser=${conanUser}"]) {
         sh '''
           set +x
           conan user \
