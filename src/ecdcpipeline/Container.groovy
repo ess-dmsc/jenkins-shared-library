@@ -120,18 +120,19 @@ class Container implements Serializable {
 
   def setupConanUser() {
     script.withCredentials([
-      script.string(
-        credentialsId: 'local-conan-server-password',
-        variable: 'CONAN_PASSWORD'
+      script.usernamePassword(
+        credentialsId: 'internal-conan-artifactory-ecdc-username-with-token',
+        passwordVariable: 'INTERNAL_SERVER_PASSWORD',
+        usernameVariable: 'INTERNAL_SERVER_USERNAME'
       )
     ]) {
-      script.withEnv(["conanRemote=${conanRemote}", "conanUser=${conanUser}"]) {
+      script.withEnv(["conanRemote=${conanRemote}"]) {
         sh '''
           set +x
           conan user \
-            --password '$CONAN_PASSWORD' \
+            --password '$INTERNAL_SERVER_PASSWORD' \
             --remote $conanRemote \
-            $conanUser \
+            $INTERNAL_SERVER_USERNAME \
             > /dev/null
         '''
       }  // withEnv
@@ -163,17 +164,17 @@ class Container implements Serializable {
   def uploadRemoteConanRecipe(String packageDir, String conanPackageChannel) {
     script.withCredentials([
       script.usernamePassword(
-        credentialsId: 'dm_jenkins-public-artifactory-upload',
-        passwordVariable: 'DM_JENKINS_PASSWORD',
-        usernameVariable: 'DM_JENKINS_USERNAME'
+        credentialsId: 'public-conan-artifactory-ecdc-username-with-token',
+        passwordVariable: 'PUBLIC_SERVER_PASSWORD',
+        usernameVariable: 'PUBLIC_SERVER_USERNAME'
       )
     ]) {
       sh '''
         set +x
         conan user \
-          --password '$DM_JENKINS_PASSWORD' \
+          --password '$PUBLIC_SERVER_PASSWORD' \
           --remote ecdc \
-          $DM_JENKINS_USERNAME \
+          $PUBLIC_SERVER_USERNAME \
           > /dev/null
       '''
     }  // withCredentials
