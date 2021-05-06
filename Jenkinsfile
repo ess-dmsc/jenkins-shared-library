@@ -57,7 +57,7 @@ node('docker') {
 
         withCredentials([
           usernamePassword(
-            credentialsId: 'cow-bot-username',
+            credentialsId: 'cow-bot-username-with-token',
             usernameVariable: 'USERNAME',
             passwordVariable: 'PASSWORD'
           )
