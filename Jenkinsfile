@@ -20,7 +20,7 @@ node('docker') {
     if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "test") {
       stage('Push to GitLab') {
         withCredentials([usernamePassword(
-          credentialsId: 'dm_jenkins_gitlab_token',
+          credentialsId: 'dm-jenkins-dmsc-gitlab-username-with-token',
           usernameVariable: 'USERNAME',
           passwordVariable: 'PASSWORD'
         )]) {
