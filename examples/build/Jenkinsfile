@@ -16,7 +16,7 @@ import ecdcpipeline.NodeStatus
 containerBuildNodes = [
   'centos-debug': ContainerBuildNode.getDefaultContainerBuildNode('centos7'),
   'centos-release': ContainerBuildNode.getDefaultContainerBuildNode('centos7'),
-  'ubuntu': new ContainerBuildNode('essdmscdm/ubuntu18.04-build-node:1.1.0', 'bash -e')
+  'ubuntu': new ContainerBuildNode('screamingudder/ubuntu18.04-build-node:4.0.1', 'bash -e')
 ]
 
 // Instantiate a PipelineBuilder object to generate the builders, mounting the
