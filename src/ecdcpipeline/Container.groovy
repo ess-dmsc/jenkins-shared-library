@@ -213,6 +213,26 @@ class Container implements Serializable {
     return "${packageName}/${packageVersion}"
   }
 
+  /**
+   * Set up automation Git user name and email.
+   *
+   * @param path path to repository directory
+   */
+  def setupLocalGitUser(String path) {
+    withEnv(["REPO_PATH=${path}"]) {
+      withCredentials([string(
+        credentialsId: 'jenkins-notification-email',
+        variable: 'NOTIFICATION_EMAIL'
+      )]) {
+        sh '''
+          cd $REPO_PATH
+          git config user.name cow-bot
+          git config user.email $NOTIFICATION_EMAIL
+        '''
+      }  // withCredentials
+    }  // withEnv
+  }
+
   private def resolveContainerPath(String path) {
     String resolvedPath
 
