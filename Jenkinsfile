@@ -41,11 +41,19 @@ node('docker') {
   if (env.BRANCH_NAME == 'master') {
     dir('code') {
       stage('Publish documentation') {
+        withCredentials([string(
+          credentialsId: 'jenkins-notification-email',
+          variable: 'NOTIFICATION_EMAIL'
+        )]) {
+          sh '''
+            git config user.email '$NOTIFICATION_EMAIL'
+            git config user.name 'cow-bot'
+            git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+          '''
+        }  // withCredentials
+
         sh """
           cp jenkins/push-docs-repo ..
-          git config user.email 'dm-jenkins-integration@esss.se'
-          git config user.name 'cow-bot'
-          git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
           git fetch
           git checkout gh-pages
           rm -rf *
