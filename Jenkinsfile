@@ -46,8 +46,8 @@ node('docker') {
           variable: 'NOTIFICATION_EMAIL'
         )]) {
           sh '''
-            git config user.email '$NOTIFICATION_EMAIL'
-            git config user.name 'cow-bot'
+            git config user.email $NOTIFICATION_EMAIL
+            git config user.name cow-bot
             git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
           '''
         }  // withCredentials
