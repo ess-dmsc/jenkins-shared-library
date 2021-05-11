@@ -14,8 +14,8 @@ import ecdcpipeline.NodeStatus
 // this library is updated; use the custom image if you want to keep the version
 // fixed or if the image you require is not provided by the library.
 containerBuildNodes = [
-  'centos-debug': ContainerBuildNode.getDefaultContainerBuildNode('centos7'),
-  'centos-release': ContainerBuildNode.getDefaultContainerBuildNode('centos7'),
+  'centos-debug': ContainerBuildNode.getDefaultContainerBuildNode('centos7-gcc8'),
+  'centos-release': ContainerBuildNode.getDefaultContainerBuildNode('centos7-gcc8'),
   'ubuntu': new ContainerBuildNode('screamingudder/ubuntu18.04-build-node:4.0.1', 'bash -e')
 ]
 
