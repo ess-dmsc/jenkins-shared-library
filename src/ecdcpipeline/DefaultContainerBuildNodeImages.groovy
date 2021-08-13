@@ -28,7 +28,7 @@ class DefaultContainerBuildNodeImages {
       'shell': 'bash -e -x'
     ],
     'ubuntu2004': [
-      'image': 'screamingudder/ubuntu20.04-build-node:2.0.1',
+      'image': 'screamingudder/ubuntu20.04-build-node:2.0.2',
       'shell': 'bash -e -x'
     ]
   ]
