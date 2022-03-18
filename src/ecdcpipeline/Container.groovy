@@ -157,7 +157,7 @@ class Container implements Serializable {
         --all \
         -c \
         --remote ${conanRemote} \
-        || echo 'Ignoring error'
+        || echo 'Ignoring error in post-build Conan package upload'
     """
   }
 
