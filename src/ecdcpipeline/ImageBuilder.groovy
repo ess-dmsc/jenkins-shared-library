@@ -54,21 +54,21 @@ class ImageBuilder {
         """
       }  // stage
 
-      stage("Push") {
-        if (env.BRANCH_NAME == 'master') {
+      script.stage("Push") {
+        if (script.env.BRANCH_NAME == 'master') {
           // Don't overwrite image if it exists.
           try {
-            // How to check if an image exists?
-            sh "docker manifest inspect ${image_name}"
-            error "Image ${image_name} already exists in registry, cannot push from master."
+            // Is there another way of checking if an image exists?
+            script.sh "docker manifest inspect ${this.imageName}"
+            script.error "Image ${this.imageName} already exists in registry, cannot push from master."
           } catch (e) {
-            echo "Image ${image_name} not found in registry and will be pushed."
+            script.echo "Image ${this.imageName} not found in registry and will be pushed."
           }
         } else {
-          echo "Not in master, image will be pushed."
+          script.echo "Not in master, image will be pushed."
         }
 
-        sh "docker push ${image_name}"
+        script.sh "docker push ${this.ImageName}"
       }  // stage
     }  // node
   }  // def
