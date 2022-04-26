@@ -15,7 +15,7 @@ class ImageBuilder {
    *   Jenkinsfile)
    * @param imageName Docker image name with version
    */
-  ConanPackageBuilder(script, String imageName) {
+  ImageBuilder(script, String imageName) {
     this.script = script
     this.imageName = imageName
   }
