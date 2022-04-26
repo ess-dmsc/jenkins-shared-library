@@ -27,9 +27,9 @@ class ImageBuilder {
    * container registry.
    */
   def buildAndPush() {
-    return node('docker') {
+    return script.node('docker') {
       // Delete workspace when build is done.
-      cleanWs()
+      script.cleanWs()
 
       script.stage('Checkout') {
         script.checkout script.scm
