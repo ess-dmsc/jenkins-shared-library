@@ -68,7 +68,7 @@ class ImageBuilder {
           script.echo "Not in master, image will be pushed."
         }
 
-        script.sh "docker push ${this.ImageName}"
+        script.sh "docker push ${this.imageName}"
       }  // stage
     }  // node
   }  // def
