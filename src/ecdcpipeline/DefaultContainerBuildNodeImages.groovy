@@ -28,7 +28,7 @@ class DefaultContainerBuildNodeImages {
       'shell': 'bash -e -x'
     ],
     'ubuntu2004': [
-      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/ubuntu20.04-build-node:3.0.2',
+      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/ubuntu20.04-build-node:3.0.3',
       'shell': 'bash -e -x'
     ]
   ]
