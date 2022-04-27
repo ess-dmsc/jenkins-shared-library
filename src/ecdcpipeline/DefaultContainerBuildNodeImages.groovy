@@ -8,7 +8,7 @@ class DefaultContainerBuildNodeImages {
       'shell': '/usr/bin/scl enable devtoolset-6 -- /bin/bash -e -x'
     ],
     'centos7-gcc8': [
-      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/centos7-build-node:6.2.0',
+      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/centos7-build-node:6.2.1',
       'shell': '/usr/bin/scl enable devtoolset-8 rh-python38 -- /bin/bash -e -x'
     ],
     'debian9': [
@@ -16,7 +16,7 @@ class DefaultContainerBuildNodeImages {
       'shell': 'bash -e -x'
     ],
     'debian10': [
-      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/debian10-build-node:4.2.1',
+      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/debian10-build-node:4.2.2',
       'shell': 'bash -e -x'
     ],
     'ubuntu1804': [
@@ -28,7 +28,7 @@ class DefaultContainerBuildNodeImages {
       'shell': 'bash -e -x'
     ],
     'ubuntu2004': [
-      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/ubuntu20.04-build-node:3.0.0',
+      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/ubuntu20.04-build-node:3.0.1',
       'shell': 'bash -e -x'
     ]
   ]
