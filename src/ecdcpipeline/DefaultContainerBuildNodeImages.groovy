@@ -19,6 +19,10 @@ class DefaultContainerBuildNodeImages {
       'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/debian10-build-node:4.3.0',
       'shell': 'bash -e -x'
     ],
+    'debian11': [
+      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/debian11-build-node:1.0.0',
+      'shell': 'bash -e -x'
+    ],
     'ubuntu1804': [
       'image': 'screamingudder/ubuntu18.04-build-node:2.6.0',
       'shell': 'bash -e -x'
@@ -29,6 +33,10 @@ class DefaultContainerBuildNodeImages {
     ],
     'ubuntu2004': [
       'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/ubuntu20.04-build-node:3.2.0',
+      'shell': 'bash -e -x'
+    ],
+    'ubuntu2204': [
+      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/ubuntu22.04-build-node:1.0.0',
       'shell': 'bash -e -x'
     ]
   ]
