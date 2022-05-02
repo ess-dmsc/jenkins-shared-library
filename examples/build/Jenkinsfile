@@ -32,6 +32,7 @@ echo pipelineBuilder.branch
 echo pipelineBuilder.buildNumber
 echo pipelineBuilder.baseContainerName
 echo pipelineBuilder.numCpus
+echo pipelineBuilder.numMakeJobs
 
 // Create builders for each build node with a parameterised pipeline. Notice the
 // 'container' parameter after the opening curly brace; this parameter can have
@@ -82,7 +83,7 @@ builders = pipelineBuilder.createBuilders { container ->
       cd build
       echo TEST > test.txt
       cmake ../code
-      make -j${pipeline_builder.numCpus}
+      make -j${pipeline_builder.numMakeJobs}
     """
     // Copy a file from the container.
     container.copyFrom('build/test.txt', '.')

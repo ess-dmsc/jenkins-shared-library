@@ -34,6 +34,11 @@ class PipelineBuilder implements Serializable {
    */
   final numCpus = 8
 
+  /**
+   * Suggested value for make -j.
+   */
+  final numMakeJobs = 16
+
   private def failure_messages
   private def script
   private def containerBuildNodes
