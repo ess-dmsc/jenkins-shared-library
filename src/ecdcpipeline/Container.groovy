@@ -28,7 +28,7 @@ class Container implements Serializable {
   ContainerBuildNode containerBuildNode
 
   private final String conanUser = 'ess-dmsc'
-  private final String conanRemote = 'ess-dmsc-local'
+  private final String conanRemote = 'gitlab'
 
   /**
    * <p></p>

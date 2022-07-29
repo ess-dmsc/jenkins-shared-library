@@ -84,10 +84,6 @@ class ConanPackageBuilder {
         container.copyTo(pipelineBuilder.project, pipelineBuilder.project)
       }  // stage
 
-      pipelineBuilder.stage("${container.key}: Conan setup") {
-        container.setupLocalConanServer()
-      }  // stage
-
       pipelineBuilder.stage("${container.key}: package") {
         configurations(container)
       }  // stage
