@@ -4,7 +4,7 @@ package ecdcpipeline
 class DefaultContainerBuildNodeImages {
   static images = [
     'centos7-gcc8': [
-      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/centos7-build-node:6.3.0',
+      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/centos7-build-node:6.4.0',
       'shell': '/usr/bin/scl enable devtoolset-8 rh-python38 -- /bin/bash -e -x'
     ],
     'debian10': [
