@@ -4,7 +4,7 @@ package ecdcpipeline
 class DefaultContainerBuildNodeImages {
   static images = [
     'centos7-gcc11': [
-      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/centos7-build-node:7.1.0',
+      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/centos7-build-node:8.0.0',
       'shell': '/usr/bin/scl enable devtoolset-11 rh-python38 -- /bin/bash -e -x'
     ],
     'centos7-gcc8': [
@@ -16,7 +16,7 @@ class DefaultContainerBuildNodeImages {
       'shell': 'bash -e -x'
     ],
     'debian11': [
-      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/debian11-build-node:1.1.0',
+      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/debian11-build-node:2.0.0',
       'shell': 'bash -e -x'
     ],
     'ubuntu2004': [
@@ -24,7 +24,7 @@ class DefaultContainerBuildNodeImages {
       'shell': 'bash -e -x'
     ],
     'ubuntu2204': [
-      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/ubuntu22.04-build-node:1.3.1',
+      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/ubuntu22.04-build-node:2.0.0',
       'shell': 'bash -e -x'
     ]
   ]
