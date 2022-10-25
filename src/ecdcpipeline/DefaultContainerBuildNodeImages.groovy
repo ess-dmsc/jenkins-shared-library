@@ -16,7 +16,7 @@ class DefaultContainerBuildNodeImages {
       'shell': 'bash -e -x'
     ],
     'debian11': [
-      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/debian11-build-node:2.0.0',
+      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/debian11-build-node:2.1.0',
       'shell': 'bash -e -x'
     ],
     'ubuntu2004': [
@@ -24,7 +24,7 @@ class DefaultContainerBuildNodeImages {
       'shell': 'bash -e -x'
     ],
     'ubuntu2204': [
-      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/ubuntu22.04-build-node:2.0.0',
+      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/ubuntu22.04-build-node:2.1.0',
       'shell': 'bash -e -x'
     ]
   ]
