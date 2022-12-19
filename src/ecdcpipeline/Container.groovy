@@ -162,9 +162,6 @@ class Container implements Serializable {
   }
 
   def uploadRemoteConanRecipe(String packageDir, String conanPackageChannel) {
-    sh '''
-      conan remote add ecdc-conan-release https://artifactory.esss.lu.se/artifactory/api/conan/ecdc-conan-release
-    '''
     script.withCredentials([
       script.string(
         credentialsId: 'ess-artifactory-ecdc-conan-release-token',
