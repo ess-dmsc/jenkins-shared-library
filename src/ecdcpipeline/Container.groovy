@@ -163,18 +163,17 @@ class Container implements Serializable {
 
   def uploadRemoteConanRecipe(String packageDir, String conanPackageChannel) {
     script.withCredentials([
-      script.usernamePassword(
-        credentialsId: 'public-conan-artifactory-ecdc-username-with-token',
-        passwordVariable: 'PUBLIC_SERVER_PASSWORD',
-        usernameVariable: 'PUBLIC_SERVER_USERNAME'
+      script.string(
+        credentialsId: 'ess-artifactory-ecdc-conan-release-token',
+        variable: 'ARTIFACTORY_TOKEN'
       )
     ]) {
       sh '''
         set +x
         conan user \
           --password '$PUBLIC_SERVER_PASSWORD' \
-          --remote ecdc \
-          $PUBLIC_SERVER_USERNAME \
+          --remote ecdc-conan-release \
+          ecdc \
           > /dev/null
       '''
     }  // withCredentials
