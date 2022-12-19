@@ -174,7 +174,7 @@ class Container implements Serializable {
       sh '''
         set +x
         conan user \
-          --password '$PUBLIC_SERVER_PASSWORD' \
+          --password '$ARTIFACTORY_TOKEN' \
           --remote ecdc-conan-release \
           ecdc \
           > /dev/null
