@@ -11,10 +11,6 @@ class DefaultContainerBuildNodeImages {
       'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/centos7-build-node:6.4.0',
       'shell': '/usr/bin/scl enable devtoolset-8 rh-python38 -- /bin/bash -e -x'
     ],
-    'centos7-pyenv': [
-      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/centos7-build-node:10.1.0',
-      'shell': '/bin/bash -e -x'
-    ],
     'debian10': [
       'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/debian10-build-node:4.3.0',
       'shell': 'bash -e -x'
