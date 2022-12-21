@@ -83,7 +83,7 @@ builders = pipelineBuilder.createBuilders { container ->
       cd build
       echo TEST > test.txt
       cmake ../code
-      make -j${pipeline_builder.numMakeJobs}
+      make -j${pipelineBuilder.numMakeJobs}
     """
     // Copy a file from the container.
     container.copyFrom('build/test.txt', '.')
