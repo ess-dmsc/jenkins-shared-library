@@ -122,8 +122,8 @@ class Container implements Serializable {
     script.withCredentials([
       script.usernamePassword(
         credentialsId: 'dmsc-gitlab-build-node-images-docker-registry',
-        usernameVariable: 'USERNAME'
-        passwordVariable: 'PASSWORD',
+        usernameVariable: 'USERNAME',
+        passwordVariable: 'PASSWORD'
       )
     ]) {
       script.withEnv(["conanRemote=${conanRemote}"]) {
