@@ -115,6 +115,29 @@ class Container implements Serializable {
         --force \
         ${conanRemote} ${script.env.local_conan_server}
     """
+    setupConanUser()
+  }
+
+  def setupConanUser() {
+    script.withCredentials([
+      script.usernamePassword(
+        credentialsId: 'dmsc-gitlab-build-node-images-docker-registry',
+        usernameVariable: 'USERNAME'
+        passwordVariable: 'PASSWORD',
+      )
+    ]) {
+      script.withEnv(["conanRemote=${conanRemote}"]) {
+        sh '''
+          set +x
+          conan user \
+            --password '$PASSWORD' \
+            --remote $conanRemote \
+            $USERNAME \
+            > /dev/null
+        '''
+      }  // withEnv
+    }  // withCredentials
+    
   }
 
   def uploadLocalConanPackage(String packageDir, String conanPackageChannel) {
