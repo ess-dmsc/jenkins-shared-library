@@ -115,28 +115,6 @@ class Container implements Serializable {
         --force \
         ${conanRemote} ${script.env.local_conan_server}
     """
-    setupConanUser()
-  }
-
-  def setupConanUser() {
-    script.withCredentials([
-      script.usernamePassword(
-        credentialsId: 'internal-conan-artifactory-ecdc-username-with-token',
-        passwordVariable: 'INTERNAL_SERVER_PASSWORD',
-        usernameVariable: 'INTERNAL_SERVER_USERNAME'
-      )
-    ]) {
-      script.withEnv(["conanRemote=${conanRemote}"]) {
-        sh '''
-          set +x
-          conan user \
-            --password '$INTERNAL_SERVER_PASSWORD' \
-            --remote $conanRemote \
-            $INTERNAL_SERVER_USERNAME \
-            > /dev/null
-        '''
-      }  // withEnv
-    }  // withCredentials
   }
 
   def uploadLocalConanPackage(String packageDir, String conanPackageChannel) {
