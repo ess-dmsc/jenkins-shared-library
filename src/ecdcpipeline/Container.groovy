@@ -121,7 +121,7 @@ class Container implements Serializable {
   def setupConanUser() {
     script.withCredentials([
       script.usernamePassword(
-        credentialsId: 'dmsc-gitlab-build-node-images-docker-registry',
+        credentialsId: 'dmsc-gitlab-conan-packages-jenkins-integration',
         usernameVariable: 'USERNAME',
         passwordVariable: 'PASSWORD'
       )
