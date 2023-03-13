@@ -34,23 +34,23 @@ class DeploymentTrigger implements Serializable {
    */
   def deploy(String version) {
     String credentialsId = "ess-gitlab-${pipelineName}-url-and-token"
-    script.withCredentials([script.usernamePassword(
-      credentialsId: credentialsId,
-      usernameVariable: 'url',
-      passwordVariable: 'token'
-    )]) {
-      script.withEnv(["TRIGGER_URL=${url},TRIGGER_TOKEN=${token}"]) {
+    script.withEnv(["version=${version}"]) {
+      script.withCredentials([script.usernamePassword(
+        credentialsId: credentialsId,
+        usernameVariable: 'TRIGGER_URL',
+        passwordVariable: 'TRIGGER_TOKEN'
+      )]) {
         script.sh """
           set +x
           curl -X POST \
             --fail \
-            -F token='${TRIGGER_TOKEN}' \
+            -F token='TRIGGER_TOKEN' \
             -F ref=main \
             -F 'variables[VERSION]=$version' \
-            ${TRIGGER_URL} > /dev/null 2>&1
+            $TRIGGER_URL > /dev/null 2>&1
         """
-      }  // withEnv
-    }  // withCredentials
+      }  // withCredentials
+    }  // withEnv
   }
 
 }
