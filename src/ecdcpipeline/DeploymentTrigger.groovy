@@ -44,9 +44,9 @@ class DeploymentTrigger implements Serializable {
           set +x
           curl -X POST \
             --fail \
-            -F token='$TRIGGER_TOKEN' \
+            -F token=$TRIGGER_TOKEN \
             -F ref=main \
-            -F 'variables[VERSION]=$version' \
+            -F variables[VERSION]=$version \
             $TRIGGER_URL > /dev/null 2>&1
         '''
       }  // withCredentials
