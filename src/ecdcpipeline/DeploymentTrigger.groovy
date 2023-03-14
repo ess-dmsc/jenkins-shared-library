@@ -35,7 +35,7 @@ class DeploymentTrigger implements Serializable {
   def deploy(String version) {
     String projectIdCredentialsId = "ess-gitlab-${pipelineName}-id"
     String tokenCredentialsId = "ess-gitlab-${pipelineName}-token"
-    script.withEnv(["version=${version},gitlab_server=${script.env.ess_gitlab_server}"]) {
+    script.withEnv(["version=${version}","gitlab_server=${script.env.ess_gitlab_server}"]) {
       script.withCredentials([script.string(
         credentialsId: projectIdCredentialsId,
         variable: 'PROJECT_ID'
@@ -51,7 +51,7 @@ class DeploymentTrigger implements Serializable {
               -F token=$DEPLOYMENT_TOKEN \
               -F ref=main \
               -F variables[VERSION]=$version \
-              https://gitlab.esss.lu.se/api/v4/projects/$PROJECT_ID/trigger/pipeline > /dev/null 2>&1
+              $gitlab_server/api/v4/projects/$PROJECT_ID/trigger/pipeline > /dev/null 2>&1
           '''
         }  // withCredentials
       }  // withCredentials
