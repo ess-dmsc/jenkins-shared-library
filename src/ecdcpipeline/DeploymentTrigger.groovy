@@ -51,7 +51,7 @@ class DeploymentTrigger implements Serializable {
               -F token=$DEPLOYMENT_TOKEN \
               -F ref=main \
               -F variables[VERSION]=$version \
-              $gitlab_server/api/v4/projects/$PROJECT_ID/trigger/pipeline > /dev/null 2>&1
+              https://gitlab.esss.lu.se/api/v4/projects/$PROJECT_ID/trigger/pipeline > /dev/null 2>&1
           '''
         }  // withCredentials
       }  // withCredentials
