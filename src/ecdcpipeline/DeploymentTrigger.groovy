@@ -33,22 +33,27 @@ class DeploymentTrigger implements Serializable {
    * @param version version to deploy (passed as a trigger parameter)
    */
   def deploy(String version) {
-    String credentialsId = "ess-gitlab-${pipelineName}-url-and-token"
-    script.withEnv(["version=${version}"]) {
-      script.withCredentials([script.usernamePassword(
-        credentialsId: credentialsId,
-        usernameVariable: 'TRIGGER_URL',
-        passwordVariable: 'TRIGGER_TOKEN'
+    String projectIdCredentialsId = "ess-gitlab-${pipelineName}-id"
+    String tokenCredentialsId = "ess-gitlab-${pipelineName}-token"
+    script.withEnv(["version=${version},gitlab_server=${script.env.ess_gitlab_server}"]) {
+      script.withCredentials([script.string(
+        credentialsId: projectIdCredentialsId,
+        variable: 'PROJECT_ID'
       )]) {
-        script.sh '''
-          set +x
-          curl -X POST \
-            --fail \
-            -F token=$TRIGGER_TOKEN \
-            -F ref=main \
-            -F variables[VERSION]=$version \
-            $TRIGGER_URL > /dev/null 2>&1
-        '''
+        script.withCredentials([script.string(
+          credentialsId: tokenCredentialsId,
+          variable: 'DEPLOYMENT_TOKEN'
+        )]) {
+          script.sh '''
+            set +x
+            curl -X POST \
+              --fail \
+              -F token=$DEPLOYMENT_TOKEN \
+              -F ref=main \
+              -F variables[VERSION]=$version \
+              $gitlab_server/api/v4/projects/$PROJECT_ID/trigger/pipeline > /dev/null 2>&1
+          '''
+        }  // withCredentials
       }  // withCredentials
     }  // withEnv
   }
