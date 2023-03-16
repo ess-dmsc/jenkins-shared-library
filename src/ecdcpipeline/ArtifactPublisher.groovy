@@ -28,13 +28,24 @@ class ArtifactPublisher implements Serializable {
   }
 
   /**
-   * Publish artifact to ESS GitLab server.
+   * Publish artifact to ESS GitLab server; package name and versions are
+   * checked with {@link isValidPackageArg}.
    *
    * @param artifactPath path to the artifact to be published
    * @param packageName name for the published package
    * @param packageVersion version for the published package
+   *
+   * @throws IllegalArgumentException if package name or version is invalid.
    */
   def publish(String artifactPath, String packageName, String packageVersion) {
+    if (!isValidPackageArg(packageName)) {
+      throw new IllegalArgumentException("'${packageName}' is not a valid name for the package")
+    }
+
+    if (!isValidPackageArg(packageVersion) {
+      throw new IllegalArgumentException("'${packageVersion}' is not a valid version for the package")
+    }
+
     String projectIdCredentialsId = "ess-gitlab-${pipelineName}-id"
     script.withEnv([
       "gitlab_server=${script.env.ess_gitlab_server}",
@@ -59,6 +70,11 @@ class ArtifactPublisher implements Serializable {
         }  // withCredentials
       }  // withCredentials
     }  // withEnv
+  }
+
+  private boolean isValidPackageArg(String arg) {
+    // Arguments can only contain alphanumeric characters, '.', '-' and '_'.
+    return arg ==~ /^[a-zA-Z0-9.-_]+$/
   }
 
 }
