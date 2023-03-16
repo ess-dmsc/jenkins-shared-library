@@ -53,21 +53,21 @@ class ArtifactPublisher implements Serializable {
       "packageName=${packageName}",
       "packageVersion=${packageVersion}"
     ]) {
-      script.withCredentials([script.string(
-        credentialsId: projectIdCredentialsId,
-        variable: 'PROJECT_ID'
-      )]) {
-        script.withCredentials([script.string(
+      script.withCredentials([
+        script.string(
+          credentialsId: projectIdCredentialsId,
+          variable: 'PROJECT_ID'
+        ), script.string(
           credentialsId: 'ess-gitlab-ecdc-package-token',
           variable: 'PACKAGE_TOKEN'
-        )]) {
-          script.sh '''
-            ls
-            curl --header "PRIVATE-TOKEN: $PACKAGE" \
-              --upload-file "$artifactPath" \
-              $gitlab_server/api/v4/projects/$PROJECT_ID/packages/generic/$package_name/$package_version/file.txt
-          '''
-        }  // withCredentials
+        )
+      ]) {
+        script.sh '''
+          ls
+          curl --header "PRIVATE-TOKEN: $PACKAGE" \
+            --upload-file "$artifactPath" \
+            $gitlab_server/api/v4/projects/$PROJECT_ID/packages/generic/$package_name/$package_version/file.txt
+        '''
       }  // withCredentials
     }  // withEnv
   }
