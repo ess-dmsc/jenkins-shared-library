@@ -42,7 +42,7 @@ class ArtifactPublisher implements Serializable {
       throw new IllegalArgumentException("'${packageName}' is not a valid name for the package")
     }
 
-    if (!isValidPackageArg(packageVersion) {
+    if (!isValidPackageArg(packageVersion)) {
       throw new IllegalArgumentException("'${packageVersion}' is not a valid version for the package")
     }
 
