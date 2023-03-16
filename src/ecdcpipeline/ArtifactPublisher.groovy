@@ -74,7 +74,7 @@ class ArtifactPublisher implements Serializable {
 
   private boolean isValidPackageArg(String arg) {
     // Arguments can only contain alphanumeric characters, '.', '-' and '_'.
-    return arg ==~ /^[a-zA-Z0-9.-_]+$/
+    return arg ==~ /^[a-zA-Z0-9.\-_]+$/
   }
 
 }
