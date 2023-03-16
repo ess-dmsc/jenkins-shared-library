@@ -63,7 +63,6 @@ class ArtifactPublisher implements Serializable {
         )
       ]) {
         script.sh '''
-          ls
           curl \
             --fail \
             --header "PRIVATE-TOKEN: $PACKAGE_TOKEN" \
