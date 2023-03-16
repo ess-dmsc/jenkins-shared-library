@@ -66,7 +66,7 @@ class ArtifactPublisher implements Serializable {
           ls
           curl \
             --fail \
-            --header "PRIVATE-TOKEN: $PACKAGE" \
+            --header "PRIVATE-TOKEN: $PACKAGE_TOKEN" \
             --upload-file "$artifactPath" \
             $gitlab_server/api/v4/projects/$PROJECT_ID/packages/generic/$packageName/$packageVersion/file.txt
         '''
