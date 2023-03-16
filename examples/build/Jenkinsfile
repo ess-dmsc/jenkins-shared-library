@@ -4,6 +4,8 @@
 import ecdcpipeline.ContainerBuildNode
 import ecdcpipeline.PipelineBuilder
 import ecdcpipeline.NodeStatus
+import ecdcpipeline.ArtifactPublisher
+import ecdcpipeline.DeploymentTrigger
 
 // Build a map of container build nodes where the pipeline will be run.
 // ContainerBuildNode.getDefaultContainerBuildNode will return a default build
@@ -117,6 +119,21 @@ node {
   } catch (e) {
     pipelineBuilder.handleFailureMessages()
     throw e
+  }
+
+  // Publish file TEST as a package on the software-deployment repository on
+  // the ESS GitLab. The package is published as "a-new-package/v1.2.3".
+  stage("Publish") {
+    sh "touch TEST"
+    ap = new ArtifactPublisher(this, 'software-deployment')
+    ap.publish("TEST", "a-new-package", "v1.2.3")
+  }
+
+  // Trigger deployment pipeline on the software-deployment repository on the
+  // ESS GitLab. Pass "a-new-package/v1.2.3" as the version to deploy.
+  stage("Deploy") {
+    dt = new DeploymentTrigger(this, 'software-deployment')
+    dt.deploy("a-new-package/v1.2.3")
   }
 }
 
