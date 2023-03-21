@@ -39,24 +39,25 @@ class DeploymentTrigger implements Serializable {
       "gitlab_server=${script.env.ess_gitlab_server}",
       "version=${version}"
     ]) {
-      script.withCredentials([script.string(
-        credentialsId: projectIdCredentialsId,
-        variable: 'PROJECT_ID'
-      )]) {
-        script.withCredentials([script.string(
+      script.withCredentials([
+        script.string(
+          credentialsId: projectIdCredentialsId,
+          variable: 'PROJECT_ID'
+        ),
+        script.string(
           credentialsId: tokenCredentialsId,
           variable: 'DEPLOYMENT_TOKEN'
-        )]) {
-          script.sh '''
-            set +x
-            curl -X POST \
-              --fail \
-              -F token=$DEPLOYMENT_TOKEN \
-              -F ref=main \
-              -F variables[VERSION]=$version \
-              $gitlab_server/api/v4/projects/$PROJECT_ID/trigger/pipeline > /dev/null 2>&1
-          '''
-        }  // withCredentials
+        )
+      ]) {
+        script.sh '''
+          set +x
+          curl -X POST \
+            --fail \
+            -F token=$DEPLOYMENT_TOKEN \
+            -F ref=main \
+            -F variables[VERSION]=$version \
+            $gitlab_server/api/v4/projects/$PROJECT_ID/trigger/pipeline > /dev/null 2>&1
+        '''
       }  // withCredentials
     }  // withEnv
   }

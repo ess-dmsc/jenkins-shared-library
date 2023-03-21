@@ -57,7 +57,8 @@ class ArtifactPublisher implements Serializable {
         script.string(
           credentialsId: projectIdCredentialsId,
           variable: 'PROJECT_ID'
-        ), script.string(
+        ),
+        script.string(
           credentialsId: 'ess-gitlab-ecdc-package-token',
           variable: 'PACKAGE_TOKEN'
         )
