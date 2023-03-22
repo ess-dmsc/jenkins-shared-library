@@ -38,7 +38,7 @@ node('docker') {
     }  // if
   }  // dir
 
-  if (env.BRANCH_NAME == 'update_git_commit') {
+  if (env.BRANCH_NAME == 'master') {
     dir('code') {
       stage('Publish documentation') {
         withCredentials([string(
