@@ -38,7 +38,7 @@ node('docker') {
     }  // if
   }  // dir
 
-  if (env.BRANCH_NAME == 'master') {
+  if (env.BRANCH_NAME == 'update_git_commit') {
     dir('code') {
       stage('Publish documentation') {
         withCredentials([string(
@@ -64,13 +64,12 @@ node('docker') {
         """
 
         withCredentials([
-          usernamePassword(
+          gitUsernamePassword(
             credentialsId: 'cow-bot-username-with-token',
-            usernameVariable: 'USERNAME',
-            passwordVariable: 'PASSWORD'
+            gitToolName: 'Default'
           )
         ]) {
-          sh '../push-docs-repo $USERNAME $PASSWORD'
+          sh 'git push'
         }  // withCredentials
       }  // stage
     }  // dir
