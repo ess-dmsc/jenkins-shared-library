@@ -27,7 +27,7 @@ node('docker') {
         ]) {
           sh '''
             git checkout $BRANCH_NAME
-            git push
+            git push --force http://git.esss.dk/dm_group/jenkins-shared-library.git $BRANCH_NAME
           '''
         }  // withCredentials
       }  // stage
