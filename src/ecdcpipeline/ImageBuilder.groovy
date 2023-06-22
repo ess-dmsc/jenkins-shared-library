@@ -40,7 +40,7 @@ class ImageBuilder {
         if (script.env.CHANGE_ID) {
           // Pull request.
           this.imageName = "${this.imageName}-pr"
-        } else if (script.env.BRANCH_NAME != 'master') {
+        } else if (script.env.BRANCH_NAME != 'master' && script.env.BRANCH_NAME != 'main') {
           // Development branch.
           this.imageName = "${this.imageName}-dev"
         }
