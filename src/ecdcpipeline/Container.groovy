@@ -111,7 +111,7 @@ class Container implements Serializable {
     sh """
       set +x
       conan remote add \
-        --insert 0 \
+        --index 0 \
         --force \
         ${conanRemote} ${script.env.local_conan_server}
     """
@@ -129,9 +129,9 @@ class Container implements Serializable {
       script.withEnv(["conanRemote=${conanRemote}"]) {
         sh '''
           set +x
-          conan user \
+          conan remote login \
             --password '$PASSWORD' \
-            --remote $conanRemote \
+            $conanRemote \
             $USERNAME \
             > /dev/null
         '''
@@ -155,9 +155,8 @@ class Container implements Serializable {
   def uploadAllConanPackages() {
     sh """
       conan upload '*' \
-        --all \
-        -c \
         --remote ${conanRemote} \
+        --confirm \
         || echo 'Ignoring error in post-build Conan package upload'
     """
   }
@@ -171,9 +170,9 @@ class Container implements Serializable {
     ]) {
       sh '''
         set +x
-        conan user \
+        conan remote login \
           --password '$ARTIFACTORY_TOKEN' \
-          --remote ecdc-conan-release \
+          ecdc-conan-release \
           ecdc \
           > /dev/null
       '''
@@ -192,7 +191,7 @@ class Container implements Serializable {
   private def getConanUploadFlag(String conanPackageChannel) {
     def conanUploadFlag
     if (conanPackageChannel == 'stable') {
-      conanUploadFlag = '--no-overwrite'
+      conanUploadFlag = ''  // TODO check
     } else {
       conanUploadFlag = ''
     }
@@ -201,6 +200,7 @@ class Container implements Serializable {
   }
 
   private def getPackageNameAndVersion(String packageDir) {
+    // TODO update
     def shellScript = """
       cd ${packageDir}
       conan inspect --attribute name --attribute version .
@@ -251,8 +251,9 @@ class Container implements Serializable {
   def createConanPackage(String conanPackageChannel, String packageDir, String settings, String options, String env) {
     def shellScript = """
       cd ${packageDir}
-      ${env} conan create . ${conanUser}/${conanPackageChannel} \
-        --build=outdated \
+      ${env} conan create . \
+        --user ${conanUser} \
+        --channel ${conanPackageChannel} \
         ${settings} \
         ${options}
     """
