@@ -84,9 +84,9 @@ To create the documentation pages locally, run from the root of this repository
 groovydoc -sourcepath src -d docs 'ecdcpipeline' '*.groovy'
 ```
 
-### The test branch
+### The test-library branch
 
-To test changes to the library on Jenkins before merging to _master_, you can merge them to the _test_ branch that is used in https://github.com/ess-dmsc/jenkins-shared-library-test.
+To test changes to the library on Jenkins before merging to _master_, you can merge them to the _test-library_ branch that is used in https://github.com/ess-dmsc/jenkins-shared-library-test.
 
 
 ### Does this library use proper Groovy coding conventions or style?

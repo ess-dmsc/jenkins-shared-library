@@ -17,7 +17,7 @@ node('docker') {
       """
     }  // stage
 
-    if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "test") {
+    if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "test-library") {
       stage('Push to GitLab') {
         withCredentials([
           gitUsernamePassword(
