@@ -7,9 +7,9 @@ import ecdcpipeline.ConanPackageBuilder
 conanPackageChannel = 'stable'
 
 containerBuildNodes = [
-  'centos': ContainerBuildNode.getDefaultContainerBuildNode('centos7-gcc8'),
-  'debian': ContainerBuildNode.getDefaultContainerBuildNode('debian10'),
-  'ubuntu': ContainerBuildNode.getDefaultContainerBuildNode('ubuntu1804-gcc8')
+  'centos': ContainerBuildNode.getDefaultContainerBuildNode('centos7-gcc11'),
+  'debian': ContainerBuildNode.getDefaultContainerBuildNode('debian11'),
+  'ubuntu': ContainerBuildNode.getDefaultContainerBuildNode('ubuntu2204')
 ]
 
 // Instantiate a ConanPackageBuilder object to generate the package builder.

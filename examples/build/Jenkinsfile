@@ -16,9 +16,9 @@ import ecdcpipeline.DeploymentTrigger
 // this library is updated; use the custom image if you want to keep the version
 // fixed or if the image you require is not provided by the library.
 containerBuildNodes = [
-  'centos-debug': ContainerBuildNode.getDefaultContainerBuildNode('centos7-gcc8'),
-  'centos-release': ContainerBuildNode.getDefaultContainerBuildNode('centos7-gcc8'),
-  'ubuntu': new ContainerBuildNode('screamingudder/ubuntu18.04-build-node:4.0.1', 'bash -e')
+  'centos-debug': ContainerBuildNode.getDefaultContainerBuildNode('centos7-gcc11'),
+  'centos-release': ContainerBuildNode.getDefaultContainerBuildNode('centos7-gcc11'),
+  'ubuntu': new ContainerBuildNode('dockerregistry.esss.dk/ecdc_group/build-node-images/ubuntu22.04-build-node:4.0.0', 'bash -e')
 ]
 
 // Instantiate a PipelineBuilder object to generate the builders, mounting the
