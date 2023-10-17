@@ -32,7 +32,12 @@ class PipelineBuilder implements Serializable {
   /**
    * Number of cores available for building.
    */
-  final numCpus = 8
+  final numCpus = 32
+
+  /**
+   * Memory available for building in GB.
+   */
+  final memGB = 60
 
   /**
    * Suggested value for make -j.
@@ -212,14 +217,14 @@ class PipelineBuilder implements Serializable {
     def mountArgs = mountArgList.join(' ')
 
     def builder = {
-      script.node('docker') {
+      script.node('dockertest') {
         try {
           def image = script.docker.image(containerBuildNode.image)
           image.run("\
             --name ${containerName} \
             --tty \
             --cpus=${numCpus} \
-            --memory=6GB \
+            --memory=${memGB}GB \
             --network=host \
             --env http_proxy=${script.env.http_proxy} \
             --env https_proxy=${script.env.https_proxy} \
