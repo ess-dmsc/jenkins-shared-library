@@ -32,17 +32,17 @@ class PipelineBuilder implements Serializable {
   /**
    * Number of cores available for building.
    */
-  final numCpus = 32
+  final numCpus = 24
 
   /**
    * Memory available for building in GB.
    */
-  final memGB = 60
+  final memGB = 44
 
   /**
    * Suggested value for make -j.
    */
-  final numMakeJobs = 16
+  final numMakeJobs = 24
 
   private def failure_messages
   private def script
