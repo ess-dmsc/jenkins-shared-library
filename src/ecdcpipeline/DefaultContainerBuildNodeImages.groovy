@@ -12,7 +12,7 @@ class DefaultContainerBuildNodeImages {
       'shell': '/usr/bin/scl enable gcc-toolset-12 -- /bin/bash -e -x'
     ],
     'debian11': [
-      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/debian11-build-node:4.0.0',
+      'image': 'dockerregistry.esss.dk/ecdc_group/build-node-images/debian11-build-node:5.0.0',
       'shell': 'bash -e -x'
     ],
     'ubuntu2204': [
