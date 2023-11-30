@@ -217,7 +217,7 @@ class PipelineBuilder implements Serializable {
     def mountArgs = mountArgList.join(' ')
 
     def builder = {
-      script.node('dockertest') {
+      script.node('docker') {
         try {
           def image = script.docker.image(containerBuildNode.image)
           image.run("\
