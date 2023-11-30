@@ -32,17 +32,12 @@ class PipelineBuilder implements Serializable {
   /**
    * Number of cores available for building.
    */
-  final numCpus = 24
-
-  /**
-   * Memory available for building in GB.
-   */
-  final memGB = 44
+  final numCpus = 8
 
   /**
    * Suggested value for make -j.
    */
-  final numMakeJobs = 24
+  final numMakeJobs = 16
 
   private def failure_messages
   private def script
@@ -224,7 +219,7 @@ class PipelineBuilder implements Serializable {
             --name ${containerName} \
             --tty \
             --cpus=${numCpus} \
-            --memory=${memGB}GB \
+            --memory=6GB \
             --network=host \
             --env http_proxy=${script.env.http_proxy} \
             --env https_proxy=${script.env.https_proxy} \
