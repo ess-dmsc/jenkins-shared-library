@@ -92,3 +92,4 @@ To test changes to the library on Jenkins before merging to _master_, you can me
 ### Does this library use proper Groovy coding conventions or style?
 
 Possibly not. If you know how to make it more proper Groovy-like and want to do it, make the changes and send a pull request.
+
