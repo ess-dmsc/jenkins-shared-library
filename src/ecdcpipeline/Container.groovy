@@ -28,7 +28,6 @@ class Container implements Serializable {
   ContainerBuildNode containerBuildNode
 
   private final String conanUser = 'ess-dmsc'
-  private final String conanRemote = 'gitlab'
 
   /**
    * <p></p>
@@ -113,31 +112,27 @@ class Container implements Serializable {
       conan remote add \
         --insert 0 \
         --force \
-        ${conanRemote} ${script.env.local_conan_server}
+        ecdc-conan-external ${script.env.local_conan_server}
     """
     setupConanUser()
   }
 
   def setupConanUser() {
     script.withCredentials([
-      script.usernamePassword(
-        credentialsId: 'dmsc-gitlab-conan-packages-jenkins-integration',
-        usernameVariable: 'USERNAME',
-        passwordVariable: 'PASSWORD'
+      script.string(
+        credentialsId: 'ess-artifactory-ecdc-conan-external-token',
+        variable: 'ARTIFACTORY_TOKEN'
       )
     ]) {
-      script.withEnv(["conanRemote=${conanRemote}"]) {
-        sh '''
-          set +x
-          conan user \
-            --password '$PASSWORD' \
-            --remote $conanRemote \
-            $USERNAME \
-            > /dev/null
-        '''
-      }  // withEnv
+      sh '''
+        set +x
+        conan user \
+          --password '$ARTIFACTORY_TOKEN' \
+          --remote ecdc-conan-external \
+          ecdc \
+          > /dev/null
+      '''
     }  // withCredentials
-    
   }
 
   def uploadLocalConanPackage(String packageDir, String conanPackageChannel) {
@@ -147,7 +142,7 @@ class Container implements Serializable {
       conan upload \
         --all \
         ${conanUploadFlag} \
-        --remote ${conanRemote} \
+        --remote ecdc-conan-external \
         ${packageNameAndVersion}@${conanUser}/${conanPackageChannel}
     """
   }
@@ -157,7 +152,7 @@ class Container implements Serializable {
       conan upload '*' \
         --all \
         -c \
-        --remote ${conanRemote} \
+        --remote ecdc-conan-external \
         || echo 'Ignoring error in post-build Conan package upload'
     """
   }
