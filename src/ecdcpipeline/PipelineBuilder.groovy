@@ -213,6 +213,17 @@ class PipelineBuilder implements Serializable {
 
     def builder = {
       script.node('docker') {
+
+        script.withCredentials([
+          script.usernamePassword(
+            credentialsId: 'dmsc-gitlab-docker-registry-username-token', 
+            usernameVariable: 'REGISTRY_USER', 
+            passwordVariable: 'REGISTRY_PASS'
+          )
+        ]) {
+            script.sh('docker login -u $REGISTRY_USER -p $REGISTRY_PASS registry.esss.lu.se')
+        }
+
         try {
           def image = script.docker.image(containerBuildNode.image)
           image.run("\
