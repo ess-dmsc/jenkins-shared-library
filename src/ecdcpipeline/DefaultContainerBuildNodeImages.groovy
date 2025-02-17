@@ -24,7 +24,7 @@ class DefaultContainerBuildNodeImages {
     ],
 
     'ubuntu2204-qt6': [
-      'image': 'registry.esss.lu.se/ecdc/ess-dmsc/build-nodes/ubuntu2204-qt6:1.0',
+      'image': 'registry.esss.lu.se/ecdc/ess-dmsc/build-nodes/ubuntu2204-qt6:1.1',
       'shell': 'bash -e -x'
     ],
 
